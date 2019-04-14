@@ -1,0 +1,56 @@
+{
+  "name": "qa-system-client",
+  "version": "0.0.1",
+  "description": "Implementacao de um sistema web de perguntas e respostas baseando na metodologia de desenvolvimento de software Extreme Programming",
+  "scripts": {
+    "lint": "prettier --write '{src,test, dist}/**/*.js' && eslint --fix '{src,test, dist}/**/*.js'",
+    "start": "fastify start src/backend/server.js",
+    "watch:frontend": "webpack --mode development -w",
+    "watch:backend": "fastify start -w src/backend/server.js -p 9000 | pino-pretty",
+    "livereload": "browser-sync start --proxy localhost:9000 --files 'dist'",
+    "build": "webpack --mode production",
+    "debug": "concurrently --raw 'npm run watch:frontend' 'npm run watch:backend' 'npm run livereload'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flaviolc18/qa-system.git"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flaviolc18/qa-system/issues"
+  },
+  "homepage": "https://github.com/flaviolc18/qa-system#readme",
+  "dependencies": {
+    "@reach/router": "1.2.1",
+    "fastify": "2.2.0",
+    "fastify-cli": "1.0.0",
+    "fastify-cookie": "3.0.2",
+    "fastify-static": "2.4.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.3",
+    "@babel/preset-env": "7.4.3",
+    "@babel/preset-react": "7.0.0",
+    "babel-eslint": "10.0.1",
+    "babel-loader": "8.0.5",
+    "browser-sync": "2.26.3",
+    "concurrently": "4.1.0",
+    "css-loader": "2.1.1",
+    "eslint-plugin-unicorn": "7.1.0",
+    "eslint": "5.16.0",
+    "eslint-plugin-react": "7.12.4",
+    "html-webpack-plugin": "3.2.0",
+    "mini-css-extract-plugin": "0.5.0",
+    "node-sass": "4.11.0",
+    "pino": "5.12.1",
+    "pino-pretty": "2.6.0",
+    "prettier": "1.16.4",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.1",
+    "webpack": "4.29.6",
+    "webpack-cli": "3.3.0"
+  }
+}
