@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - '10.15.0'
+services: mongodb
+cache:
+  directories:
+    - 'node_modules'
+install: npm install
+script:
+  - npm run lint
+branches:
+  only:
+    - master
+deploy:
+  provider: heroku
+  api_key:
+    secure: bc399d66-dc2f-4ae4-b725-8b749a12a305
+  app: qa-system-client
+  on:
+    repo: flaviolc18/qa-system-client
