@@ -1,8 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Home from './Home';
 import { Router } from '@reach/router';
+import PropTypes from 'prop-types';
 
-const FullPage = ({ children, location }) => <div>{children}</div>;
+import Navbar from '../components/Navbar';
+
+const links = [
+  { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
+  {
+    label: (
+      <div>
+        Logout
+        {'  '}
+        <i className="fas fa-sign-out-alt" />
+      </div>
+    ),
+    class: 'action',
+    type: 'button',
+    action: () => alert('Logout'),
+  },
+  { label: 'Dropdown', class: 'navigation', type: 'dropdown', links: [{ label: 'Teste', to: 'Teste' }] },
+];
+const FullPage = ({ children }) => (
+  <div>
+    <Navbar to="home" title={'UFMG Q&A'} links={links} />
+    <div>{children}</div>
+  </div>
+);
+
+FullPage.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+};
+
 const NotFount = () => <div>Sorry, nothing here</div>;
 
 const Index = () => (
