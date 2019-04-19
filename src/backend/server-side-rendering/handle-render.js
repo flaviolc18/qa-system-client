@@ -1,5 +1,6 @@
 const { default: render } = require('../../../dist/app.ssr');
 
+/* eslint no-console:0 */
 module.exports = function handleRender(req, reply) {
   try {
     reply.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url));
