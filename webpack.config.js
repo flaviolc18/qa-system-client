@@ -1,3 +1,5 @@
+'use strict';
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -47,7 +49,7 @@ const appConfig = {
 
 const serverSideRenderingConfig = {
   target: 'node',
-  entry: './src/backend/server-side-rendering/app.ssr.jsx',
+  entry: './src/frontend/app.ssr.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.ssr.js',

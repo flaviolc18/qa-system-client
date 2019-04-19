@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-import App from '../../frontend/pages/App';
+import App from './pages/App';
 import { ServerLocation } from '@reach/router';
 
 export default function render(url) {
