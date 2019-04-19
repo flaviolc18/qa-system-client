@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './pages/App';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
+import Index from './pages/Index';
+import './app.css';
 
-ReactDOM.hydrate(<App />, document.getElementById('root'));
+ReactDOM.hydrate(<Index />, document.getElementById('root'));
