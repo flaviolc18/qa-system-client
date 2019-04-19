@@ -34,13 +34,6 @@
       { "blankLine": "any", "prev": "directive", "next": "directive" }
     ],
     "prefer-const": "error",
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "unicorn/filename-case": [
-      "error",
-      {
-        "case": "kebabCase"
-      }
-    ]
+    "quotes": ["error", "single"]
   }
 }
