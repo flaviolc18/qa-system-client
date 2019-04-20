@@ -1,22 +1,20 @@
 {
+  "root": true,
   "env": {
     "es6": true,
-    "node": true,
-    "browser": true
+    "node": true
   },
-  "plugins": ["unicorn"],
-  "parser": "babel-eslint",
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parserOptions": {
-    "sourceType": "module",
     "ecmaVersion": 2018
   },
+  "extends": ["eslint:recommended"],
   "rules": {
     "eqeqeq": ["error", "always"],
     "curly": ["error", "all"],
     "radix": ["error", "always"],
-    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "strict": ["error", "global"],
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "no-var": "error",
     "eol-last": ["error", "always"],
     "indent": "off",
     "linebreak-style": ["error", "unix"],
