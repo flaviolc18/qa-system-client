@@ -1,13 +1,13 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-import App from './pages/App';
+import Index from '../../frontend/pages/Index';
 import { ServerLocation } from '@reach/router';
 
 export default function render(url) {
   const html = renderToString(
     <ServerLocation url={url}>
-      <App />
+      <Index />
     </ServerLocation>
   );
 

@@ -23,10 +23,14 @@
   "homepage": "https://github.com/flaviolc18/qa-system#readme",
   "dependencies": {
     "@reach/router": "1.2.1",
+    "bootstrap": "4.3.1",
     "fastify": "2.2.0",
     "fastify-cli": "1.0.0",
     "fastify-cookie": "3.0.2",
     "fastify-static": "2.4.0",
+    "jquery": "3.4.0",
+    "popper.js": "1.15.0",
+    "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
