@@ -1,6 +1,5 @@
-.a {
-  text-decoration: none;
-  color: white;
+body {
+  background-color: rgb(232, 232, 232);
 }
 
 .navbar-title {
@@ -32,4 +31,11 @@
 .font-navbar {
   font-family: Comic Sans MS, Comic Sans, cursive;
   font-size: 15px;
+}
+
+.feed {
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  width: 800px;
+  min-height: 100vh;
 }
