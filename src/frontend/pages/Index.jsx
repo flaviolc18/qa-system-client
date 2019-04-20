@@ -4,7 +4,7 @@ import { Router } from '@reach/router';
 import PropTypes from 'prop-types';
 
 import Navbar from '../components/Navbar';
-
+import Feed from '../components/Feed';
 const links = [
   { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
   {
@@ -24,7 +24,7 @@ const links = [
 const FullPage = ({ children }) => (
   <div>
     <Navbar to="home" title={'UFMG Q&A'} links={links} />
-    <div>{children}</div>
+    <Feed>{children}</Feed>
   </div>
 );
 
