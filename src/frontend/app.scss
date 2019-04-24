@@ -1,0 +1,41 @@
+body {
+  background-color: rgb(232, 232, 232);
+}
+
+.navbar-title {
+  color: white;
+  font-family: Trattatello, fantasy;
+  font-size: 30px;
+}
+
+.navbar-title:hover {
+  text-decoration: none;
+  color: white;
+}
+.action-button {
+  color: white;
+  border: 1px;
+  border-style: solid;
+  border-color: white;
+}
+.action-button:hover {
+  color: green;
+  border-color: green;
+}
+.button-toggler {
+  color: white;
+}
+.button-toggler:hover {
+  color: green;
+}
+.font-navbar {
+  font-family: Comic Sans MS, Comic Sans, cursive;
+  font-size: 15px;
+}
+
+.feed {
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  width: 800px;
+  min-height: 100vh;
+}
