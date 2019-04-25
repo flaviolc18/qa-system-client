@@ -1,5 +1,4 @@
 const devServerUrl = 'http://localhost:3000';
-const productionServerUrl = '';
 
 process.env.ENV;
 
