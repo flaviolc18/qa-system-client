@@ -10,7 +10,7 @@ const loginBody = [
 class Login extends Component {
   login(e, state) {
     e.preventDefault();
-    http.post('/api/session/login', state).then(response => console.log(response));
+    http.post('/api/session/login', state);
   }
 
   render() {
