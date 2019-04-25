@@ -1,0 +1,19 @@
+.box {
+  width: 200px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 5px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.t-1 {
+  font-size: 12px;
+}
+
+.t-2 {
+  font-size: 24px;
+}
