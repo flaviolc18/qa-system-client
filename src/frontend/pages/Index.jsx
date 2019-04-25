@@ -1,7 +1,9 @@
 import React from 'react';
-import Home from './Home';
 import { Router } from '@reach/router';
 import PropTypes from 'prop-types';
+
+import Home from './Home';
+import Test from './Test';
 
 import Navbar from '../components/Navbar';
 import Feed from '../components/Feed';
@@ -38,6 +40,7 @@ const Index = () => (
   <Router>
     <FullPage path="/">
       <Home path="home" />
+      <Test path="test" />
       <NotFount default />
     </FullPage>
   </Router>
