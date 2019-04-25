@@ -1,0 +1,18 @@
+{
+  "123": {
+    "nome": "Usuario Teste",
+    "login": "usuarioTeste123",
+    "senha": "senhaTeste123",
+    "descricao": "Eu incididunt laborum sint nulla. Adipisicing aute aute veniam ea non voluptate minim enim irure ex sint officia. Minim elit cupidatat",
+    "reputacao": 100,
+    "profilePicture": "base64:://asdkajsdkljhsalkjfhuiafh8934u5y82726cn8246d/97847rnn903287rndxibk56897c4n6"
+  },
+  "456": {
+    "nome": "Teste Usuario",
+    "login": "usuarioTeste123",
+    "senha": "senhaTeste123",
+    "descricao": "Eu incididunt laborum sint nulla. Adipisicing aute aute veniam ea non voluptate minim enim irure ex sint officia. Minim elit cupidatat",
+    "reputacao": 100,
+    "profilePicture": "base64:://asdkajsdkljhsalkjfhuiafh8934u5y82726cn8246d/97847rnn903287rndxibk56897c4n6"
+  }
+}
