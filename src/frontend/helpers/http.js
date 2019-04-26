@@ -7,7 +7,9 @@ function request({ method, url, body }) {
     method,
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     },
+    mode: 'cors',
   };
 
   opts.body = method === 'GET' ? undefined : JSON.stringify(body || {});
@@ -16,12 +18,10 @@ function request({ method, url, body }) {
 }
 
 export const http = {
-  get(url, query) {
-    query = JSON.stringify(query);
-
+  get(url) {
     return request({
       method: 'GET',
-      url: url + '?' + query,
+      url,
     });
   },
   delete(url, body) {

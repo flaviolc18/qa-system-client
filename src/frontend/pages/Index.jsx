@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 import Feed from '../components/Feed';
 import Login from './Login';
 import RegistroUsuario from './RegistroUsuario';
+import QuestionPage from './QuestionPage';
 
 const links = [
   { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
@@ -28,6 +29,7 @@ const links = [
   },
   { label: 'Dropdown', class: 'navigation', type: 'dropdown', links: [{ label: 'Teste', to: 'Teste' }] },
 ];
+
 const FullPage = ({ children }) => (
   <div>
     <Navbar to="home" title={'UFMG Q&A'} links={links} />
@@ -47,6 +49,7 @@ const Index = () => (
       <Login path="login" />
       <RegistroUsuario path="registro-usuario" />
       <Home path="home" />
+      <QuestionPage path="questions/:id" />
       <NotFount default />
     </FullPage>
   </Router>
