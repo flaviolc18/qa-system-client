@@ -1,23 +1,27 @@
+const devServerUrl = 'http://localhost:3000';
+
+process.env.ENV;
+
 function request({ method, url, body }) {
   const opts = {
     method,
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     },
+    mode: 'cors',
   };
 
   opts.body = method === 'GET' ? undefined : JSON.stringify(body || {});
 
-  return fetch(url, opts).then(res => res.json());
+  return fetch(devServerUrl + url, opts).then(res => res.json());
 }
 
 export const http = {
-  get(url, query) {
-    query = JSON.stringify(query);
-
+  get(url) {
     return request({
       method: 'GET',
-      url: url + '?' + query,
+      url,
     });
   },
   delete(url, body) {
