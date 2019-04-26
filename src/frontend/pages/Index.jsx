@@ -6,9 +6,14 @@ import Home from './Home';
 
 import Navbar from '../components/Navbar';
 import Feed from '../components/Feed';
+import Login from './Login';
+import RegistroUsuario from './RegistroUsuario';
 
 const links = [
   { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
+  { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
+  { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
+
   {
     label: (
       <div>
@@ -39,6 +44,8 @@ const NotFount = () => <div>Sorry, nothing here</div>;
 const Index = () => (
   <Router>
     <FullPage path="/">
+      <Login path="login" />
+      <RegistroUsuario path="registro-usuario" />
       <Home path="home" />
       <NotFount default />
     </FullPage>
