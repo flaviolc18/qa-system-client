@@ -8,12 +8,20 @@ function Votes({ votes }) {
     <div
       className="d-flex align-items-center justify-content-center flex-column"
       style={{
+<<<<<<< HEAD
         width: 40,
+=======
+        width: 75,
+>>>>>>> origin/master
         height: 125,
       }}
     >
       <i className="fas fa-caret-up fa-3x" />
+<<<<<<< HEAD
       <div className="t-2">{votes}</div>
+=======
+      <text className="t-2">{votes}</text>
+>>>>>>> origin/master
       <i className="fas fa-caret-down fa-3x" />
     </div>
   );

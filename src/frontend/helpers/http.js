@@ -1,3 +1,7 @@
+const devServerUrl = 'http://localhost:3000';
+
+process.env.ENV;
+
 function request({ method, url, body }) {
   const opts = {
     method,
@@ -10,16 +14,14 @@ function request({ method, url, body }) {
 
   opts.body = method === 'GET' ? undefined : JSON.stringify(body || {});
 
-  return fetch(url, opts).then(res => res.json());
+  return fetch(devServerUrl + url, opts).then(res => res.json());
 }
 
 export const http = {
   get(url) {
-    // query = JSON.stringify(query);
-
     return request({
       method: 'GET',
-      url: url,
+      url,
     });
   },
   delete(url, body) {
