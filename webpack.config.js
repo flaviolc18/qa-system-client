@@ -19,6 +19,10 @@ const appConfig = {
         use: { loader: 'babel-loader' },
       },
       {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader',
+      },
+      {
         test: /\.s?[ac]ss$/,
         use: [
           {

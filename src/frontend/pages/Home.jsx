@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 
-import PostList from '../components/PostList';
-
-import mockUsuarios from '../mock/usuario.json';
-import mockPerguntas from '../mock/pergunta.json';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +22,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="row justify-content-center">
+      <div>
         <h1>Página inicial</h1>
       </div>
     );
