@@ -8,12 +8,12 @@ function Votes({ votes }) {
     <div
       className="d-flex align-items-center justify-content-center flex-column"
       style={{
-        width: 75,
+        width: 40,
         height: 125,
       }}
     >
       <i className="fas fa-caret-up fa-3x" />
-      <text className="t-2">{votes}</text>
+      <div className="t-2">{votes}</div>
       <i className="fas fa-caret-down fa-3x" />
     </div>
   );
@@ -26,10 +26,10 @@ Votes.propTypes = {
 function Box({ name, date, image }) {
   return (
     <div className="box">
-      <text className="t-1">{`asked ${date}`}</text>
+      <div className="t-1">{`asked ${date}`}</div>
       <div className="d-flex align-items-center">
         <ProfilePicture image={image} />
-        <text className="t-1 p-3">{name}</text>
+        <div className="t-1 p-3">{name}</div>
       </div>
     </div>
   );
@@ -46,8 +46,8 @@ function Post({ post, user }) {
     <div className="d-flex justify-content-around">
       <Votes votes={post.upvotes - post.downvotes} />
       <div className="d-flex flex-column align-items-end w-75">
-        <text>{post.descricao}</text>
-        <Box name={user.nome} date={post.dataCriacao} image={user.profilePicture} />
+        <div className="d-flex align-self-start">{post.descricao}</div>
+        <Box className="d-flex align-self-end" name={user.nome} date={post.dataCriacao} image={user.profilePicture} />
       </div>
     </div>
   );

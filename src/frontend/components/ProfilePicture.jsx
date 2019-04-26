@@ -13,14 +13,14 @@ function ProfilePicture({ image }) {
         justifyContent: 'center',
       }}
     >
-      <text
+      <div
         style={{
           fontSize: 24,
           color: '#FFFFFF',
         }}
       >
         {image[0].toUpperCase()}
-      </text>
+      </div>
     </div>
   );
 }

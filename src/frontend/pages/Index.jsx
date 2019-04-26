@@ -3,6 +3,7 @@ import { Router } from '@reach/router';
 import PropTypes from 'prop-types';
 
 import Home from './Home';
+import QuestionPage from './QuestionPage';
 
 import Navbar from '../components/Navbar';
 import Feed from '../components/Feed';
@@ -23,6 +24,7 @@ const links = [
   },
   { label: 'Dropdown', class: 'navigation', type: 'dropdown', links: [{ label: 'Teste', to: 'Teste' }] },
 ];
+
 const FullPage = ({ children }) => (
   <div>
     <Navbar to="home" title={'UFMG Q&A'} links={links} />
@@ -40,6 +42,7 @@ const Index = () => (
   <Router>
     <FullPage path="/">
       <Home path="home" />
+      <QuestionPage path="questions/:id" />
       <NotFount default />
     </FullPage>
   </Router>
