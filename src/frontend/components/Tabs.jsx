@@ -50,7 +50,7 @@ class Tabs extends Component {
   render() {
     let tabIndex = this.state.activeTab;
     if (this.props.useUrl) {
-      tabIndex = this.getUrlTabIndex() || 0;
+      tabIndex = this.getUrlTabIndex();
     }
 
     return (

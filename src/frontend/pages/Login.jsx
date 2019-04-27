@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from '../components/Form';
 import { http } from '../helpers/http';
+import { navigate } from '@reach/router';
 
 const loginBody = [
   { label: 'Email', defaultValue: '', class: 'input', type: 'email', placeHolder: 'example@mail.com' },
@@ -10,7 +11,11 @@ const loginBody = [
 class Login extends Component {
   login(e, state) {
     e.preventDefault();
-    http.post('/api/session/login', state);
+    const body = {
+      email: state.Email,
+      password: state.Senha,
+    };
+    http.post('/api/usuarios/login', body).then(() => navigate('/home'));
   }
 
   render() {

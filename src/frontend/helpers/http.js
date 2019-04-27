@@ -10,6 +10,7 @@ function request({ method, url, body }) {
       'Access-Control-Allow-Origin': '*',
     },
     mode: 'cors',
+    credentials: 'include',
   };
 
   opts.body = method === 'GET' ? undefined : JSON.stringify(body || {});

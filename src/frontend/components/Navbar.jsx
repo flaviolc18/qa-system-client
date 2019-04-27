@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MediaQuery from 'react-responsive';
 import { Location, Link } from '@reach/router';
 
 class Navbar extends Component {
@@ -32,7 +31,7 @@ class Navbar extends Component {
           return <Search />;
         case 'button':
           return (
-            <button className="btn action-button font-navbar" key={index} onClick={() => link.action()}>
+            <button className="btn action-button" key={index} onClick={() => link.action()}>
               {link.label}
             </button>
           );
@@ -47,68 +46,29 @@ class Navbar extends Component {
     return this.computeElements(this.actions);
   }
 
-  renderFullNavbar() {
+  render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-success">
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col">
-                <ul className="navbar-nav" style={{ float: 'left' }}>
-                  {this.computeLinks()}
-                </ul>
-              </div>
-
-              <Link className="navbar-title" to={this.props.to}>
-                {this.props.title}
-              </Link>
-
-              <div className="col">
-                <ul className="navbar-nav" style={{ float: 'right' }}>
-                  {this.computeActions()}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
-
-  renderSmallNavbar() {
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-success">
-        <Link className="navbar-title" to={this.props.to}>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a className="navbar-brand" href="#">
           {this.props.title}
-        </Link>
-
+        </a>
         <button
-          className="btn button-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <i className="fas fa-align-justify" />
+          <span className="navbar-toggler-icon" />
         </button>
-
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav">{this.computeLinks()}</ul>
-
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          {<ul className="navbar-nav">{this.computeLinks()}</ul>}
+          <div style={{ margin: '0 auto' }} />
           <ul className="navbar-nav">{this.computeActions()}</ul>
         </div>
       </nav>
-    );
-  }
-
-  render() {
-    return (
-      <div style={{}}>
-        <MediaQuery query="(max-width: 991px)">{this.renderSmallNavbar()}</MediaQuery>
-        <MediaQuery query="(min-width: 991px)">{this.renderFullNavbar()}</MediaQuery>
-      </div>
     );
   }
 }
@@ -122,11 +82,7 @@ Navbar.propTypes = {
 const Navlink = ({ label, disabled, active, to }) => {
   return (
     <li className="nav-item">
-      <Link
-        style={{ color: 'white' }}
-        className={'nav-link font-navbar ' + (disabled ? 'disabled' : active ? 'active' : '')}
-        to={to}
-      >
+      <Link className={'nav-link ' + (disabled ? 'disabled' : active ? 'active' : '')} to={to}>
         {label}
       </Link>
     </li>
@@ -153,9 +109,8 @@ const Search = () => (
 
 const Dropdown = ({ label, links }) => {
   return (
-    <li className="nav-item dropdown font-navbar">
+    <li className="nav-item dropdown">
       <a
-        style={{ color: 'white' }}
         className="nav-link dropdown-toggle"
         href="#"
         id="navbarDropdown"
