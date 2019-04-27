@@ -1,87 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { http } from '../helpers/http';
+import Question from '../components/Question';
+import TextBoxArea from '../components/TextAreaBox';
+import { postResposta } from '../redux/respostas.redux';
+import { connect } from 'react-redux';
+import { getSession } from '../helpers/session';
+import Answers from '../components/Answers';
 
-import Post from '../components/Post';
-import PostList from '../components/PostList';
-
-const ColoredLine = () => <hr className="colored-line" />;
-const NotFount = () => <div>Pergunta não encontrada...</div>;
-const Loading = () => <div>Loading...</div>;
-
-const Question = ({ id }) => {
-  const [pergunta, setPergunta] = useState('LOADING');
-  const [respostas, setRespostas] = useState(null);
-  const [usuario, setUsuario] = useState(null);
-  const [usuarios, setUsuarios] = useState(null);
-
-  useEffect(() => {
-    http.get(`http://localhost:9001/api/perguntas/${id}`).then(pergunta => {
-      if (pergunta.error) {
-        setPergunta('NOT_FOUND');
-        return;
-      }
-
-      setPergunta(pergunta);
-
-      http.get(`http://localhost:9001/api/perguntas/${id}/usuario`).then(usuario => {
-        setUsuario(usuario);
-      });
-
-      http.get(`http://localhost:9001/api/perguntas/${id}/respostas`).then(respostas => {
-        setRespostas(respostas);
-      });
-
-      http.get(`http://localhost:9001/api/perguntas/${id}/respostas/usuarios`).then(usuarios => {
-        setUsuarios(
-          (usuarios || []).reduce((objUsuarios, usuario) => {
-            objUsuarios[usuario._id] = usuario;
-            return objUsuarios;
-          }, {})
-        );
-      });
-    });
-  }, []);
-
-  switch (pergunta) {
-    case 'NOT_FOUND':
-      return <NotFount />;
-    case 'LOADING':
-      return <Loading />;
-
-    default:
-      return (
-        <div>
-          <h3 className="ml-5">{`${pergunta.titulo}`}</h3>
-          <ColoredLine />
-
-          <div className="mt-1 mb-3">
-            <div className="mt-3 mb-3">{usuario && <Post post={pergunta} user={usuario} />}</div>
-            <ColoredLine />
-            {respostas && usuarios && <PostList posts={respostas} users={usuarios} />}
-          </div>
-        </div>
-      );
+class QuestionPage extends Component {
+  constructor(props) {
+    super(props);
+    this.postResposta = this.postResposta.bind(this);
   }
-};
 
-Question.propTypes = {
-  id: PropTypes.string,
-};
+  postResposta(text) {
+    getSession().then(session => {
+      let resposta = {
+        descricao: text,
+        upvotes: 0,
+        downvotes: 0,
+        usuarioId: session.usuarioId,
+        perguntaId: this.props.id,
+      };
 
-function QuestionPage({ id }) {
-  return (
-    <div className="teste">
-      <div className="row justify-content-start p-3">
-        <Question id={id} />
+      this.props.postResposta(resposta);
+    });
+  }
+
+  render() {
+    return (
+      <div className="p-3">
+        <Question id={this.props.id} />
+        <Answers perguntaId={this.props.id} />
+        <TextBoxArea onSubmit={state => this.postResposta(state.text)} />
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 QuestionPage.propTypes = {
   id: PropTypes.string,
+  postResposta: PropTypes.func,
 };
 
-export default QuestionPage;
+export default connect(
+  () => {
+    return {};
+  },
+  { postResposta }
+)(QuestionPage);

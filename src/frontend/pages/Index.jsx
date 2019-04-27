@@ -20,7 +20,7 @@ const Index = () => (
       <Perfil path="usuarios/:usuarioId" />
       <RegistroUsuario path="registro-usuario" />
       <Home path="home" />
-      <QuestionPage path="questions/:id" />
+      <QuestionPage path="perguntas/:id" />
       <PostarPergunta path="postar-pergunta" />
       <NotFount default />
     </FullPage>

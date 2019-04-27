@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 import TextAreaBox from '../components/TextAreaBox';
+import PropTypes from 'prop-types';
+import { getSession } from '../helpers/session';
+
+import { postPergunta } from '../redux/perguntas.redux';
+import { connect } from 'react-redux';
+import { navigate } from '@reach/router';
 
 class PostarPergunta extends Component {
   constructor(props) {
@@ -17,11 +23,21 @@ class PostarPergunta extends Component {
   }
 
   post(state) {
-    const questionBody = {
-      titulo: this.state.title,
-      descricao: state.text,
-    };
-    alert(questionBody);
+    return getSession().then(session => {
+      const questionBody = {
+        titulo: this.state.title,
+        descricao: state.text,
+        dataCriacao: new Date(),
+        upvotes: 0,
+        downvotes: 0,
+        usuarioId: session.usuarioId,
+      };
+
+      return this.props.postPergunta(questionBody).then(pergunta => {
+        pergunta = pergunta.elements[0];
+        navigate('/perguntas/' + pergunta._id);
+      });
+    });
   }
 
   render() {
@@ -45,4 +61,14 @@ class PostarPergunta extends Component {
     );
   }
 }
-export default PostarPergunta;
+
+PostarPergunta.propTypes = {
+  postPergunta: PropTypes.func,
+};
+
+export default connect(
+  () => {
+    return {};
+  },
+  { postPergunta }
+)(PostarPergunta);

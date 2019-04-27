@@ -3,7 +3,8 @@ import Navbar from './Navbar';
 import Feed from './Feed';
 import PropTypes from 'prop-types';
 import { http } from '../helpers/http';
-
+import { getSession } from '../helpers/session';
+import { navigate } from '@reach/router';
 const sharedLink = [{ label: 'Home', class: 'navigation', type: 'link', to: '/home' }];
 const unloggedLinks = sharedLink.concat([
   { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
@@ -11,6 +12,14 @@ const unloggedLinks = sharedLink.concat([
 ]);
 const loggedLink = sharedLink.concat([
   { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
+  {
+    label: <div>Perfil</div>,
+    class: 'action',
+    type: 'button',
+    action: () => {
+      getSession().then(session => navigate('/usuarios/' + session.usuarioId));
+    },
+  },
   {
     label: (
       <div>
@@ -21,59 +30,30 @@ const loggedLink = sharedLink.concat([
     ),
     class: 'action',
     type: 'button',
-    action: () => alert('Logout'),
+    action: () => http.delete('/api/usuarios/logout'),
   },
 ]);
 
-const AppContext = React.createContext({
-  isLogged: false,
-  usuarioId: '',
-});
+const debugLinks = unloggedLinks.concat(loggedLink);
 
 class FullPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isLogged: false, usuarioId: '' };
-    this.getUserState = this.getUserState.bind(this);
   }
 
-  getUserState() {
-    http.get('/api/sessions').then(session => {
-      if (session && session.usuarioId)
-        if (session.usuarioId != this.state.usuarioId) {
-          this.setState({ isLogged: true, usuarioId: session.usuarioId });
-        }
-    });
-  }
+  componentDidMount() {}
 
-  componentDidMount() {
-    this.getUserState();
-  }
-
-  componentDidUpdate() {
-    this.getUserState();
+  componentDidUpdate(oldProps) {
+    if (oldProps.location.href === this.props.location.href) {
+      return;
+    }
   }
 
   render() {
-    const value = this.state;
-
     return (
       <div>
-        <AppContext.Provider value={value}>
-          <AppContext.Consumer>
-            {value => (
-              <div>
-                <Navbar
-                  context={value}
-                  to="/home"
-                  title={'Não Faço a Menor Ideia'}
-                  links={this.state.isLogged ? loggedLink : unloggedLinks}
-                />
-                <Feed context={value}>{this.props.children}</Feed>
-              </div>
-            )}
-          </AppContext.Consumer>
-        </AppContext.Provider>
+        <Navbar to="/home" title={'Não Faço a Menor Ideia'} links={debugLinks} />
+        <Feed>{this.props.children}</Feed>
       </div>
     );
   }
@@ -81,6 +61,7 @@ class FullPage extends Component {
 
 FullPage.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  location: PropTypes.object,
 };
 
 export default FullPage;
