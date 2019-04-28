@@ -5,7 +5,7 @@ import Question from '../components/Question';
 import TextBoxArea from '../components/TextAreaBox';
 import { postResposta } from '../redux/respostas.redux';
 import { connect } from 'react-redux';
-import { getSession } from '../helpers/session';
+import { castSession } from '../helpers/session';
 import Answers from '../components/Answers';
 
 class QuestionPage extends Component {
@@ -15,7 +15,7 @@ class QuestionPage extends Component {
   }
 
   postResposta(text) {
-    getSession().then(session => {
+    castSession().then(session => {
       let resposta = {
         descricao: text,
         upvotes: 0,

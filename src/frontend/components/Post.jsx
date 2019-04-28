@@ -35,10 +35,13 @@ Votes.propTypes = {
 
 function Box({ name, date, image }) {
   return (
-    <div className="box">
-      <div className="t-1">{`asked ${date}`}</div>
-      <ProfilePicture image={image} />
-      <div>{name}</div>
+    <div className="row p-2" style={{ float: 'right' }}>
+      <ProfilePicture style={{ float: 'left' }} image={image} />
+      <div className="pr-2" />
+      <div style={{ float: 'right' }}>
+        <div>{name}</div>
+        <div className="t-1">{`${date}`}</div>
+      </div>
     </div>
   );
 }
@@ -52,7 +55,7 @@ Box.propTypes = {
 function Post({ post, user }) {
   return (
     <div>
-      <Votes votes={post.upvotes - post.downvotes} />
+      {/* <Votes votes={post.upvotes - post.downvotes} /> */}
       <div>
         <div>{post.descricao}</div>
         <Box name={user.username} date={post.dataCriacao} image={user.profilePicture} />

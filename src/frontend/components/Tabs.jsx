@@ -59,7 +59,7 @@ class Tabs extends Component {
     }
 
     return (
-      <div className="card text-center">
+      <div className="card">
         <div className="card-header">
           <ul className="nav nav-tabs card-header-tabs">
             {this.props.tabs.map((tab, index) => (

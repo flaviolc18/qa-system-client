@@ -21,13 +21,21 @@ export function loadPergunta(filters) {
   };
 }
 
-export function loadPerguntas(filters) {
+export function loadPerguntasUsuario(filters) {
   return {
     types: [PERGUNTAS_REQUEST, PERGUNTAS_RECEIVE, PERGUNTAS_NOT_RECEIVE],
     callAPI: () => http.get('/api/perguntas/usuario/' + filters.usuarioId),
     payload: {
       filters,
     },
+  };
+}
+
+export function loadPerguntas(filters) {
+  return {
+    types: [PERGUNTAS_REQUEST, PERGUNTAS_RECEIVE, PERGUNTAS_NOT_RECEIVE],
+    callAPI: () => http.get('/api/perguntas'),
+    payload: { filters },
   };
 }
 
@@ -44,6 +52,7 @@ export function postPergunta(questionBody) {
 export function getPergunta(state, id) {
   return state.perguntas.byIds[id];
 }
+
 export function getPerguntaByFilters(state, filters) {
   const ids = state.perguntas ? state.perguntas.byFilters[serialize(filters)] : [];
   if (ids) {

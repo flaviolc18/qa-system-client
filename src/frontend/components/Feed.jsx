@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Feed extends Component {
   render() {
-    return <div className="feed">{this.props.children}</div>;
+    return <div className="feed p-3">{this.props.children}</div>;
   }
 }
 Feed.propTypes = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
 import { Link } from '@reach/router';
 
@@ -11,14 +11,11 @@ class PerguntasUsuario extends Component {
   renderPerguntas() {
     return this.props.perguntas.map((pergunta, index) => {
       return (
-        <Link
-          to={'/perguntas/' + pergunta._id}
-          className="card m-1"
-          key={index}
-          style={{ backgroundColor: 'rgb(245,245,245)' }}
-        >
-          <h5>{pergunta.titulo}</h5>
-        </Link>
+        <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
+          <Link to={'/perguntas/' + pergunta._id}>
+            <h5>{pergunta.titulo}</h5>
+          </Link>
+        </div>
       );
     });
   }
@@ -51,5 +48,5 @@ export default connect(
       perguntas: getPerguntaByFilters(state, { usuarioId: ownProps.usuarioId }),
     };
   },
-  { loadPerguntas }
+  { loadPerguntas: loadPerguntasUsuario }
 )(PerguntasUsuario);

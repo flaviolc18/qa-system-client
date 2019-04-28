@@ -1,7 +1,7 @@
 import { http } from './http';
 import { getSearch } from './search';
 
-export function getSession() {
+export function castSession() {
   return http.get('/api/sessions').then(session => session);
 }
 

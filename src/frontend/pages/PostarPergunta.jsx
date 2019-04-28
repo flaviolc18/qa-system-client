@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import TextAreaBox from '../components/TextAreaBox';
 import PropTypes from 'prop-types';
-import { getSession } from '../helpers/session';
+import { castSession } from '../helpers/session';
 
 import { postPergunta } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
@@ -23,7 +23,7 @@ class PostarPergunta extends Component {
   }
 
   post(state) {
-    return getSession().then(session => {
+    return castSession().then(session => {
       const questionBody = {
         titulo: this.state.title,
         descricao: state.text,

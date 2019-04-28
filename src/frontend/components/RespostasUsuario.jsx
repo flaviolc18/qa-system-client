@@ -5,26 +5,17 @@ import { connect } from 'react-redux';
 import { Link } from '@reach/router';
 
 class RespostasUsuario extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      respostas: [],
-    };
-  }
   componentDidMount() {
     this.props.loadRespostasByUsuario({ usuarioId: this.props.usuarioId });
   }
-  renderPerguntas() {
+  renderRespostas() {
     return this.props.respostas.map((resposta, index) => {
       return (
-        <Link
-          to={'/perguntas/' + resposta.perguntaId}
-          className="card m-1"
-          key={index}
-          style={{ backgroundColor: 'rgb(245,245,245)' }}
-        >
-          <h5>{resposta.descricao}</h5>
-        </Link>
+        <div key={'resposta-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
+          <Link to={'/perguntas/' + resposta.perguntaId}>
+            <h5>{resposta.descricao}</h5>
+          </Link>
+        </div>
       );
     });
   }
@@ -35,7 +26,7 @@ class RespostasUsuario extends Component {
         {this.props.respostas.length <= 0 ? (
           <div>Nenhuma Resposta encontrada para o Usuário!</div>
         ) : (
-          <div>{this.renderPerguntas()}</div>
+          <div>{this.renderRespostas()}</div>
         )}
       </div>
     );

@@ -3,8 +3,12 @@ import Navbar from './Navbar';
 import Feed from './Feed';
 import PropTypes from 'prop-types';
 import { http } from '../helpers/http';
-import { getSession } from '../helpers/session';
 import { navigate } from '@reach/router';
+import { connect } from 'react-redux';
+import { castSession } from '../helpers/session';
+
+import { loadSession, getSession } from '../redux/app.redux';
+
 const sharedLink = [{ label: 'Home', class: 'navigation', type: 'link', to: '/home' }];
 const unloggedLinks = sharedLink.concat([
   { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
@@ -17,7 +21,7 @@ const loggedLink = sharedLink.concat([
     class: 'action',
     type: 'button',
     action: () => {
-      getSession().then(session => navigate('/usuarios/' + session.usuarioId));
+      castSession().then(session => navigate('/usuarios/' + session.usuarioId));
     },
   },
   {
@@ -37,19 +41,19 @@ const loggedLink = sharedLink.concat([
 const debugLinks = unloggedLinks.concat(loggedLink);
 
 class FullPage extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    this.props.loadSession();
   }
-
-  componentDidMount() {}
 
   componentDidUpdate(oldProps) {
     if (oldProps.location.href === this.props.location.href) {
       return;
     }
+    this.props.loadSession();
   }
 
   render() {
+    console.log(this.props.session);
     return (
       <div>
         <Navbar to="/home" title={'Não Faço a Menor Ideia'} links={debugLinks} />
@@ -62,6 +66,15 @@ class FullPage extends Component {
 FullPage.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   location: PropTypes.object,
+  loadSession: PropTypes.func,
+  session: PropTypes.object,
 };
 
-export default FullPage;
+export default connect(
+  state => {
+    return {
+      session: getSession(state),
+    };
+  },
+  { loadSession }
+)(FullPage);
