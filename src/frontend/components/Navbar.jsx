@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link, navigate } from '@reach/router';
 import { connect } from 'react-redux';
+
 import { getSession } from '../redux/app.redux';
 import { http } from '../helpers/http';
 
@@ -78,7 +79,7 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link className="navbar-brand" to={this.props.to}>
+        <Link className="navbar-brand navbar-title" to={this.props.to}>
           {this.props.title}
         </Link>
         <button

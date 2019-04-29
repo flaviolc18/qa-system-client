@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import Form from '../components/Form';
-import { http } from '../helpers/http';
 import { navigate } from '@reach/router';
+
+import { http } from '../helpers/http';
+import Form from '../components/Form';
 
 const loginBody = [
   { label: 'Email', defaultValue: '', class: 'input', type: 'email', placeHolder: 'example@mail.com' },
   { label: 'Senha', defaultValue: '', class: 'input', type: 'password', placeHolder: '******' },
 ];
 
-class Login extends Component {
+class SignIn extends Component {
   login(e, state) {
     e.preventDefault();
     const body = {
@@ -31,4 +32,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignIn;

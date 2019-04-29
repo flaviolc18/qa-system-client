@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Post from './Post';
 import { loadPergunta, getPergunta } from '../redux/perguntas.redux';
 import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import Post from './Post';
 
 class Question extends Component {
   componentDidMount() {

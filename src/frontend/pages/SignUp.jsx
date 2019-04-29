@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Form from '../components/Form';
-import { http } from '../helpers/http';
 import { navigate } from '@reach/router';
+
+import { http } from '../helpers/http';
+import Form from '../components/Form';
 
 const registroBody = [
   {
@@ -35,15 +36,15 @@ const registroBody = [
   },
 ];
 
-class RegistroUsuario extends Component {
-  registrar(e, state) {
+class SignUp extends Component {
+  signUp(e, state) {
     e.preventDefault();
     if (state.Senha != state['Confirmar Confirmar Senha']) {
       alert('As senhas não são iguais!');
       return;
     }
 
-    const userDate = {
+    const userData = {
       username: state.Nome,
       email: state.Email,
       password: state.Senha,
@@ -52,7 +53,7 @@ class RegistroUsuario extends Component {
       profilePicture: '1234',
     };
 
-    http.post('/api/usuarios/signup', userDate).then(response => {
+    http.post('/api/usuarios/signup', userData).then(response => {
       if (response) {
         navigate('/login');
       }
@@ -63,11 +64,11 @@ class RegistroUsuario extends Component {
       <div className="row pt-5">
         <div className="col" />
         <div className="col">
-          <Form body={registroBody} submit={this.registrar} submitLabel="Registrar!" />
+          <Form body={registroBody} submit={this.signUp} submitLabel="Registrar!" />
         </div>
         <div className="col" />
       </div>
     );
   }
 }
-export default RegistroUsuario;
+export default SignUp;

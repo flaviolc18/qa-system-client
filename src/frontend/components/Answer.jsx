@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Post from './Post';
 import PropTypes from 'prop-types';
+
+import Post from './Post';
 
 class Answer extends Component {
   render() {

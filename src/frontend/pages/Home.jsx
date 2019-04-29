@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from '@reach/router';
+
+import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
 
 class Home extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Home extends Component {
           <Link style={{ color: 'black' }} to={'/perguntas/' + pergunta._id}>
             {pergunta.titulo}
           </Link>
-          <div style={{ fontSize: '15px', float: 'right' }}>{pergunta.dataCriacao}</div>
+          <div style={{ fontSize: '15px', float: 'right' }}>{new Date(pergunta.dataCriacao).toLocaleDateString()}</div>
         </div>
       );
     });
@@ -49,7 +50,9 @@ class Home extends Component {
     }
     return (
       <div>
-        <h1>Ultimas Perguntas:</h1>
+        <h1>
+          <i className="fas fa-align-left" /> Ultimas Perguntas:
+        </h1>
         <div className="p-3" />
         <div className="pl-5 pr-5">{this.renderPerguntas()}</div>
       </div>

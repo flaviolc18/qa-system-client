@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
 import { Link } from '@reach/router';
+
+import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
 
 class PerguntasUsuario extends Component {
   componentDidMount() {

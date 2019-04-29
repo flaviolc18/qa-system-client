@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { loadRespostasByUsuario, getRespostaByPergunta } from '../redux/respostas.redux';
 import { connect } from 'react-redux';
 import { Link } from '@reach/router';
+
+import { loadRespostasByUsuario, getRespostaByPergunta } from '../redux/respostas.redux';
 
 class RespostasUsuario extends Component {
   componentDidMount() {

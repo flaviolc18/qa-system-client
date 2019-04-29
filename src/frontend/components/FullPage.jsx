@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
-import Feed from './Feed';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadSession, getSession } from '../redux/app.redux';
+import Navbar from './Navbar';
+import Feed from './Feed';
 
 const sharedLink = [{ label: 'Home', class: 'navigation', type: 'link', to: '/home' }];
 const unloggedLinks = sharedLink.concat([
@@ -32,7 +32,7 @@ class FullPage extends Component {
   render() {
     return (
       <div>
-        <Navbar to="/home" title={'Não Faço a Menor Ideia'} links={debugLinks} />
+        <Navbar to="/home" title={'Não Faço a Menor Ideia!'} links={debugLinks} />
         <Feed>{this.props.children}</Feed>
       </div>
     );

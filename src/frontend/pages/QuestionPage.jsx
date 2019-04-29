@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import Question from '../components/Question';
-import TextBoxArea from '../components/TextAreaBox';
-import { postResposta } from '../redux/respostas.redux';
 import { connect } from 'react-redux';
-import Answers from '../components/Answers';
+
+import { postResposta } from '../redux/respostas.redux';
 import { getSession } from '../redux/app.redux';
+import Question from '../components/Question';
+import TextBox from '../components/TextBox';
+import Answers from '../components/Answers';
 
 class QuestionPage extends Component {
   constructor(props) {
     super(props);
-    this.postResposta = this.postResposta.bind(this);
+    this.postResposta = this.postAnswer.bind(this);
   }
 
-  postResposta(text) {
+  postAnswer(text) {
     if (this.props.session) {
       let resposta = {
         descricao: text,
@@ -33,7 +33,7 @@ class QuestionPage extends Component {
       <div className="p-3">
         <Question id={this.props.id} />
         <Answers perguntaId={this.props.id} />
-        <TextBoxArea onSubmit={state => this.postResposta(state.text)} />
+        <TextBox buttonMessage="Responder!" onSubmit={state => this.postAnswer(state.text)} />
       </div>
     );
   }
