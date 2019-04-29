@@ -1,27 +1,32 @@
 import React from 'react';
 import { Router } from '@reach/router';
 
-import Home from './Home';
-
-import Login from './Login';
-import RegistroUsuario from './RegistroUsuario';
-import QuestionPage from './QuestionPage';
-import PostarPergunta from './PostarPergunta';
-import Perfil from './Perfil';
-
 import FullPage from '../components/FullPage';
 
-const NotFount = () => <div>Sorry, nothing here</div>;
+import Home from './Home';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import QuestionPage from './QuestionPage';
+import QuestionPost from './QuestionPost';
+import Perfil from './Perfil';
+
+const NotFount = () => (
+  <div className="row justify-content-md-center">
+    <h3>
+      Desculpe, mas não tem nada aqui! <i className="fas fa-sad-tear" />
+    </h3>
+  </div>
+);
 
 const Index = () => (
   <Router>
     <FullPage path="/">
-      <Login path="login" />
+      <SignIn path="login" />
       <Perfil path="usuarios/:usuarioId" />
-      <RegistroUsuario path="registro-usuario" />
+      <SignUp path="registro-usuario" />
       <Home path="home" />
       <QuestionPage path="perguntas/:id" />
-      <PostarPergunta path="postar-pergunta" />
+      <QuestionPost path="postar-pergunta" />
       <NotFount default />
     </FullPage>
   </Router>

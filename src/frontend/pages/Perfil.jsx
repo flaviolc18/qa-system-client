@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-
-import Tabs from '../components/Tabs';
-import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
 import PropTypes from 'prop-types';
-
-import PerguntasUsuario from '../components/PerguntasUsuario';
-import RespostasUsuario from '../components/RespostasUsuario';
 import { connect } from 'react-redux';
+
+import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
+import PerguntasUsuario from '../components/UserQuestions';
+import RespostasUsuario from '../components/UserAnswers';
+import Tabs from '../components/Tabs';
 
 class Perfil extends Component {
   constructor(props) {

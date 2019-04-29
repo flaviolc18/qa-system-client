@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import Post from './Post';
 import { loadPergunta, getPergunta } from '../redux/perguntas.redux';
 import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+<<<<<<< HEAD
+import Post from './Post';
+
+=======
 class Question extends Component {
   componentDidMount() {
-    this.props.loadPergunta({ id: this.props.id });
-    this.props.loadUsuarioPergunta({ perguntaId: this.props.id });
   }
   render() {
     if (!this.props.pergunta || !this.props.usuario) {
