@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
-import { http } from '../helpers/http';
 import PropTypes from 'prop-types';
+import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { connect } from 'react-redux';
+import { Link } from '@reach/router';
 
 class PerguntasUsuario extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      perguntas: [],
-    };
-  }
   componentDidMount() {
-    http.get('/api/perguntas/usuario/' + this.props.usuarioId).then(perguntas => this.setState({ perguntas }));
+    this.props.loadPerguntas({ usuarioId: this.props.usuarioId });
+  }
+  renderPerguntas() {
+    return this.props.perguntas.map((pergunta, index) => {
+      return (
+        <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
+          <Link to={'/perguntas/' + pergunta._id}>
+            <h5>{pergunta.titulo}</h5>
+          </Link>
+        </div>
+      );
+    });
   }
   render() {
+    if (!this.props.perguntas) {
+      return '';
+    }
+
     return (
       <div>
-        {this.state.perguntas.length <= 0 ? (
+        {this.props.perguntas.length <= 0 ? (
           <div>Nenhuma Pergunta encontrada para o Usuário!</div>
         ) : (
-          <div>Perguntas</div>
+          <div>{this.renderPerguntas()}</div>
         )}
       </div>
     );
@@ -27,6 +38,15 @@ class PerguntasUsuario extends Component {
 
 PerguntasUsuario.propTypes = {
   usuarioId: PropTypes.string,
+  perguntas: PropTypes.array,
+  loadPerguntas: PropTypes.func,
 };
 
-export default PerguntasUsuario;
+export default connect(
+  (state, ownProps) => {
+    return {
+      perguntas: getPerguntaByFilters(state, { usuarioId: ownProps.usuarioId }),
+    };
+  },
+  { loadPerguntas: loadPerguntasUsuario }
+)(PerguntasUsuario);

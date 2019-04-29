@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Location, Link, navigate } from '@reach/router';
 import PropTypes from 'prop-types';
+import { serialize, deserialize } from '../helpers/serializer';
 
 class Tabs extends Component {
   constructor(props) {
@@ -15,8 +16,12 @@ class Tabs extends Component {
     this.renderUrlBody = this.renderUrlBody.bind(this);
     this.getUrlTabIndex = this.getUrlTabIndex.bind(this);
 
-    if (this.props.useUrl)
-      navigate(this.props.location.pathname + '?' + this.props.tabName + '=' + (this.getUrlTabIndex() || 0));
+    if (this.props.useUrl) {
+      const search = this.props.location.search.substr(1);
+      let filter = deserialize(search);
+      filter[this.props.tabName] = this.getUrlTabIndex() || 0;
+      navigate(this.props.location.pathname + '?' + serialize(filter));
+    }
   }
 
   changeStateTab(e, index) {
@@ -54,7 +59,7 @@ class Tabs extends Component {
     }
 
     return (
-      <div className="card text-center">
+      <div className="card">
         <div className="card-header">
           <ul className="nav nav-tabs card-header-tabs">
             {this.props.tabs.map((tab, index) => (

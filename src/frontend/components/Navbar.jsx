@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Location, Link } from '@reach/router';
+import { Location, Link, navigate } from '@reach/router';
+import { connect } from 'react-redux';
+import { getSession } from '../redux/app.redux';
+import { http } from '../helpers/http';
 
 class Navbar extends Component {
   constructor(props) {
@@ -17,6 +20,32 @@ class Navbar extends Component {
         return link;
       }
     });
+
+    if (props.session) {
+      this.actions.concat([
+        {
+          label: <div>Perfil</div>,
+          class: 'action',
+          type: 'button',
+          action: () => {
+            navigate('/usuarios/' + props.session.usuarioId);
+          },
+        },
+        {
+          label: (
+            <div>
+              Logout
+              {'  '}
+              <i className="fas fa-sign-out-alt" />
+            </div>
+          ),
+          class: 'action',
+          type: 'button',
+          action: () => http.delete('/api/usuarios/logout'),
+        },
+      ]);
+    }
+
     this.actions = this.actions.filter(e => e != undefined);
   }
 
@@ -49,9 +78,9 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to={this.props.to}>
           {this.props.title}
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -77,6 +106,7 @@ Navbar.propTypes = {
   title: PropTypes.string,
   links: PropTypes.array,
   to: PropTypes.string,
+  session: PropTypes.object,
 };
 
 const Navlink = ({ label, disabled, active, to }) => {
@@ -137,7 +167,15 @@ Dropdown.propTypes = {
   links: PropTypes.array,
 };
 
-export default Object.assign(
-  props => <Location>{({ location }) => <Navbar location={location} {...props} />}</Location>,
-  { displayName: 'Navbar' }
+export default connect(
+  state => {
+    return {
+      session: getSession(state),
+    };
+  },
+  {}
+)(
+  Object.assign(props => <Location>{({ location }) => <Navbar location={location} {...props} />}</Location>, {
+    displayName: 'Navbar',
+  })
 );

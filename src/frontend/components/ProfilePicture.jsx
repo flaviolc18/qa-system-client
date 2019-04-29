@@ -5,7 +5,7 @@ import { http } from '../helpers/http';
 
 const base64Flag = 'data:image/jpeg;base64,';
 
-function ProfilePicture({ size, src, route }) {
+function ProfilePicture({ size, src, route, onClick, style }) {
   const [source, setSource] = useState(null);
   useEffect(() => {
     if (src) {
@@ -38,9 +38,12 @@ function ProfilePicture({ size, src, route }) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        ...style,
       }}
     >
-      <img src={source} style={{ width: size, height: size, borderRadius: '100%' }} />
+      <button onClick={onClick || (() => {})}>
+        <img src={source} style={{ width: size, height: size, borderRadius: '100%' }} />
+      </button>
       <span>
         <label htmlFor={'uploadInput'} className="ui icon button">
           <i className="fas fa-upload fa-2x" />
@@ -55,6 +58,8 @@ ProfilePicture.propTypes = {
   size: PropTypes.number,
   route: PropTypes.string,
   src: PropTypes.object,
+  onClick: PropTypes.func,
+  style: PropTypes.object,
 };
 
 export default ProfilePicture;

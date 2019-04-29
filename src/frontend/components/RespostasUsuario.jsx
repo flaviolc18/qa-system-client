@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
-import { http } from '../helpers/http';
 import PropTypes from 'prop-types';
+import { loadRespostasByUsuario, getRespostaByPergunta } from '../redux/respostas.redux';
+import { connect } from 'react-redux';
+import { Link } from '@reach/router';
 
 class RespostasUsuario extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      respostas: [],
-    };
-  }
   componentDidMount() {
-    http.get('/api/respostas/usuario/' + this.props.usuarioId).then(respostas => this.setState(respostas));
+    this.props.loadRespostasByUsuario({ usuarioId: this.props.usuarioId });
   }
+  renderRespostas() {
+    return this.props.respostas.map((resposta, index) => {
+      return (
+        <div key={'resposta-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
+          <Link to={'/perguntas/' + resposta.perguntaId}>
+            <h5>{resposta.descricao}</h5>
+          </Link>
+        </div>
+      );
+    });
+  }
+
   render() {
     return (
       <div>
-        {this.state.respostas.length <= 0 ? (
+        {this.props.respostas.length <= 0 ? (
           <div>Nenhuma Resposta encontrada para o Usuário!</div>
         ) : (
-          <div>Respostas</div>
+          <div>{this.renderRespostas()}</div>
         )}
       </div>
     );
@@ -27,6 +35,15 @@ class RespostasUsuario extends Component {
 
 RespostasUsuario.propTypes = {
   usuarioId: PropTypes.string,
+  loadRespostasByUsuario: PropTypes.func,
+  respostas: PropTypes.array,
 };
 
-export default RespostasUsuario;
+export default connect(
+  (state, ownProps) => {
+    return {
+      respostas: getRespostaByPergunta(state, { usuarioId: ownProps.usuarioId }),
+    };
+  },
+  { loadRespostasByUsuario }
+)(RespostasUsuario);

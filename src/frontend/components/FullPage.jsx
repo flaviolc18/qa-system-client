@@ -2,36 +2,37 @@ import React, { Component } from 'react';
 import Navbar from './Navbar';
 import Feed from './Feed';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const links = [
-  { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
+import { loadSession, getSession } from '../redux/app.redux';
+
+const sharedLink = [{ label: 'Home', class: 'navigation', type: 'link', to: '/home' }];
+const unloggedLinks = sharedLink.concat([
   { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
   { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
+]);
+const loggedLink = sharedLink.concat([
   { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
+]);
 
-  {
-    label: (
-      <div>
-        Logout
-        {'  '}
-        <i className="fas fa-sign-out-alt" />
-      </div>
-    ),
-    class: 'action',
-    type: 'button',
-    action: () => alert('Logout'),
-  },
-  { label: 'Dropdown', class: 'navigation', type: 'dropdown', links: [{ label: 'Teste', to: 'Teste' }] },
-];
+const debugLinks = unloggedLinks.concat(loggedLink);
 
 class FullPage extends Component {
-  componentDidUpdate() {
-    console.log('update');
+  componentDidMount() {
+    this.props.loadSession();
   }
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.location.href === this.props.location.href) {
+      return;
+    }
+    this.props.loadSession();
+  }
+
   render() {
     return (
       <div>
-        <Navbar to="home" title={'Não Faço a Menor Ideia'} links={links} />
+        <Navbar to="/home" title={'Não Faço a Menor Ideia'} links={debugLinks} />
         <Feed>{this.props.children}</Feed>
       </div>
     );
@@ -40,6 +41,16 @@ class FullPage extends Component {
 
 FullPage.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  location: PropTypes.object,
+  loadSession: PropTypes.func,
+  session: PropTypes.object,
 };
 
-export default FullPage;
+export default connect(
+  state => {
+    return {
+      session: getSession(state),
+    };
+  },
+  { loadSession }
+)(FullPage);
