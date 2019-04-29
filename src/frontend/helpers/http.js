@@ -1,3 +1,4 @@
+import { serialize } from './serializer';
 const devServerUrl = 'http://localhost:3000';
 
 process.env.ENV;
@@ -10,6 +11,7 @@ function request({ method, url, body }) {
       'Access-Control-Allow-Origin': '*',
     },
     mode: 'cors',
+    credentials: 'include',
   };
 
   opts.body = method === 'GET' ? undefined : JSON.stringify(body || {});
@@ -18,10 +20,10 @@ function request({ method, url, body }) {
 }
 
 export const http = {
-  get(url) {
+  get(url, body) {
     return request({
       method: 'GET',
-      url,
+      url: url + serialize(body),
     });
   },
   delete(url, body) {

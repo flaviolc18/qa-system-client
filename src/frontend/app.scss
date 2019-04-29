@@ -14,16 +14,7 @@ body {
   text-decoration: none;
   color: white;
 }
-.action-button {
-  color: white;
-  border: 1px;
-  border-style: solid;
-  border-color: white;
-}
-.action-button:hover {
-  color: green;
-  border-color: green;
-}
+
 .button-toggler {
   color: white;
 }
@@ -34,7 +25,11 @@ body {
   font-family: Comic Sans MS, Comic Sans, cursive;
   font-size: 15px;
 }
-
+.action-button {
+  border: 1px solid rgb(155, 155, 155);
+  color: rgb(155, 155, 155);
+  margin: 4px;
+}
 .feed {
   background-color: rgb(255, 255, 255);
   margin: 0 auto;

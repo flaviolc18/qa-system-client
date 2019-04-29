@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from '@reach/router';
 
-class App extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,7 +14,9 @@ class App extends Component {
     this.onChange = this.onChange.bind(this);
     this.submit = this.submit.bind(this);
   }
-
+  componentDidMount() {
+    this.props.loadPerguntas({});
+  }
   onChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
@@ -20,13 +26,47 @@ class App extends Component {
     alert(this.state.email);
   }
 
+  renderPerguntas() {
+    return this.props.perguntas.map((pergunta, index) => {
+      return (
+        <div
+          style={{ margin: '4px', borderBottom: 'solid 1px rgb(205,205,205)', fontSize: '30px' }}
+          key={'pergunta' + index}
+        >
+          <div style={{ height: '40px' }} />
+          <Link style={{ color: 'black' }} to={'/perguntas/' + pergunta._id}>
+            {pergunta.titulo}
+          </Link>
+          <div style={{ fontSize: '15px', float: 'right' }}>{pergunta.dataCriacao}</div>
+        </div>
+      );
+    });
+  }
+
   render() {
+    if (!this.props.perguntas) {
+      return '';
+    }
     return (
       <div>
-        <h1>Página inicial</h1>
+        <h1>Ultimas Perguntas:</h1>
+        <div className="p-3" />
+        <div className="pl-5 pr-5">{this.renderPerguntas()}</div>
       </div>
     );
   }
 }
 
-export default App;
+Home.propTypes = {
+  loadPerguntas: PropTypes.func,
+  perguntas: PropTypes.array,
+};
+
+export default connect(
+  state => {
+    return {
+      perguntas: getPerguntaByFilters(state, {}),
+    };
+  },
+  { loadPerguntas }
+)(Home);

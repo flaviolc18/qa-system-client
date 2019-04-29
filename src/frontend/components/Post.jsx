@@ -6,15 +6,25 @@ import ProfilePicture from './ProfilePicture';
 function Votes({ votes }) {
   return (
     <div
-      className="d-flex align-items-center justify-content-center flex-column"
+      className="col"
       style={{
-        width: 40,
-        height: 125,
+        width: '40px',
+        float: 'left',
       }}
     >
-      <i className="fas fa-caret-up fa-3x" />
-      <div className="t-2">{votes}</div>
-      <i className="fas fa-caret-down fa-3x" />
+      <div className="row justify-content-center">
+        <button className="btn btn-sm">
+          <i className="fas fa-caret-up fa-3x" />
+        </button>
+      </div>
+      <div className="row justify-content-center">
+        <div className="t-2">{votes}</div>
+      </div>
+      <div className="row justify-content-center">
+        <button className="btn btn-sm">
+          <i className="fas fa-caret-down fa-3x" />
+        </button>
+      </div>
     </div>
   );
 }
@@ -23,19 +33,21 @@ Votes.propTypes = {
   votes: PropTypes.number,
 };
 
-function Box({ name, date, image }) {
+function Box({ usuarioId, name, date, image }) {
   return (
-    <div className="box">
-      <div className="t-1">{`asked ${date}`}</div>
-      <div className="d-flex align-items-center">
-        <ProfilePicture image={image} />
-        <div className="t-1 p-3">{name}</div>
+    <div className="row p-2" style={{ float: 'right' }}>
+      <ProfilePicture usuarioId={usuarioId} style={{ float: 'left' }} image={image} />
+      <div className="pr-2" />
+      <div style={{ float: 'right' }}>
+        <div>{name}</div>
+        <div className="t-1">{new Date(date).toLocaleDateString()}</div>
       </div>
     </div>
   );
 }
 
 Box.propTypes = {
+  usuarioId: PropTypes.string,
   name: PropTypes.string,
   date: PropTypes.string,
   image: PropTypes.string,
@@ -43,11 +55,10 @@ Box.propTypes = {
 
 function Post({ post, user }) {
   return (
-    <div className="d-flex justify-content-around">
-      <Votes votes={post.upvotes - post.downvotes} />
-      <div className="d-flex flex-column align-items-end w-75">
-        <div className="d-flex align-self-start">{post.descricao}</div>
-        <Box className="d-flex align-self-end" name={user.nome} date={post.dataCriacao} image={user.profilePicture} />
+    <div>
+      <div>
+        <div>{post.descricao}</div>
+        <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} image={user.profilePicture} />
       </div>
     </div>
   );

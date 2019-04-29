@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from '../components/Form';
 import { http } from '../helpers/http';
+import { navigate } from '@reach/router';
 
 const registroBody = [
   {
@@ -43,14 +44,19 @@ class RegistroUsuario extends Component {
     }
 
     const userDate = {
-      nome: state.Nome,
-      login: state.Email,
-      senha: state.Senha,
+      username: state.Nome,
+      email: state.Email,
+      password: state.Senha,
       descricao: state.descricao,
       reputacao: 0,
+      profilePicture: '1234',
     };
 
-    http.post('/api/usuarios', userDate);
+    http.post('/api/usuarios/signup', userDate).then(response => {
+      if (response) {
+        navigate('/login');
+      }
+    });
   }
   render() {
     return (

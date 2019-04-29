@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MediaQuery from 'react-responsive';
-import { Location, Link } from '@reach/router';
+import { Location, Link, navigate } from '@reach/router';
+import { connect } from 'react-redux';
+import { getSession } from '../redux/app.redux';
+import { http } from '../helpers/http';
 
 class Navbar extends Component {
   constructor(props) {
@@ -18,6 +20,32 @@ class Navbar extends Component {
         return link;
       }
     });
+
+    if (props.session) {
+      this.actions.concat([
+        {
+          label: <div>Perfil</div>,
+          class: 'action',
+          type: 'button',
+          action: () => {
+            navigate('/usuarios/' + props.session.usuarioId);
+          },
+        },
+        {
+          label: (
+            <div>
+              Logout
+              {'  '}
+              <i className="fas fa-sign-out-alt" />
+            </div>
+          ),
+          class: 'action',
+          type: 'button',
+          action: () => http.delete('/api/usuarios/logout'),
+        },
+      ]);
+    }
+
     this.actions = this.actions.filter(e => e != undefined);
   }
 
@@ -32,7 +60,7 @@ class Navbar extends Component {
           return <Search />;
         case 'button':
           return (
-            <button className="btn action-button font-navbar" key={index} onClick={() => link.action()}>
+            <button className="btn action-button" key={index} onClick={() => link.action()}>
               {link.label}
             </button>
           );
@@ -47,68 +75,29 @@ class Navbar extends Component {
     return this.computeElements(this.actions);
   }
 
-  renderFullNavbar() {
+  render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-success">
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col">
-                <ul className="navbar-nav" style={{ float: 'left' }}>
-                  {this.computeLinks()}
-                </ul>
-              </div>
-
-              <Link className="navbar-title" to={this.props.to}>
-                {this.props.title}
-              </Link>
-
-              <div className="col">
-                <ul className="navbar-nav" style={{ float: 'right' }}>
-                  {this.computeActions()}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
-
-  renderSmallNavbar() {
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-success">
-        <Link className="navbar-title" to={this.props.to}>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <Link className="navbar-brand" to={this.props.to}>
           {this.props.title}
         </Link>
-
         <button
-          className="btn button-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <i className="fas fa-align-justify" />
+          <span className="navbar-toggler-icon" />
         </button>
-
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav">{this.computeLinks()}</ul>
-
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          {<ul className="navbar-nav">{this.computeLinks()}</ul>}
+          <div style={{ margin: '0 auto' }} />
           <ul className="navbar-nav">{this.computeActions()}</ul>
         </div>
       </nav>
-    );
-  }
-
-  render() {
-    return (
-      <div style={{}}>
-        <MediaQuery query="(max-width: 991px)">{this.renderSmallNavbar()}</MediaQuery>
-        <MediaQuery query="(min-width: 991px)">{this.renderFullNavbar()}</MediaQuery>
-      </div>
     );
   }
 }
@@ -117,16 +106,13 @@ Navbar.propTypes = {
   title: PropTypes.string,
   links: PropTypes.array,
   to: PropTypes.string,
+  session: PropTypes.object,
 };
 
 const Navlink = ({ label, disabled, active, to }) => {
   return (
     <li className="nav-item">
-      <Link
-        style={{ color: 'white' }}
-        className={'nav-link font-navbar ' + (disabled ? 'disabled' : active ? 'active' : '')}
-        to={to}
-      >
+      <Link className={'nav-link ' + (disabled ? 'disabled' : active ? 'active' : '')} to={to}>
         {label}
       </Link>
     </li>
@@ -153,9 +139,8 @@ const Search = () => (
 
 const Dropdown = ({ label, links }) => {
   return (
-    <li className="nav-item dropdown font-navbar">
+    <li className="nav-item dropdown">
       <a
-        style={{ color: 'white' }}
         className="nav-link dropdown-toggle"
         href="#"
         id="navbarDropdown"
@@ -182,7 +167,15 @@ Dropdown.propTypes = {
   links: PropTypes.array,
 };
 
-export default Object.assign(
-  props => <Location>{({ location }) => <Navbar location={location} {...props} />}</Location>,
-  { displayName: 'Navbar' }
+export default connect(
+  state => {
+    return {
+      session: getSession(state),
+    };
+  },
+  {}
+)(
+  Object.assign(props => <Location>{({ location }) => <Navbar location={location} {...props} />}</Location>, {
+    displayName: 'Navbar',
+  })
 );
