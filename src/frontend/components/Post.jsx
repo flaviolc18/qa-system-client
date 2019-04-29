@@ -33,20 +33,21 @@ Votes.propTypes = {
   votes: PropTypes.number,
 };
 
-function Box({ name, date, image }) {
+function Box({ usuarioId, name, date, image }) {
   return (
     <div className="row p-2" style={{ float: 'right' }}>
-      <ProfilePicture style={{ float: 'left' }} image={image} />
+      <ProfilePicture usuarioId={usuarioId} style={{ float: 'left' }} image={image} />
       <div className="pr-2" />
       <div style={{ float: 'right' }}>
         <div>{name}</div>
-        <div className="t-1">{`${date}`}</div>
+        <div className="t-1">{new Date(date).toLocaleDateString()}</div>
       </div>
     </div>
   );
 }
 
 Box.propTypes = {
+  usuarioId: PropTypes.string,
   name: PropTypes.string,
   date: PropTypes.string,
   image: PropTypes.string,
@@ -55,10 +56,9 @@ Box.propTypes = {
 function Post({ post, user }) {
   return (
     <div>
-      {/* <Votes votes={post.upvotes - post.downvotes} /> */}
       <div>
         <div>{post.descricao}</div>
-        <Box name={user.username} date={post.dataCriacao} image={user.profilePicture} />
+        <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} image={user.profilePicture} />
       </div>
     </div>
   );

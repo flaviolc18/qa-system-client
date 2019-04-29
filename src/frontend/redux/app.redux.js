@@ -9,22 +9,23 @@ const SESSION_NOT_RECEIVE = 'SESSION_NOT_RECEIVE';
 export function loadSession() {
   return {
     types: [SESSION_REQUEST, SESSION_RECEIVE, SESSION_NOT_RECEIVE],
-    callAPI: () => http.get('/api/sessions').then(session => http.get('/api/sessions/' + session._id)),
+    callAPI: () => http.get('/api/sessions'),
     payload: {},
   };
 }
 
 export function getSession(state) {
+  if (state.app.session === {}) {
+    return null;
+  }
+
   return state.app.session;
 }
 
 export const app = combineReducers({
-  session: createReducer(
-    {},
-    {
-      [SESSION_RECEIVE]: (state, action) => {
-        return action.response;
-      },
-    }
-  ),
+  session: createReducer(null, {
+    [SESSION_RECEIVE]: (state, action) => {
+      return action.response;
+    },
+  }),
 });

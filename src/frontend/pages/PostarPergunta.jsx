@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import TextAreaBox from '../components/TextAreaBox';
 import PropTypes from 'prop-types';
-import { castSession } from '../helpers/session';
 
 import { postPergunta } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
 import { navigate } from '@reach/router';
+import { getSession } from '../redux/app.redux';
 
 class PostarPergunta extends Component {
   constructor(props) {
@@ -23,21 +23,21 @@ class PostarPergunta extends Component {
   }
 
   post(state) {
-    return castSession().then(session => {
+    if (this.props.session) {
       const questionBody = {
         titulo: this.state.title,
         descricao: state.text,
         dataCriacao: new Date(),
         upvotes: 0,
         downvotes: 0,
-        usuarioId: session.usuarioId,
+        usuarioId: this.props.session.usuarioId,
       };
 
       return this.props.postPergunta(questionBody).then(pergunta => {
         pergunta = pergunta.elements[0];
         navigate('/perguntas/' + pergunta._id);
       });
-    });
+    }
   }
 
   render() {
@@ -50,6 +50,7 @@ class PostarPergunta extends Component {
         <br />
         <input
           onChange={this.onChangeTitle}
+          disabled={this.props.session ? false : true}
           type="text"
           className="form-control"
           style={{ resize: 'none', width: '100%', height: '50px', fontSize: '30px' }}
@@ -64,11 +65,14 @@ class PostarPergunta extends Component {
 
 PostarPergunta.propTypes = {
   postPergunta: PropTypes.func,
+  session: PropTypes.object,
 };
 
 export default connect(
-  () => {
-    return {};
+  state => {
+    return {
+      session: getSession(state),
+    };
   },
   { postPergunta }
 )(PostarPergunta);

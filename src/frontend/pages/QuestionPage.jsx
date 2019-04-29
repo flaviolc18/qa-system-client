@@ -5,8 +5,8 @@ import Question from '../components/Question';
 import TextBoxArea from '../components/TextAreaBox';
 import { postResposta } from '../redux/respostas.redux';
 import { connect } from 'react-redux';
-import { castSession } from '../helpers/session';
 import Answers from '../components/Answers';
+import { getSession } from '../redux/app.redux';
 
 class QuestionPage extends Component {
   constructor(props) {
@@ -15,17 +15,17 @@ class QuestionPage extends Component {
   }
 
   postResposta(text) {
-    castSession().then(session => {
+    if (this.props.session) {
       let resposta = {
         descricao: text,
         upvotes: 0,
         downvotes: 0,
-        usuarioId: session.usuarioId,
+        usuarioId: this.props.session.usuarioId,
         perguntaId: this.props.id,
       };
 
       this.props.postResposta(resposta);
-    });
+    }
   }
 
   render() {
@@ -42,11 +42,12 @@ class QuestionPage extends Component {
 QuestionPage.propTypes = {
   id: PropTypes.string,
   postResposta: PropTypes.func,
+  session: PropTypes.object,
 };
 
 export default connect(
-  () => {
-    return {};
+  state => {
+    return { session: getSession(state) };
   },
   { postResposta }
 )(QuestionPage);

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { navigate } from '@reach/router';
 
-function ProfilePicture({ image }) {
+function ProfilePicture({ image, usuarioId }) {
   return (
-    <div
+    <button
       style={{
         backgroundColor: '#000000',
         width: 40,
@@ -11,6 +12,10 @@ function ProfilePicture({ image }) {
         borderRadius: 25,
         display: 'flex',
         justifyContent: 'center',
+      }}
+      onClick={e => {
+        e.preventDefault();
+        navigate('/usuarios/' + usuarioId);
       }}
     >
       <div
@@ -21,12 +26,13 @@ function ProfilePicture({ image }) {
       >
         {image[0].toUpperCase()}
       </div>
-    </div>
+    </button>
   );
 }
 
 ProfilePicture.propTypes = {
   image: PropTypes.string,
+  usuarioId: PropTypes.string,
 };
 
 export default ProfilePicture;
