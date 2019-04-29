@@ -4,6 +4,7 @@ import Tabs from '../components/Tabs';
 import { http } from '../helpers/http';
 import PropTypes from 'prop-types';
 
+import ProfilePicture from '../components/ProfilePicture';
 import PerguntasUsuario from '../components/PerguntasUsuario';
 import RespostasUsuario from '../components/RespostasUsuario';
 
@@ -28,7 +29,11 @@ class Perfil extends Component {
       <div className="p-3">
         <div className="row">
           <div className="col">
-            <div style={{ backgroundColor: 'gray', borderRadius: '100%', height: '200px', width: '200px' }} />
+            <ProfilePicture
+              size={200}
+              route={`/api/usuarios/${this.props.usuarioId}/upload`}
+              src={usuario.profilePicture}
+            />
           </div>
           <div className="col pt-5">
             <h4>{usuario.username}</h4>

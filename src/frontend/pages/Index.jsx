@@ -1,11 +1,8 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import PropTypes from 'prop-types';
 
 import Home from './Home';
 
-import Navbar from '../components/Navbar';
-import Feed from '../components/Feed';
 import Login from './Login';
 import RegistroUsuario from './RegistroUsuario';
 import QuestionPage from './QuestionPage';
