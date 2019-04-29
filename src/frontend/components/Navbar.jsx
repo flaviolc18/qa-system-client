@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link, navigate } from '@reach/router';
 import { connect } from 'react-redux';
-
 import { getSession } from '../redux/app.redux';
 import { http } from '../helpers/http';
 

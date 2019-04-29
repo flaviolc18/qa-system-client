@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import PropTypes from 'prop-types';
 
 import Post from './Post';
+=======
+import Post from './Post';
+import PropTypes from 'prop-types';
+>>>>>>> 2611a719559ba3e567f8b3cf7636207daeec0d37
 
 class Answer extends Component {
   render() {

@@ -32,7 +32,11 @@ class FullPage extends Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         <Navbar to="/home" title={'Não Faço a Menor Ideia!'} links={debugLinks} />
+=======
+        <Navbar to="/home" title={'Não Faço a Menor Ideia'} links={debugLinks} />
+>>>>>>> 2611a719559ba3e567f8b3cf7636207daeec0d37
         <Feed>{this.props.children}</Feed>
       </div>
     );

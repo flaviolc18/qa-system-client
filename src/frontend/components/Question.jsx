@@ -4,12 +4,12 @@ import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redu
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+<<<<<<< HEAD
 import Post from './Post';
 
+=======
 class Question extends Component {
   componentDidMount() {
-    this.props.loadPergunta({ id: this.props.id });
-    this.props.loadUsuarioPergunta({ perguntaId: this.props.id });
   }
   render() {
     if (!this.props.pergunta || !this.props.usuario) {

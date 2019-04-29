@@ -51,7 +51,7 @@ class Home extends Component {
     return (
       <div>
         <h1>
-          <i className="fas fa-align-left" /> Ultimas Perguntas:
+          <i className="fas fa-align-left" /> Perguntas Recentes:
         </h1>
         <div className="p-3" />
         <div className="pl-5 pr-5">{this.renderPerguntas()}</div>
