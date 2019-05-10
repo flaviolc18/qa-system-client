@@ -2,8 +2,8 @@
 
 const { skip } = require('tap');
 
-const { initServer } = require('../test-helpers');
-const seed = require('../../seed');
+const { initServer } = require('../../../test-helpers');
+const seed = require('../../../../seed');
 
 skip('api.sessions.find', async t => {
   const fastify = await initServer(t);

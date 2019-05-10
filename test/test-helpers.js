@@ -3,8 +3,8 @@
 const assert = require('assert');
 const Fastify = require('fastify');
 
-const server = require('../src/server');
-const db = require('../src/core/database');
+const server = require('../src/backend/server');
+const core = require('../src/core');
 
 exports.initServer = async function register(tap) {
   const fastify = Fastify();
@@ -13,33 +13,33 @@ exports.initServer = async function register(tap) {
   tap.teardown(() => fastify.close());
   await fastify.ready();
 
-  await db.mongoose.connection.db.dropDatabase();
+  await core.database.mongoose.connection.db.dropDatabase();
 
   return fastify;
 };
 
 exports.withDB = function(fn) {
   return async t => {
-    let isConnected = await db.connect();
+    let isConnected = await core.database.connect();
 
     assert(isConnected, 'Database should be connected');
 
-    await db.mongoose.connection.db.dropDatabase();
+    await core.database.mongoose.connection.db.dropDatabase();
 
     await fn(t);
 
-    isConnected = await db.disconnect();
+    isConnected = await core.database.disconnect();
     assert(!isConnected, 'Database should be disconnected');
   };
 };
 
-exports.randomObjectId = () => db.mongoose.Types.ObjectId();
+exports.randomObjectId = () => core.database.mongoose.Types.ObjectId();
 
-exports.isValidObjectId = ObjectId => db.mongoose.Types.ObjectId.isValid(ObjectId);
+exports.isValidObjectId = ObjectId => core.database.mongoose.Types.ObjectId.isValid(ObjectId);
 
 exports.convertObjectIdsToString = obj => {
   return Object.entries(obj).reduce((parsedObj, [key, value]) => {
-    if (typeof value === 'object' && db.mongoose.Types.ObjectId.isValid(value)) {
+    if (typeof value === 'object' && core.database.mongoose.Types.ObjectId.isValid(value)) {
       parsedObj[key] = value.toString();
     } else {
       parsedObj[key] = value;

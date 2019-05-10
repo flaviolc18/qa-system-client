@@ -2,10 +2,8 @@
 
 const { skip } = require('tap');
 
-const { initServer, randomObjectId, isValidObjectId, convertObjectIdsToString } = require('../test-helpers');
-const seed = require('../../seed');
-
-const models = require('../../src/core/models');
+const { initServer, randomObjectId, isValidObjectId, convertObjectIdsToString } = require('../../../test-helpers');
+const seed = require('../../../../seed');
 
 skip('api.usuarios.signup', async t => {
   const fastify = await initServer(t);
@@ -41,7 +39,7 @@ skip('api.usuarios.delete', async t => {
 
   const deletedUsuario = JSON.parse(payload);
 
-  const usuarios = await models.usuario.findAll();
+  const usuarios = await fastify.core.models.usuario.findAll();
 
   t.strictSame(deletedUsuario, parsedUsuario);
   t.same(usuarios, []);

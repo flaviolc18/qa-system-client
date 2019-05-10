@@ -9,7 +9,8 @@
     "watch:backend": "fastify start -w src/backend/server.js -p 9000 | pino-pretty",
     "livereload": "browser-sync start --proxy localhost:9000 --files 'dist'",
     "build": "webpack --mode production",
-    "debug": "concurrently --raw 'npm run watch:frontend' 'npm run watch:backend' 'npm run livereload'"
+    "debug": "concurrently --raw 'npm run watch:frontend' 'npm run watch:backend' 'npm run livereload'",
+    "test": "tap -b test/*/*.test.js test/*/*/*.test.js --no-coverage"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 
 const { test } = require('tap');
 
-const { initServer } = require('../test-helpers');
+const { initServer } = require('../../test-helpers');
 
 const genericSchema = {
   object: {
