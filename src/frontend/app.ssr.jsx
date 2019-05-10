@@ -21,7 +21,7 @@ export default function render(url) {
 
   return `
   <!DOCTYPE html>
-  <html lang="en">
+  <html lang="pt-br">
   <head>
   <link
       rel="stylesheet"
