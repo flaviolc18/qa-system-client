@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { navigate } from '@reach/router';
 
 import ProfilePicture from './ProfilePicture';
 
@@ -33,10 +34,18 @@ Votes.propTypes = {
   votes: PropTypes.number,
 };
 
-function Box({ usuarioId, name, date, image }) {
+function Box({ usuarioId, name, date, src }) {
   return (
     <div className="row p-2" style={{ float: 'right' }}>
-      <ProfilePicture usuarioId={usuarioId} style={{ float: 'left' }} image={image} />
+      <ProfilePicture
+        onClick={e => {
+          e.preventDefault();
+          navigate('/usuarios/' + usuarioId);
+        }}
+        size={70}
+        style={{ float: 'left' }}
+        src={src}
+      />
       <div className="pr-2" />
       <div style={{ float: 'right' }}>
         <div>{name}</div>
@@ -50,7 +59,7 @@ Box.propTypes = {
   usuarioId: PropTypes.string,
   name: PropTypes.string,
   date: PropTypes.string,
-  image: PropTypes.string,
+  src: PropTypes.string,
 };
 
 function Post({ post, user }) {
@@ -58,7 +67,7 @@ function Post({ post, user }) {
     <div>
       <div>
         <div>{post.descricao}</div>
-        <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} image={user.profilePicture} />
+        <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
       </div>
     </div>
   );

@@ -4,13 +4,10 @@ import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redu
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-<<<<<<< HEAD
 import Post from './Post';
 
-=======
 class Question extends Component {
-  componentDidMount() {
-  }
+  componentDidMount() {}
   render() {
     if (!this.props.pergunta || !this.props.usuario) {
       return '';

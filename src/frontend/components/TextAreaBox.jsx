@@ -13,7 +13,6 @@ class TextAreaBox extends Component {
   }
   onChange(e) {
     e.preventDefault();
-
     this.setState({ text: e.target.value });
   }
   onSubmit(e) {

@@ -32,4 +32,7 @@ export const http = {
   post(url, body) {
     return request({ url, method: 'POST', body });
   },
+  upload(url, body) {
+    return fetch(devServerUrl + url, { method: 'POST', body }).then(res => res.json());
+  },
 };

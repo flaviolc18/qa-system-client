@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
-import PerguntasUsuario from '../components/UserQuestions';
-import RespostasUsuario from '../components/UserAnswers';
+
+import ProfilePicture from '../components/ProfilePicture';
+import PerguntasUsuario from '../components/PerguntasUsuario';
+import RespostasUsuario from '../components/RespostasUsuario';
 import Tabs from '../components/Tabs';
 
 class Perfil extends Component {
@@ -28,7 +30,12 @@ class Perfil extends Component {
       <div>
         <div className="row" style={{ width: '100%' }}>
           <div className="col">
-            <div style={{ backgroundColor: 'gray', borderRadius: '100%', height: '200px', width: '200px' }} />
+            <ProfilePicture
+              size={200}
+              route={`/api/usuarios/${this.props.usuarioId}/upload`}
+              src={usuario.profilePicture}
+              style={{ marginLeft: 30 }}
+            />
           </div>
 
           <div style={{ paddingTop: '40px' }} className="col">
