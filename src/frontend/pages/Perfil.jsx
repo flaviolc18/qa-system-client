@@ -4,6 +4,7 @@ import Tabs from '../components/Tabs';
 import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
 import PropTypes from 'prop-types';
 
+import ProfilePicture from '../components/ProfilePicture';
 import PerguntasUsuario from '../components/PerguntasUsuario';
 import RespostasUsuario from '../components/RespostasUsuario';
 import { connect } from 'react-redux';
@@ -33,6 +34,7 @@ class Perfil extends Component {
               size={200}
               route={`/api/usuarios/${this.props.usuarioId}/upload`}
               src={usuario.profilePicture}
+              style={{ marginLeft: 30 }}
             />
           </div>
 

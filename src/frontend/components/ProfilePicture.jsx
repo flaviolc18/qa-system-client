@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getSession } from '../redux/app.redux';
 
 import { http } from '../helpers/http';
 
 const base64Flag = 'data:image/jpeg;base64,';
 
-function ProfilePicture({ size, src, route, onClick, style }) {
+function ProfilePicture({ size, src, route, onClick, style, session }) {
   const [source, setSource] = useState(null);
   useEffect(() => {
     if (src) {
@@ -31,7 +33,6 @@ function ProfilePicture({ size, src, route, onClick, style }) {
   return (
     <div
       style={{
-        backgroundColor: '#cecece',
         width: size,
         height: size,
         borderRadius: size,
@@ -41,15 +42,17 @@ function ProfilePicture({ size, src, route, onClick, style }) {
         ...style,
       }}
     >
-      <button onClick={onClick || (() => {})}>
+      <a onClick={onClick || (() => {})}>
         <img src={source} style={{ width: size, height: size, borderRadius: '100%' }} />
-      </button>
-      <span>
-        <label htmlFor={'uploadInput'} className="ui icon button">
-          <i className="fas fa-upload fa-2x" />
-        </label>
-        <input type="file" id={'uploadInput'} style={{ display: 'none' }} onChange={onChange} />
-      </span>
+      </a>
+      {session && (
+        <span>
+          <label htmlFor={'uploadInput'} className="ui icon button">
+            <i className="fas fa-upload fa-2x" />
+          </label>
+          <input type="file" id={'uploadInput'} style={{ display: 'none' }} onChange={onChange} />
+        </span>
+      )}
     </div>
   );
 }
@@ -60,6 +63,12 @@ ProfilePicture.propTypes = {
   src: PropTypes.object,
   onClick: PropTypes.func,
   style: PropTypes.object,
+  session: PropTypes.object,
 };
 
-export default ProfilePicture;
+export default connect(
+  state => {
+    return { session: getSession(state) };
+  },
+  {}
+)(ProfilePicture);
