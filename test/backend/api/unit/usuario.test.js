@@ -12,7 +12,7 @@ test('api.usuarios.signup', async t => {
 
   const usuarioData = seed.fixtures.usuario();
 
-  const { statusCode, payload } = await fastify.inject({
+  const { statusCode } = await fastify.inject({
     url: '/api/usuarios/signup',
     method: 'POST',
     payload: usuarioData,
