@@ -29,15 +29,15 @@ module.exports = {
         description: 'Id do usuario que postou a pergunta',
       },
     },
-    params: {
-      type: 'object',
-      properties: {
-        perguntaId: {
-          type: 'string',
-          description: 'Id da pergunta',
-        },
+  },
+  params: {
+    type: 'object',
+    properties: {
+      perguntaId: {
+        type: 'string',
+        description: 'Id da pergunta',
       },
-      required: ['perguntaId'],
     },
+    required: ['perguntaId'],
   },
 };

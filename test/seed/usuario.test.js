@@ -1,11 +1,11 @@
 'use strict';
 
-const { skip } = require('tap');
+const { test } = require('tap');
 
 const { withDB } = require('../test-helpers');
 const seed = require('../../seed');
 
-skip(
+test(
   'seed.usuario',
   withDB(async t => {
     const dadosUsuario = seed.fixtures.usuario();

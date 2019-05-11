@@ -1,7 +1,13 @@
 'use strict';
 
+const usuarioSchema = require('./usuario.schema');
+
 module.exports = async function(fastify) {
-  fastify.get('/perguntas/:perguntaId/usuario', {}, async function({ params: { perguntaId } }) {
+  const schemaHelper = fastify.schemaHelper(usuarioSchema);
+
+  fastify.get('/usuarios/perguntas/:perguntaId', schemaHelper.findAll('usuario.find.pergunta'), async function({
+    params: { perguntaId },
+  }) {
     const pergunta = await fastify.core.models.pergunta.find({ _id: perguntaId });
 
     if (!pergunta) {
@@ -10,6 +16,6 @@ module.exports = async function(fastify) {
 
     const usuario = await fastify.core.models.usuario.find({ _id: pergunta.usuarioId });
 
-    return { elements: [usuario], total: 1 };
+    return fastify.getResponseObject(usuario);
   });
 };

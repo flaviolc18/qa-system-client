@@ -1,13 +1,17 @@
 'use strict';
 
+const perguntaSchema = require('./pergunta.schema');
+
 module.exports = async function(fastify) {
-  fastify.get('/perguntas/:perguntaId', {}, async function({ params: { perguntaId } }) {
+  const schemaHelper = fastify.schemaHelper(perguntaSchema);
+
+  fastify.get('/perguntas/:perguntaId', schemaHelper.find('pergunta.find'), async function({ params: { perguntaId } }) {
     const pergunta = await fastify.core.models.pergunta.find({ _id: perguntaId });
 
     if (!pergunta) {
       throw fastify.httpErrors.notFound();
     }
 
-    return { elements: [pergunta], total: 1 };
+    return fastify.getResponseObject(pergunta);
   });
 };

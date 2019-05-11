@@ -29,15 +29,15 @@ module.exports = {
         description: 'profile picture em base 64',
       },
     },
-    params: {
-      type: 'object',
-      properties: {
-        usuarioId: {
-          type: 'string',
-          description: 'Id do usuário',
-        },
+  },
+  params: {
+    type: 'object',
+    properties: {
+      usuarioId: {
+        type: 'string',
+        description: 'Id do usuário',
       },
-      required: ['usuarioId'],
     },
+    required: ['usuarioId'],
   },
 };

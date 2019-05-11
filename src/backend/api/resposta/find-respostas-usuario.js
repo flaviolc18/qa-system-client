@@ -1,9 +1,15 @@
 'use strict';
 
+const respostaSchema = require('./resposta.schema');
+
 module.exports = async function(fastify) {
-  fastify.get('/respostas/usuario/:usuarioId', {}, async function({ params: { usuarioId } }) {
+  const schemaHelper = fastify.schemaHelper(respostaSchema);
+
+  fastify.get('/respostas/usuarios/:usuarioId', schemaHelper.findAll('resposta.findAll.usuarios'), async function({
+    params: { usuarioId },
+  }) {
     const respostas = await fastify.core.models.resposta.findAll({ usuarioId });
 
-    return { elements: respostas, total: respostas.length };
+    return fastify.getResponseObject(respostas);
   });
 };

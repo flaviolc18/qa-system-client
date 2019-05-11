@@ -6,6 +6,8 @@ module.exports = async function(fastify) {
   const schemaHelper = fastify.schemaHelper(usuarioSchema);
 
   fastify.get('/usuarios', schemaHelper.findAll('usuario.findAll'), async function() {
-    return fastify.core.models.usuario.findAll();
+    const usuarios = await fastify.core.models.usuario.findAll();
+
+    return fastify.getResponseObject(usuarios);
   });
 };

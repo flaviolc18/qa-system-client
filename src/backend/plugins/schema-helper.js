@@ -15,7 +15,16 @@ function schemaHelper(schema) {
           description: operationDescription,
           body: schema.object,
           response: {
-            200: addIdToObject(schema.object),
+            200: {
+              type: 'object',
+              properties: {
+                elements: {
+                  type: 'array',
+                  items: addIdToObject(schema.object),
+                },
+                total: { type: 'number' },
+              },
+            },
           },
         },
       };
@@ -27,7 +36,16 @@ function schemaHelper(schema) {
           description: operationDescription,
           params: schema.params,
           response: {
-            200: addIdToObject(schema.object),
+            200: {
+              type: 'object',
+              properties: {
+                elements: {
+                  type: 'array',
+                  items: addIdToObject(schema.object),
+                },
+                total: { type: 'number' },
+              },
+            },
           },
         },
       };
@@ -43,7 +61,16 @@ function schemaHelper(schema) {
             required: [],
           },
           response: {
-            200: addIdToObject(schema.object),
+            200: {
+              type: 'object',
+              properties: {
+                elements: {
+                  type: 'array',
+                  items: addIdToObject(schema.object),
+                },
+                total: { type: 'number' },
+              },
+            },
           },
         },
       };
@@ -55,7 +82,16 @@ function schemaHelper(schema) {
           description: operationDescription,
           params: schema.params,
           response: {
-            200: addIdToObject(schema.object),
+            200: {
+              type: 'object',
+              properties: {
+                elements: {
+                  type: 'array',
+                  items: addIdToObject(schema.object),
+                },
+                total: { type: 'number' },
+              },
+            },
           },
         },
       };
@@ -67,8 +103,14 @@ function schemaHelper(schema) {
           description: operationDescription,
           response: {
             200: {
-              type: 'array',
-              items: addIdToObject(schema.object),
+              type: 'object',
+              properties: {
+                elements: {
+                  type: 'array',
+                  items: addIdToObject(schema.object),
+                },
+                total: { type: 'number' },
+              },
             },
           },
         },
