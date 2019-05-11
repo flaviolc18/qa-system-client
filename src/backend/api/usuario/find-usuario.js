@@ -1,13 +1,17 @@
 'use strict';
 
+const usuarioSchema = require('./usuario.schema');
+
 module.exports = async function(fastify) {
-  fastify.get('/usuarios/:usuarioId', {}, async function({ params: { usuarioId } }) {
+  const schemaHelper = fastify.schemaHelper(usuarioSchema);
+
+  fastify.get('/usuarios/:usuarioId', schemaHelper.find('usuario.find'), async function({ params: { usuarioId } }) {
     const usuario = await fastify.core.models.usuario.find({ _id: usuarioId });
 
     if (!usuario) {
       throw fastify.httpErrors.notFound();
     }
 
-    return { elements: [usuario], total: 1 };
+    return fastify.getResponseObject(usuario);
   });
 };

@@ -5,9 +5,9 @@ const usuarioSchema = require('./usuario.schema');
 module.exports = async function(fastify) {
   const schemaHelper = fastify.schemaHelper(usuarioSchema);
 
-  fastify.post('/usuarios/login', schemaHelper.find('usuario.login'), async function(
+  fastify.post('/usuarios/login', schemaHelper.create('usuario.login'), async function(
     { body: { username, email, password } },
-    reply
+    res
   ) {
     const query = username ? { username } : { email };
     const usuario = await fastify.core.models.usuario.find(query);
@@ -24,7 +24,7 @@ module.exports = async function(fastify) {
 
     const session = await fastify.core.models.session.create(usuario._id);
 
-    return reply
+    return res
       .setCookie('session', session._id, {
         path: '/',
       })

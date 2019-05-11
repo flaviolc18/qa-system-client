@@ -8,7 +8,9 @@ import { http } from '../helpers/http';
 const base64Flag = 'data:image/jpeg;base64,';
 
 function ProfilePicture({ size, src, route, onClick, style, session }) {
+
   const [source, setSource] = useState(null);
+  
   useEffect(() => {
     if (src) {
       const imageStr = Buffer.from(src).toString('base64');

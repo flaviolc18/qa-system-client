@@ -12,6 +12,6 @@ module.exports = async function(fastify) {
       throw fastify.httpErrors.notFound();
     }
 
-    return resposta;
+    return fastify.getResponseObject(resposta);
   });
 };

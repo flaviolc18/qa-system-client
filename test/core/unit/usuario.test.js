@@ -1,13 +1,13 @@
 'use strict';
 
-const { skip } = require('tap');
+const { test } = require('tap');
 
 const { withDB, randomObjectId } = require('../../test-helpers');
 const seed = require('../../../seed');
 
 const usuarioModel = require('../../../src/core/models/usuario');
 
-skip(
+test(
   'model.usuario.create',
   withDB(async t => {
     const usuarioData = seed.fixtures.usuario();
@@ -26,7 +26,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.find',
   withDB(async t => {
     const usuario = await seed.entidades.usuario();
@@ -41,7 +41,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.update',
   withDB(async t => {
     const usuario = await seed.entidades.usuario();
@@ -57,7 +57,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.update: altera senha',
   withDB(async t => {
     const usuario = await seed.entidades.usuario();
@@ -73,7 +73,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.update: usuário inexistente',
   withDB(async t => {
     const alteracoes = { username: 'teste2' };
@@ -88,7 +88,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.findAll',
   withDB(async t => {
     const usuario = await seed.entidades.usuario();
@@ -105,7 +105,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.delete',
   withDB(async t => {
     const usuario = await seed.entidades.usuario();
@@ -123,7 +123,7 @@ skip(
   })
 );
 
-skip(
+test(
   'model.usuario.comparePassword',
   withDB(async t => {
     const usuarioData = seed.fixtures.usuario();

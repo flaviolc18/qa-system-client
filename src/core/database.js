@@ -8,6 +8,8 @@ const DB_CONFIG = {
   name: 'qa-system',
   mongoOptions: {
     useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
   },
 };
 const CONNECTION_STRING = `mongodb://${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.name}`;

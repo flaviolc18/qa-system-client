@@ -13,16 +13,16 @@ const genericSchema = {
         description: 'Um atributo qualquer',
       },
     },
-    params: {
-      type: 'object',
-      properties: {
-        testId: {
-          type: 'string',
-          description: 'Id da entidade de teste',
-        },
+  },
+  params: {
+    type: 'object',
+    properties: {
+      testId: {
+        type: 'string',
+        description: 'Id da entidade de teste',
       },
-      required: ['testId'],
     },
+    required: ['testId'],
   },
 };
 
@@ -35,7 +35,16 @@ const testCases = [
         description: 'create scheme',
         body: genericSchema.object,
         response: {
-          200: addIdToObject(genericSchema.object),
+          200: {
+            type: 'object',
+            properties: {
+              elements: {
+                type: 'array',
+                items: addIdToObject(genericSchema.object),
+              },
+              total: { type: 'number' },
+            },
+          },
         },
       },
     },
@@ -48,7 +57,16 @@ const testCases = [
         description: 'find scheme',
         params: genericSchema.params,
         response: {
-          200: addIdToObject(genericSchema.object),
+          200: {
+            type: 'object',
+            properties: {
+              elements: {
+                type: 'array',
+                items: addIdToObject(genericSchema.object),
+              },
+              total: { type: 'number' },
+            },
+          },
         },
       },
     },
@@ -65,7 +83,16 @@ const testCases = [
           required: [],
         },
         response: {
-          200: addIdToObject(genericSchema.object),
+          200: {
+            type: 'object',
+            properties: {
+              elements: {
+                type: 'array',
+                items: addIdToObject(genericSchema.object),
+              },
+              total: { type: 'number' },
+            },
+          },
         },
       },
     },
@@ -78,7 +105,16 @@ const testCases = [
         description: 'delete scheme',
         params: genericSchema.params,
         response: {
-          200: addIdToObject(genericSchema.object),
+          200: {
+            type: 'object',
+            properties: {
+              elements: {
+                type: 'array',
+                items: addIdToObject(genericSchema.object),
+              },
+              total: { type: 'number' },
+            },
+          },
         },
       },
     },
@@ -91,8 +127,14 @@ const testCases = [
         description: 'findAll scheme',
         response: {
           200: {
-            type: 'array',
-            items: addIdToObject(genericSchema.object),
+            type: 'object',
+            properties: {
+              elements: {
+                type: 'array',
+                items: addIdToObject(genericSchema.object),
+              },
+              total: { type: 'number' },
+            },
           },
         },
       },
@@ -104,9 +146,9 @@ for (const { operation, operationDescription, expectedSchema } of testCases) {
   test(`schema-helper.${operation}: deve conter todas os atributos de schema`, async t => {
     const fastify = await initServer(t);
 
-    const schemaFind = fastify.schemaHelper(genericSchema)[operation](operationDescription);
+    const schema = fastify.schemaHelper(genericSchema)[operation](operationDescription);
 
-    t.strictSame(schemaFind, expectedSchema);
+    t.strictSame(schema, expectedSchema);
     t.end();
   });
 }

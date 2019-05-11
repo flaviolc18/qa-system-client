@@ -25,15 +25,15 @@ module.exports = {
         description: 'Id da pergunta a qual a resposta está associada',
       },
     },
-    params: {
-      type: 'object',
-      properties: {
-        respostaId: {
-          type: 'string',
-          description: 'Id da resposta',
-        },
+  },
+  params: {
+    type: 'object',
+    properties: {
+      respostaId: {
+        type: 'string',
+        description: 'Id da resposta',
       },
-      required: ['respostaId'],
     },
+    required: ['respostaId'],
   },
 };

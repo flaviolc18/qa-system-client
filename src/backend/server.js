@@ -15,6 +15,8 @@ const fastifyStatic = require('fastify-static');
 
 const core = require('../core');
 
+const { default: render } = require('../../dist/app.ssr');
+
 /* eslint no-unused-vars:0 */
 module.exports = async function(fastify, opts) {
   fastify.register(fastifyEnv, {
@@ -68,5 +70,11 @@ module.exports = async function(fastify, opts) {
     options: { prefix: '/api' },
   });
 
-  fastify.get('/*', require('./server-side-rendering'));
+  fastify.get('/api/*', async () => {
+    throw fastify.httpErrors.notFound();
+  });
+
+  fastify.get('/*', async (req, res) =>
+    res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url))
+  );
 };

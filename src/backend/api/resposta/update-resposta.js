@@ -10,7 +10,9 @@ module.exports = async function(fastify) {
     body: respostaData,
   }) {
     try {
-      return await fastify.core.models.resposta.update({ _id: respostaId }, respostaData);
+      const resposta = await fastify.core.models.resposta.update({ _id: respostaId }, respostaData);
+
+      return fastify.getResponseObject(resposta);
     } catch ({ message }) {
       throw fastify.httpErrors.badRequest(message);
     }
