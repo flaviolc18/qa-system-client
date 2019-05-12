@@ -2,20 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadSession, getSession } from '../redux/app.redux';
+import { loadSession, getSession, logout } from '../redux/app.redux';
 import Navbar from './Navbar';
 import Feed from './Feed';
-
-const sharedLink = [{ label: 'Home', class: 'navigation', type: 'link', to: '/home' }];
-const unloggedLinks = sharedLink.concat([
-  { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
-  { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
-]);
-const loggedLink = sharedLink.concat([
-  { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
-]);
-
-const debugLinks = unloggedLinks.concat(loggedLink);
+import { navigate } from '@reach/router';
 
 class FullPage extends Component {
   componentDidMount() {
@@ -29,10 +19,33 @@ class FullPage extends Component {
     this.props.loadSession();
   }
 
+  renderNavbar() {
+    const loggedLinks = [
+      { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
+      { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
+      { label: 'Logout', class: 'action', type: 'button', action: () => this.props.logout() },
+      {
+        label: 'Perfil',
+        class: 'action',
+        type: 'button',
+        action: () => navigate('/usuarios/' + this.props.session.usuarioId),
+      },
+    ];
+
+    const unloggedLinks = [
+      { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
+      { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
+    ];
+    if (this.props.session) {
+      return <Navbar key={'nav-logged'} to="/home" title={'Não Faço a Menor Ideia!'} links={loggedLinks} />;
+    }
+    return <Navbar key={'nav-unlogged'} to="/home" title={'Não Faço a Menor Ideia!'} links={unloggedLinks} />;
+  }
+
   render() {
     return (
       <div>
-        <Navbar to="/home" title={'Não Faço a Menor Ideia!'} links={debugLinks} />
+        {this.renderNavbar()}
         <Feed>{this.props.children}</Feed>
       </div>
     );
@@ -44,6 +57,7 @@ FullPage.propTypes = {
   location: PropTypes.object,
   loadSession: PropTypes.func,
   session: PropTypes.object,
+  logout: PropTypes.func,
 };
 
 export default connect(
@@ -52,5 +66,5 @@ export default connect(
       session: getSession(state),
     };
   },
-  { loadSession }
+  { loadSession, logout }
 )(FullPage);

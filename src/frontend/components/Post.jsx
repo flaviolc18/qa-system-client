@@ -34,7 +34,7 @@ Votes.propTypes = {
   votes: PropTypes.number,
 };
 
-function Box({ usuarioId, name, date, src }) {
+function Box({ usuarioId, name, date }) {
   return (
     <div className="row p-2" style={{ float: 'right' }}>
       <ProfilePicture
@@ -42,9 +42,8 @@ function Box({ usuarioId, name, date, src }) {
           e.preventDefault();
           navigate('/usuarios/' + usuarioId);
         }}
-        size={70}
-        style={{ float: 'left' }}
-        src={src}
+        style={{ float: 'left', height: '70px', width: '70px', borderRadius: '100%' }}
+        usuarioId={usuarioId}
       />
       <div className="pr-2" />
       <div style={{ float: 'right' }}>

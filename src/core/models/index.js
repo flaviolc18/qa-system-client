@@ -5,4 +5,5 @@ module.exports = {
   pergunta: require('./pergunta'),
   resposta: require('./resposta'),
   session: require('./session'),
+  imagem: require('./imagem'),
 };

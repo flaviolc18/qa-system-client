@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { navigate } from '@reach/router';
 
-import { http } from '../helpers/http';
+import PropTypes from 'prop-types';
 import Form from '../components/Form';
+import {connect} from 'react-redux';
+import {login} from '../redux/app.redux';
 
 const loginBody = [
   { label: 'Email', defaultValue: '', class: 'input', type: 'email', placeHolder: 'example@mail.com' },
@@ -10,13 +12,17 @@ const loginBody = [
 ];
 
 class SignIn extends Component {
-  login(e, state) {
+  constructor(props){
+    super(props);
+    this.signIn = this.signIn.bind(this);
+  }
+  signIn(e, state) {
     e.preventDefault();
     const body = {
       email: state.Email,
       password: state.Senha,
     };
-    http.post('/api/usuarios/login', body).then(() => navigate('/home'));
+  this.props.login(body).then(()=>navigate('/home'));
   }
 
   render() {
@@ -24,7 +30,7 @@ class SignIn extends Component {
       <div className="row pt-5">
         <div className="col" />
         <div className="col">
-          <Form body={loginBody} submit={this.login} submitLabel="Entrar!" />
+          <Form body={loginBody} submit={this.signIn} submitLabel="Entrar!" />
         </div>
         <div className="col" />
       </div>
@@ -32,4 +38,10 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+SignIn.propTypes = {
+  login:PropTypes.func
+}
+
+export default connect(()=>{
+  return {}
+},{login})(SignIn);

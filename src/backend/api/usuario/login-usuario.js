@@ -1,14 +1,7 @@
 'use strict';
 
-const usuarioSchema = require('./usuario.schema');
-
 module.exports = async function(fastify) {
-  const schemaHelper = fastify.schemaHelper(usuarioSchema);
-
-  fastify.post('/usuarios/login', schemaHelper.create('usuario.login'), async function(
-    { body: { username, email, password } },
-    res
-  ) {
+  fastify.post('/usuarios/login', async function({ body: { username, email, password } }, res) {
     const query = username ? { username } : { email };
     const usuario = await fastify.core.models.usuario.find(query);
 
@@ -28,6 +21,6 @@ module.exports = async function(fastify) {
       .setCookie('session', session._id, {
         path: '/',
       })
-      .send(usuario);
+      .send(session);
   });
 };

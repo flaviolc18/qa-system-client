@@ -24,7 +24,7 @@ export function loadPergunta(filters) {
 export function loadPerguntasUsuario(filters) {
   return {
     types: [PERGUNTAS_REQUEST, PERGUNTAS_RECEIVE, PERGUNTAS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/perguntas/usuario/' + filters.usuarioId),
+    callAPI: () => http.get('/api/perguntas/usuarios/' + filters.usuarioId),
     payload: {
       filters,
     },

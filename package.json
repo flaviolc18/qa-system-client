@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "description": "Implementacao de um sistema web de perguntas e respostas baseando na metodologia de desenvolvimento de software Extreme Programming",
   "scripts": {
-    "lint": "prettier --write '{src,test, dist}/**/*.js' && eslint --fix '{src,test, dist}/**/*.js'",
+    "lint": "prettier --write \"{src,test, dist}/**/*.js\" && eslint --fix \"{src,test, dist}/**/*.js\"",
     "start": "fastify start src/backend/server.js",
     "watch:frontend": "webpack --mode development -w",
     "watch:backend": "fastify start -w src/backend/server.js -p 9000 | pino-pretty",
-    "livereload": "browser-sync start --proxy localhost:9000 --files 'dist'",
+    "livereload": "browser-sync start --proxy localhost:9000 --files \"dist\"",
     "build": "webpack --mode production",
-    "debug": "concurrently --raw 'npm run watch:frontend' 'npm run watch:backend' 'npm run livereload'",
+    "debug": "concurrently --raw \"npm run watch:frontend\" \"npm run watch:backend\" \"npm run livereload\"",
     "test": "tap -b --100 --jobs=1 --test-regex=test\\/.*\\.test.js$ --coverage-map=map.tap.js"
   },
   "repository": {
@@ -24,8 +24,10 @@
   "homepage": "https://github.com/flaviolc18/qa-system#readme",
   "dependencies": {
     "@reach/router": "1.2.1",
+    "axios": "^0.18.0",
     "bcryptjs": "2.4.3",
     "bootstrap": "4.3.1",
+    "fastify": "2.2.0",
     "fastify-autoload": "0.6.0",
     "fastify-circuit-breaker": "0.1.0",
     "fastify-cli": "0.27.2",
@@ -37,18 +39,17 @@
     "fastify-plugin": "1.4.0",
     "fastify-sensible": "2.0.1",
     "fastify-static": "2.4.0",
-    "fastify": "2.2.0",
     "jquery": "3.4.0",
     "mongoose": "5.4.22",
     "popper.js": "1.15.0",
     "prop-types": "15.7.2",
+    "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "^7.0.2",
     "react-responsive": "6.1.1",
-    "react": "16.8.6",
+    "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "redux": "^4.0.1",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
