@@ -83,36 +83,6 @@ test(
 );
 
 test(
-  'model.session.find: tenta recuperar uma session expirada',
-  withDB(async t => {
-    const { _id: usuarioId } = await seed.entidades.usuario();
-
-    const now = new Date();
-
-    now.setDate(now.getDate() - (sessionExpirationTimeInDays + 1));
-
-    const dataCriacao = new Date(now);
-    const dataExpiracao = new Date(now);
-
-    dataExpiracao.setDate(dataCriacao.getDate() + sessionExpirationTimeInDays);
-
-    const session = new SessionModel({
-      usuarioId,
-      dataCriacao,
-      dataExpiracao,
-    });
-
-    const createdSession = await session.save();
-
-    const foundSession = await sessionModel.find(createdSession._id);
-
-    t.notOk(foundSession);
-
-    t.end();
-  })
-);
-
-test(
   'model.session.delete',
   withDB(async t => {
     const { _id: usuarioId } = await seed.entidades.usuario();
