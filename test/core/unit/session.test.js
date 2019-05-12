@@ -6,7 +6,6 @@ const { withDB, randomObjectId } = require('../../test-helpers');
 const seed = require('../../../seed');
 
 const sessionModel = require('../../../src/core/models/session');
-const SessionModel = require('../../../src/core/models/session/session.model');
 
 const { sessionExpirationTimeInDays } = require('../../../src/core/constants');
 
