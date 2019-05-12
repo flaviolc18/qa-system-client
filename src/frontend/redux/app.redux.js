@@ -17,10 +17,7 @@ const LOGIN_NOT_RECEIVE = 'LOGIN_NOT_RECEIVE';
 export function loadSession() {
   return {
     types: [SESSION_REQUEST, SESSION_RECEIVE, SESSION_NOT_RECEIVE],
-    callAPI: () =>
-      http.get('/api/sessions').then(response => {
-        return response.elements[0];
-      }),
+    callAPI: () => http.get('/api/sessions').then(response => response.elements[0]),
     payload: {},
   };
 }

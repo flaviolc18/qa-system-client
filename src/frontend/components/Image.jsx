@@ -36,7 +36,7 @@ Image.propTypes = {
 export default connect(
   (state, ownProps) => {
     return {
-      image: getImagensByFilters(state, { nome: ownProps.name }),
+      image: getImagensByFilters(state, { nome: ownProps.name })[0],
     };
   },
   { loadImagemNome }
