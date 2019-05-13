@@ -10,7 +10,7 @@
     "livereload": "browser-sync start --proxy localhost:9000 --files \"dist\"",
     "build": "webpack --mode production",
     "debug": "concurrently --raw \"npm run watch:frontend\" \"npm run watch:backend\" \"npm run livereload\"",
-    "test": "tap -b --100 --jobs=1 --test-regex=test\\\\.*\\.test.js$ --coverage-map=map.tap.js"
+    "test": "tap -b --100 --jobs=1 --test-regex=test\\/.*\\.test.js$ --coverage-map=map.tap.js"
   },
   "repository": {
     "type": "git",
