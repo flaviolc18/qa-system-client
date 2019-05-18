@@ -21,7 +21,7 @@ class Image extends Component {
   render() {
     if (!this.props.image) {
       let style = this.props.style;
-      return <div style={style} />;
+      return <div style={{ backgroundColor: 'gray', ...style }} />;
     }
     return (
       <div>

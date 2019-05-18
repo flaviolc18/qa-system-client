@@ -9,15 +9,25 @@ import { navigate } from '@reach/router';
 import ProfilePicture from './ProfilePicture';
 
 class FullPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSessionChecked: false,
+    };
+  }
   componentDidMount() {
-    this.props.loadSession();
+    this.props.loadSession().then(() => {
+      this.setState({ isSessionChecked: true });
+    });
   }
 
   componentDidUpdate(oldProps) {
     if (oldProps.location.href === this.props.location.href) {
       return;
     }
-    this.props.loadSession();
+    this.props.loadSession().then(() => {
+      this.setState({ isSessionChecked: true });
+    });
   }
 
   renderNavbar() {
@@ -27,7 +37,13 @@ class FullPage extends Component {
       {
         label: () => (
           <ProfilePicture
-            style={{ height: '40px', width: '40px', borderRadius: '100%' }}
+            style={{
+              boxShadow: '0px 0px 10px 2px rgb(1,1,1,0.5)',
+              float: 'left',
+              height: '40px',
+              width: '40px',
+              borderRadius: '100%',
+            }}
             usuarioId={this.props.session.usuarioId}
           />
         ),
@@ -61,6 +77,9 @@ class FullPage extends Component {
   }
 
   render() {
+    if (!this.state.isSessionChecked) {
+      return 'Verificando Sessão...';
+    }
     return (
       <div>
         {this.renderNavbar()}
@@ -74,6 +93,7 @@ FullPage.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   location: PropTypes.object,
   loadSession: PropTypes.func,
+  loadUsuario: PropTypes.func,
   session: PropTypes.object,
   logout: PropTypes.func,
 };
