@@ -6,6 +6,7 @@ import { loadSession, getSession, logout } from '../redux/app.redux';
 import Navbar from './Navbar';
 import Feed from './Feed';
 import { navigate } from '@reach/router';
+import ProfilePicture from './ProfilePicture';
 
 class FullPage extends Component {
   componentDidMount() {
@@ -23,12 +24,24 @@ class FullPage extends Component {
     const loggedLinks = [
       { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
       { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
-      { label: 'Logout', class: 'action', type: 'button', action: () => this.props.logout() },
       {
-        label: 'Perfil',
+        label: () => (
+          <ProfilePicture
+            style={{ height: '40px', width: '40px', borderRadius: '100%' }}
+            usuarioId={this.props.session.usuarioId}
+          />
+        ),
         class: 'action',
-        type: 'button',
-        action: () => navigate('/usuarios/' + this.props.session.usuarioId),
+        type: 'dropdown',
+        links: [
+          {
+            label: 'Perfil',
+            class: 'action',
+            type: 'button',
+            action: () => navigate('/usuarios/' + this.props.session.usuarioId),
+          },
+          { label: 'Logout', class: 'action', type: 'button', action: () => this.props.logout() },
+        ],
       },
     ];
 
@@ -36,10 +49,15 @@ class FullPage extends Component {
       { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
       { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
     ];
-    if (this.props.session) {
-      return <Navbar key={'nav-logged'} to="/home" title={'Não Faço a Menor Ideia!'} links={loggedLinks} />;
-    }
-    return <Navbar key={'nav-unlogged'} to="/home" title={'Não Faço a Menor Ideia!'} links={unloggedLinks} />;
+
+    return (
+      <Navbar
+        key={this.props.session ? 'nav-logged' : 'nav-unlogged'}
+        to="/home"
+        title={'Não faço a menor ideia?'}
+        links={this.props.session ? loggedLinks : unloggedLinks}
+      />
+    );
   }
 
   render() {

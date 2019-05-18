@@ -13,10 +13,10 @@ class UploadButton extends Component {
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = e => {
-      const data = e.target.result;
+      const buffer = e.target.result;
       const body = {
         nome: image.name,
-        data,
+        buffer,
       };
       this.props.uploadImagem(body);
     };

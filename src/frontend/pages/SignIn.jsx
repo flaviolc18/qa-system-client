@@ -3,8 +3,8 @@ import { navigate } from '@reach/router';
 
 import PropTypes from 'prop-types';
 import Form from '../components/Form';
-import {connect} from 'react-redux';
-import {login} from '../redux/app.redux';
+import { connect } from 'react-redux';
+import { login, getSession } from '../redux/app.redux';
 
 const loginBody = [
   { label: 'Email', defaultValue: '', class: 'input', type: 'email', placeHolder: 'example@mail.com' },
@@ -12,7 +12,7 @@ const loginBody = [
 ];
 
 class SignIn extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.signIn = this.signIn.bind(this);
   }
@@ -22,7 +22,9 @@ class SignIn extends Component {
       email: state.Email,
       password: state.Senha,
     };
-  this.props.login(body).then(()=>navigate('/home'));
+    this.props.login(body).then(() => {
+      if (this.props.session) navigate('/home');
+    });
   }
 
   render() {
@@ -39,9 +41,15 @@ class SignIn extends Component {
 }
 
 SignIn.propTypes = {
-  login:PropTypes.func
-}
+  login: PropTypes.func,
+  session: PropTypes.object,
+};
 
-export default connect(()=>{
-  return {}
-},{login})(SignIn);
+export default connect(
+  state => {
+    return {
+      session: getSession(state),
+    };
+  },
+  { login }
+)(SignIn);

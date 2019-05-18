@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Location, Link, navigate } from '@reach/router';
+import { Location, Link } from '@reach/router';
 import { connect } from 'react-redux';
 import { getSession } from '../redux/app.redux';
-import { http } from '../helpers/http';
 
 class Navbar extends Component {
   constructor(props) {
@@ -21,34 +20,15 @@ class Navbar extends Component {
       }
     });
 
-    if (props.session) {
-      this.actions.concat([
-        {
-          label: <div>Perfil</div>,
-          class: 'action',
-          type: 'button',
-          action: () => {
-            navigate('/usuarios/' + props.session.usuarioId);
-          },
-        },
-        {
-          label: (
-            <div>
-              Logout
-              {'  '}
-              <i className="fas fa-sign-out-alt" />
-            </div>
-          ),
-          class: 'action',
-          type: 'button',
-          action: () => http.delete('/api/usuarios/logout'),
-        },
-      ]);
-    }
-
     this.actions = this.actions.filter(e => e != undefined);
   }
 
+  computeLinks() {
+    return this.computeElements(this.links);
+  }
+  computeActions() {
+    return this.computeElements(this.actions);
+  }
   computeElements(links) {
     return links.map((link, index) => {
       switch (link.type) {
@@ -60,7 +40,7 @@ class Navbar extends Component {
           return <Search />;
         case 'button':
           return (
-            <button className="btn action-button" key={index} onClick={() => link.action()}>
+            <button className="action-button" key={index} onClick={() => link.action()}>
               {link.label}
             </button>
           );
@@ -68,35 +48,13 @@ class Navbar extends Component {
     });
   }
 
-  computeLinks() {
-    return this.computeElements(this.links);
-  }
-  computeActions() {
-    return this.computeElements(this.actions);
-  }
-
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link className="navbar-brand navbar-title" to={this.props.to}>
-          {this.props.title}
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          {<ul className="navbar-nav">{this.computeLinks()}</ul>}
-          <div style={{ margin: '0 auto' }} />
-          <ul className="navbar-nav">{this.computeActions()}</ul>
-        </div>
+      <nav className="navbar navbar-dark bg-dark">
+        <div className="navbar-title"> {this.props.title}</div>
+        <ul className="navbar-nav">{this.computeLinks()}</ul>
+        <div style={{ width: 'auto', margin: '0 auto' }} />
+        <ul className="navbar-nav">{this.computeActions()}</ul>
       </nav>
     );
   }
@@ -111,8 +69,8 @@ Navbar.propTypes = {
 
 const Navlink = ({ label, disabled, active, to }) => {
   return (
-    <li className="nav-item">
-      <Link className={'nav-link ' + (disabled ? 'disabled' : active ? 'active' : '')} to={to}>
+    <li className="navbar-item">
+      <Link className={'navbar-link ' + (disabled ? 'disabled' : active ? 'active' : '')} to={to}>
         {label}
       </Link>
     </li>
@@ -137,33 +95,69 @@ const Search = () => (
   </form>
 );
 
-const Dropdown = ({ label, links }) => {
-  return (
-    <li className="nav-item dropdown">
-      <a
-        className="nav-link dropdown-toggle"
-        href="#"
-        id="navbarDropdown"
-        role="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        {label}
-      </a>
-      <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-        {links.map((link, index) => (
-          <Link className="dropdown-item" key={index} to={link.to}>
-            {link.label}
-          </Link>
-        ))}
-      </div>
-    </li>
-  );
-};
+class Dropdown extends Component {
+  computeElementsDropdown(links) {
+    return links.map((link, index) => {
+      switch (link.type) {
+        case 'link':
+          return (
+            <li className="dropdown-item" key={index}>
+              <Link style={{ margin: '0 auto', width: '100%' }} className={'navbar-link'} to={link.to}>
+                {link.label}
+              </Link>
+            </li>
+          );
+        case 'button':
+          return (
+            <li key={index} className="dropdown-item">
+              <button className="dropdown-button" style={{ border: 'none' }} onClick={() => link.action()}>
+                {link.label}
+              </button>
+            </li>
+          );
+      }
+    });
+  }
+
+  render() {
+    const { label, links } = this.props;
+    let title;
+
+    switch (typeof label) {
+      case 'string':
+        title = label;
+        break;
+      case 'function':
+        title = label();
+        break;
+    }
+    return (
+      <li className="nav-item dropdown">
+        <a
+          className=""
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {title}
+        </a>
+        <div
+          style={{ position: 'absolute' }}
+          className="dropdown-menu dropdown-menu-right"
+          aria-labelledby="navbarDropdown"
+        >
+          <ul className="navbar-dropdown">{this.computeElementsDropdown(links)}</ul>
+        </div>
+      </li>
+    );
+  }
+}
 
 Dropdown.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   links: PropTypes.array,
 };
 

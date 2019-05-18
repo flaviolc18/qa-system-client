@@ -11,7 +11,6 @@ const LOGOUT_RECEIVE = 'LOGOUT_RECEIVE';
 const LOGOUT_NOT_RECEIVE = 'LOGOUT_NOT_RECEIVE';
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
-const LOGIN_RECEIVE = 'LOGIN_RECEIVE';
 const LOGIN_NOT_RECEIVE = 'LOGIN_NOT_RECEIVE';
 
 export function loadSession() {
@@ -32,7 +31,7 @@ export function logout() {
 
 export function login(body) {
   return {
-    types: [LOGIN_REQUEST, LOGIN_RECEIVE, LOGIN_NOT_RECEIVE],
+    types: [LOGIN_REQUEST, SESSION_RECEIVE, LOGIN_NOT_RECEIVE],
     callAPI: () => http.post('/api/usuarios/login', body),
     payload: {},
   };
@@ -45,10 +44,12 @@ export function getSession(state) {
 export const app = combineReducers({
   session: createReducer(null, {
     [SESSION_RECEIVE]: (state, action) => {
-      return action.response;
+      if (!action.response.error) {
+        return action.response;
+      }
     },
-    [LOGIN_RECEIVE]: (state, action) => {
-      return action.response;
+    [SESSION_NOT_RECEIVE]: () => {
+      return null;
     },
     [LOGOUT_RECEIVE]: () => {
       return null;

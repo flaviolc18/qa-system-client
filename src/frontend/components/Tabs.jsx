@@ -52,6 +52,17 @@ class Tabs extends Component {
 
     this.renderStateBody();
   }
+  componentDidUpdate(oldProps) {
+    if (this.props === oldProps) return;
+    if (this.props.useUrl) {
+      const search = this.props.location.search.substr(1);
+      let filter = deserialize(search);
+      if (!filter[this.props.tabName]) {
+        filter[this.props.tabName] = 0;
+        navigate(this.props.location.pathname + '?' + serialize(filter));
+      }
+    }
+  }
 
   render() {
     let tabIndex = this.state.activeTab;

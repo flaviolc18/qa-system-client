@@ -2,7 +2,7 @@
 
 const { test } = require('tap');
 
-const { initServer } = require('../../../test-helpers');
+const { initServer, randomObjectId } = require('../../../test-helpers');
 
 test('api.session.find', async t => {
   const fastify = await initServer(t);
@@ -33,7 +33,6 @@ test('api.session.find', async t => {
     method: 'POST',
     payload: userData,
   });
-
   const { statusCode } = await fastify.inject({
     url: '/api/sessions',
     method: 'GET',
@@ -41,6 +40,20 @@ test('api.session.find', async t => {
   });
 
   t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.session.find', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: '/api/sessions',
+    method: 'GET',
+    headers: { cookie: 'session=' + randomObjectId() },
+  });
+
+  t.same(statusCode, 404);
 
   t.end();
 });

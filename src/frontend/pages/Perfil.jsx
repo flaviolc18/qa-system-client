@@ -31,13 +31,14 @@ class Perfil extends Component {
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = e => {
-      const data = e.target.result;
+      const buffer = e.target.result;
       const body = {
         nome: image.name,
-        data,
+        buffer,
       };
-      this.props.uploadImagem(body);
-      this.props.updateUsuario({ id: this.props.usuarioId }, { fotoPerfil: body.nome });
+      this.props.uploadImagem(body).then(response => {
+        this.props.updateUsuario({ id: this.props.usuarioId }, { fotoPerfil: response.elements[0]._id });
+      });
     };
   }
 

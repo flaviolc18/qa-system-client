@@ -9,6 +9,7 @@ const IMAGEMS_RECEIVE = 'IMAGEMS_RECEIVE';
 const IMAGEMS_NOT_RECEIVE = 'IMAGEMS_NOT_RECEIVE';
 
 const IMAGEMS_POST_REQUEST = 'IMAGEMS_POST_REQUEST';
+const IMAGEMS_POST_SUCCESS = 'IMAGEMS_POST_SUCCESS';
 const IMAGEMS_POST_FAILURE = 'IMAGEMS_POST_FAILURE';
 
 export function loadImagemNome(filters) {
@@ -21,13 +22,22 @@ export function loadImagemNome(filters) {
   };
 }
 
-export function uploadImagem(body) {
+export function loadImagem(filters) {
   return {
-    types: [IMAGEMS_POST_REQUEST, IMAGEMS_RECEIVE, IMAGEMS_POST_FAILURE],
-    callAPI: () => http.post('/api/imagem', body),
+    types: [IMAGEMS_REQUEST, IMAGEMS_RECEIVE, IMAGEMS_NOT_RECEIVE],
+    callAPI: () => http.get('/api/imagem/' + filters.id).then(),
     payload: {
-      filters: { nome: body.nome },
+      filters,
     },
+  };
+}
+
+export function uploadImagem(body) {
+  let filters;
+  return {
+    types: [IMAGEMS_POST_REQUEST, IMAGEMS_POST_SUCCESS, IMAGEMS_POST_FAILURE],
+    callAPI: () => http.post('/api/imagem', body),
+    payload: { filters },
   };
 }
 

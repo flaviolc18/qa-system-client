@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getImagensByFilters, loadImagemNome } from '../redux/imagens.redux';
+import { getImagensByFilters, loadImagemNome, loadImagem } from '../redux/imagens.redux';
 
 class Image extends Component {
   constructor(props) {
@@ -9,18 +9,23 @@ class Image extends Component {
   }
   componentDidMount() {
     if (!this.props.image) {
-      this.props.loadImagemNome({ nome: this.props.name });
+      this.props.loadImagem({ id: this.props.id });
+    }
+  }
+
+  componentDidUpdate() {
+    if (!this.props.image) {
+      this.props.loadImagem({ id: this.props.id });
     }
   }
   render() {
     if (!this.props.image) {
       let style = this.props.style;
-      style.backgroundColor = 'gray';
       return <div style={style} />;
     }
     return (
       <div>
-        <img style={this.props.style} src={this.props.image.data} />
+        <img style={this.props.style} src={this.props.image.buffer} />
       </div>
     );
   }
@@ -28,16 +33,17 @@ class Image extends Component {
 
 Image.propTypes = {
   style: PropTypes.object,
-  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   image: PropTypes.object,
   loadImagemNome: PropTypes.func,
+  loadImagem: PropTypes.func,
 };
 
 export default connect(
   (state, ownProps) => {
     return {
-      image: getImagensByFilters(state, { nome: ownProps.name })[0],
+      image: getImagensByFilters(state, { id: ownProps.id })[0],
     };
   },
-  { loadImagemNome }
+  { loadImagemNome, loadImagem }
 )(Image);

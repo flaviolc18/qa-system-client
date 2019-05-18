@@ -14,7 +14,7 @@ class ProfilePicture extends Component {
       return 'Carregando...';
     }
 
-    return <Image style={this.props.style} name={this.props.usuario.fotoPerfil} />;
+    return <Image style={this.props.style} id={this.props.usuario.fotoPerfil} />;
   }
 }
 

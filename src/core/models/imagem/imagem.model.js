@@ -4,7 +4,7 @@ const { mongoose } = require('../../database');
 
 const imagemSchema = mongoose.Schema({
   nome: String,
-  data: String,
+  buffer: String,
   dataCriacao: Date,
 });
 
