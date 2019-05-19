@@ -10,7 +10,7 @@ const usuarioSchema = mongoose.Schema({
   password: { type: String, required: true },
   descricao: String,
   reputacao: Number,
-  profilePicture: Buffer,
+  fotoPerfil: String,
 });
 
 usuarioSchema.pre('save', function(next) {

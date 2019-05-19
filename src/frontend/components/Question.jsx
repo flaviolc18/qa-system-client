@@ -7,7 +7,10 @@ import PropTypes from 'prop-types';
 import Post from './Post';
 
 class Question extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.loadPergunta({ id: this.props.id });
+    this.props.loadUsuarioPergunta({ perguntaId: this.props.id });
+  }
   render() {
     if (!this.props.pergunta || !this.props.usuario) {
       return '';

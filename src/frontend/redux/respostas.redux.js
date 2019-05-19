@@ -15,7 +15,7 @@ const RESPOSTAS_POST_FAILURE = 'RESPOSTAS_POST_FAILURE';
 export function loadRespostasByPergunta(filters) {
   return {
     types: [RESPOSTAS_REQUEST, RESPOSTAS_RECEIVE, RESPOSTAS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/perguntas/' + filters.perguntaId + '/respostas'),
+    callAPI: () => http.get('/api/respostas/perguntas/' + filters.perguntaId),
     payload: {
       filters,
     },
@@ -37,7 +37,7 @@ export function postResposta(respostaBody) {
 export function loadRespostasByUsuario(filters) {
   return {
     types: [RESPOSTAS_REQUEST, RESPOSTAS_RECEIVE, RESPOSTAS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/respostas/usuario/' + filters.usuarioId),
+    callAPI: () => http.get('/api/respostas/usuarios/' + filters.usuarioId),
     payload: {
       filters,
     },

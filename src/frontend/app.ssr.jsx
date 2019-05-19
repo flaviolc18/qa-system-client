@@ -29,8 +29,10 @@ export default function render(url) {
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       crossorigin="anonymous"
       />
+
       <title>Não faço a Menor Ideia</title>
-    <link href="/assets/main.css" rel="stylesheet" type="text/css"/>
+      <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Great+Vibes|Kaushan+Script|Pacifico&display=swap" rel="stylesheet">    
+      <link href="/assets/main.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <div id="root">${html}</div>

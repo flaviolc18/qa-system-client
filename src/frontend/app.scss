@@ -1,16 +1,8 @@
 @import './scss/post.scss';
+@import './scss/navbar.scss';
 
 body {
   background-color: rgb(232, 232, 232);
-}
-
-.navbar-title {
-  font-size: 20px;
-}
-
-.navbar-title:hover {
-  text-decoration: none;
-  color: white;
 }
 
 .button-toggler {
@@ -19,19 +11,11 @@ body {
 .button-toggler:hover {
   color: green;
 }
-.font-navbar {
-  font-family: Comic Sans MS, Comic Sans, cursive;
-  font-size: 15px;
-}
-.action-button {
-  border: 1px solid rgb(155, 155, 155);
-  color: rgb(155, 155, 155);
-  margin: 4px;
-}
+
 .feed {
   background-color: rgb(255, 255, 255);
   margin: 0 auto;
-  width: 800px;
+  max-width: 1200px;
   min-height: 100vh;
 }
 

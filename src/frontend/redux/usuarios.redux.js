@@ -3,10 +3,20 @@ import { combineReducers } from 'redux';
 import { assignAllIds, assignById, assignTotalSizeByFilter, assignByFilter } from './helpers/state-transformation';
 import { http } from '../helpers/http';
 import { serialize } from '../helpers/serializer';
+
 const USUARIOS_REQUEST = 'USUARIOS_REQUEST';
 const USUARIOS_RECEIVE = 'USUARIOS_RECEIVE';
-
 const USUARIOS_NOT_RECEIVE = 'USUARIOS_NOT_RECEIVE';
+
+export function updateUsuario(filters, data) {
+  return {
+    types: [USUARIOS_REQUEST, USUARIOS_RECEIVE, USUARIOS_NOT_RECEIVE],
+    callAPI: () => http.post('/api/usuarios/' + filters.id, data),
+    payload: {
+      filters,
+    },
+  };
+}
 
 export function loadUsuario(filters) {
   return {
@@ -21,7 +31,7 @@ export function loadUsuario(filters) {
 export function loadUsuariosByPerguntaRespostas(filters) {
   return {
     types: [USUARIOS_REQUEST, USUARIOS_RECEIVE, USUARIOS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/perguntas/' + filters.perguntaId + '/respostas/usuarios'),
+    callAPI: () => http.get('/api/usuarios/perguntas/' + filters.perguntaId + '/respostas'),
     payload: {
       filters,
     },
@@ -31,7 +41,7 @@ export function loadUsuariosByPerguntaRespostas(filters) {
 export function loadUsuarioPergunta(filters) {
   return {
     types: [USUARIOS_REQUEST, USUARIOS_RECEIVE, USUARIOS_NOT_RECEIVE],
-    callAPI: () => http.get(`/api/perguntas/${filters.perguntaId}/usuario`),
+    callAPI: () => http.get('/api/usuarios/perguntas/' + filters.perguntaId),
     payload: {
       filters,
     },

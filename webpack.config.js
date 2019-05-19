@@ -19,7 +19,7 @@ const appConfig = {
         use: { loader: 'babel-loader' },
       },
       {
-        test: /\.(png|jpg)$/,
+        test: /\.(png|jpg|jpeg)$/,
         loader: 'url-loader',
       },
       {

@@ -8,7 +8,6 @@ module.exports = async function(fastify) {
   fastify.register(require('./find-usuarios-respostas-pergunta'));
   fastify.register(require('./login-usuario'));
   fastify.register(require('./logout-usuario'));
-  fastify.register(require('./profile-picture-upload'));
   fastify.register(require('./signup-usuario'));
   fastify.register(require('./update-usuario'));
 };

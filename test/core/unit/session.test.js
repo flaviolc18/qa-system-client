@@ -6,7 +6,6 @@ const { withDB, randomObjectId } = require('../../test-helpers');
 const seed = require('../../../seed');
 
 const sessionModel = require('../../../src/core/models/session');
-const SessionModel = require('../../../src/core/models/session/session.model');
 
 const { sessionExpirationTimeInDays } = require('../../../src/core/constants');
 
@@ -77,36 +76,6 @@ test(
     const session = await sessionModel.find(usuarioId);
 
     t.notOk(session);
-
-    t.end();
-  })
-);
-
-test(
-  'model.session.find: tenta recuperar uma session expirada',
-  withDB(async t => {
-    const { _id: usuarioId } = await seed.entidades.usuario();
-
-    const now = new Date();
-
-    now.setDate(now.getDate() - (sessionExpirationTimeInDays + 1));
-
-    const dataCriacao = new Date(now);
-    const dataExpiracao = new Date(now);
-
-    dataExpiracao.setDate(dataCriacao.getDate() + sessionExpirationTimeInDays);
-
-    const session = new SessionModel({
-      usuarioId,
-      dataCriacao,
-      dataExpiracao,
-    });
-
-    const createdSession = await session.save();
-
-    const foundSession = await sessionModel.find(createdSession._id);
-
-    t.notOk(foundSession);
 
     t.end();
   })
