@@ -39,7 +39,6 @@ class FullPage extends Component {
           <ProfilePicture
             style={{
               boxShadow: '0px 0px 10px 2px rgb(1,1,1,0.5)',
-              float: 'left',
               height: '40px',
               width: '40px',
               borderRadius: '100%',
