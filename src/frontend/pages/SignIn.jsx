@@ -4,7 +4,7 @@ import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import Form from '../components/Form';
 import { connect } from 'react-redux';
-import { login, getSession } from '../redux/app.redux';
+import { login, getSession } from '../redux/sessions.redux';
 
 const loginBody = [
   { label: 'Email', defaultValue: '', class: 'input', type: 'email', placeHolder: 'example@mail.com' },
@@ -22,7 +22,7 @@ class SignIn extends Component {
       email: state.Email,
       password: state.Senha,
     };
-    this.props.login(body).then(() => {
+    this.props.login(body, {}).then(() => {
       if (this.props.session) navigate('/home');
     });
   }

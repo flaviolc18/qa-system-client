@@ -1,87 +1,29 @@
-import createReducer from './creators/create-reducer';
-import { combineReducers } from 'redux';
-import { assignAllIds, assignById, assignTotalSizeByFilter, assignByFilter } from './helpers/state-transformation';
-import { http } from '../helpers/http';
-import { serialize } from '../helpers/serializer';
+import { actionsFactory, reducerFactory, gettersFactory } from './creators/factory';
 
-const IMAGEMS_REQUEST = 'IMAGEMS_REQUEST';
-const IMAGEMS_RECEIVE = 'IMAGEMS_RECEIVE';
-const IMAGEMS_NOT_RECEIVE = 'IMAGEMS_NOT_RECEIVE';
+const context = 'imagens';
 
-const IMAGEMS_POST_REQUEST = 'IMAGEMS_POST_REQUEST';
-const IMAGEMS_POST_SUCCESS = 'IMAGEMS_POST_SUCCESS';
-const IMAGEMS_POST_FAILURE = 'IMAGEMS_POST_FAILURE';
+let loadImagemNomeURL = filters => '/api/imagem/nome/' + filters.nome;
+let loadImagemURL = filters => '/api/imagem/' + filters.id;
+let uploadImagemURL = () => '/api/imagem';
 
-export function loadImagemNome(filters) {
-  return {
-    types: [IMAGEMS_REQUEST, IMAGEMS_RECEIVE, IMAGEMS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/imagem/nome/' + filters.nome),
-    payload: {
-      filters,
-    },
-  };
-}
-
-export function loadImagem(filters) {
-  return {
-    types: [IMAGEMS_REQUEST, IMAGEMS_RECEIVE, IMAGEMS_NOT_RECEIVE],
-    callAPI: () => http.get('/api/imagem/' + filters.id).then(),
-    payload: {
-      filters,
-    },
-  };
-}
-
-export function uploadImagem(body) {
-  let filters;
-  return {
-    types: [IMAGEMS_POST_REQUEST, IMAGEMS_POST_SUCCESS, IMAGEMS_POST_FAILURE],
-    callAPI: () => http.post('/api/imagem', body),
-    payload: { filters },
-  };
-}
-
-export function getImagem(state, id) {
-  return state.imagens.byIds[id];
-}
-
-export function getImagensByFilters(state, filters) {
-  const ids = state.imagens ? state.imagens.byFilters[serialize(filters)] : [];
-  if (ids) {
-    const imagens = ids.map(id => getImagem(state, id));
-    return imagens;
-  }
-  return [];
-}
-
-export const imagens = combineReducers({
-  totalByFilters: createReducer(
-    {},
-    {
-      [IMAGEMS_RECEIVE]: (state, action) => {
-        return assignTotalSizeByFilter(state, action);
-      },
-    }
-  ),
-  byIds: createReducer(
-    {},
-    {
-      [IMAGEMS_RECEIVE]: (state, action) => {
-        return assignById(state, action.response.elements);
-      },
-    }
-  ),
-  allIds: createReducer([], {
-    [IMAGEMS_RECEIVE]: (state, action) => {
-      return assignAllIds(state, action.response.elements);
-    },
-  }),
-  byFilters: createReducer(
-    {},
-    {
-      [IMAGEMS_RECEIVE]: (state, action) => {
-        return assignByFilter(state, action);
-      },
-    }
-  ),
+let actions = actionsFactory({
+  context,
+  buildURLs: {
+    loadOneURLs: [loadImagemNomeURL, loadImagemURL],
+    createOneURLs: [uploadImagemURL],
+  },
 });
+
+let getters = gettersFactory({ context });
+
+export const getImagem = getters.getOneById;
+export const getImagensByFilters = getters.getByFilters;
+export const getImagemLoadingState = getters.getLoadingState;
+
+export const loadRespostasByUsuario = actions.load[1];
+
+export const loadImagemNome = actions.load[0];
+export const loadImagem = actions.load[1];
+export const uploadImagem = actions.create[0];
+
+export const imagens = reducerFactory({ context });

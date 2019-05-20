@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadUsuario, getUsuario, updateUsuario } from '../redux/usuarios.redux';
-import { getSession } from '../redux/app.redux';
+import { getSession } from '../redux/sessions.redux';
 import ProfilePicture from '../components/ProfilePicture';
 import PerguntasUsuario from '../components/PerguntasUsuario';
 import RespostasUsuario from '../components/RespostasUsuario';
