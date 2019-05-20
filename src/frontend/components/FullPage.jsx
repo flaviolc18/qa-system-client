@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-<<<<<<< HEAD
 import { loadSession, getSession, logout } from '../redux/sessions.redux';
-=======
-import { loadSession, getSession, logout } from '../redux/app.redux';
->>>>>>> 819ccd1648e4e477f4c59131e7ac7bebf3f7d58a
 import Navbar from './Navbar';
 import Feed from './Feed';
 import { navigate } from '@reach/router';
