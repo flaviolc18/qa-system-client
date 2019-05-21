@@ -158,8 +158,11 @@ export function reducerFactory({ context }) {
         [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
           return assignById(state, action.response.elements);
         },
-        [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-          return;
+        [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
+          return state;
+        },
+        [deletePrefix + '_' + context + '_' + 'SUCCESS']: state => {
+          return state;
         },
       }
     ),
@@ -167,8 +170,11 @@ export function reducerFactory({ context }) {
       [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
         return assignAllIds(state, action.response.elements);
       },
-      [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-        return;
+      [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
+        return state;
+      },
+      [deletePrefix + '_' + context + '_' + 'SUCCESS']: state => {
+        return state;
       },
     }),
     byFilters: createReducer(

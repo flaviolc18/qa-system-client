@@ -39,6 +39,7 @@ class Votes extends Component {
     this.downVote = this.downVote.bind(this);
     this.editPost = this.editPost.bind(this);
     this.removePost = this.removePost.bind(this);
+    this.edit = this.edit.bind(this);
   }
   upVote(e) {
     e.preventDefault();
@@ -61,6 +62,8 @@ class Votes extends Component {
     });
   }
   edit() {
+    if (!this.props.session || !this.props.usuarioId) return '';
+
     if (this.props.session.usuarioId === this.props.usuarioId) {
       return (
         <li>
@@ -70,8 +73,10 @@ class Votes extends Component {
         </li>
       );
     }
+    return '';
   }
   remove() {
+    if (!this.props.session || !this.props.usuarioId) return '';
     if (this.props.session.usuarioId === this.props.usuarioId) {
       return (
         <li>
