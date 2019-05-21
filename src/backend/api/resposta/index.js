@@ -8,4 +8,6 @@ module.exports = async function(fastify) {
   fastify.register(require('./find-respostas-pergunta'));
   fastify.register(require('./find-respostas-usuario'));
   fastify.register(require('./update-resposta'));
+  fastify.register(require('./upvote-resposta'));
+  fastify.register(require('./downvote-resposta'));
 };

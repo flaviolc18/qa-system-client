@@ -24,7 +24,7 @@ module.exports = async function(respostaData) {
   };
 
   //FIXME: trocar ordem
-  const resposta = new RespostaModel({ ...defaultValues, ...respostaData });
+  const resposta = new RespostaModel({ ...respostaData, ...defaultValues });
 
   return resposta.save();
 };

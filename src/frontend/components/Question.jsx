@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { loadPergunta, getPergunta } from '../redux/perguntas.redux';
+import {
+  loadPergunta,
+  getPergunta,
+  editPergunta,
+  removePergunta,
+  downvotePergunta,
+  upvotePergunta,
+} from '../redux/perguntas.redux';
 import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,13 +20,23 @@ class Question extends Component {
   }
   render() {
     if (!this.props.pergunta || !this.props.usuario) {
-      return '';
+      return 'Loading...';
     }
     return (
       <div className="row p-3">
-        <div className="p-3" style={{ width: '100%', borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
-          <h3 className="">{`${this.props.pergunta.titulo}`}</h3>
-          <Post post={this.props.pergunta} user={this.props.usuario} />
+        <div className="p-3" style={{ width: '100%' }}>
+          <Post
+            redirect={true}
+            path="/home"
+            removePost={this.props.removePergunta}
+            editPost={this.props.editPergunta}
+            upVote={this.props.upvotePergunta}
+            downVote={this.props.downvotePergunta}
+            votes={{ upvotes: this.props.pergunta.upvotes, downvotes: this.props.pergunta.downvotes }}
+            titulo={this.props.pergunta.titulo}
+            post={this.props.pergunta}
+            user={this.props.usuario}
+          />
         </div>
       </div>
     );
@@ -27,6 +44,10 @@ class Question extends Component {
 }
 
 Question.propTypes = {
+  upvotePergunta: PropTypes.func,
+  downvotePergunta: PropTypes.func,
+  editPergunta: PropTypes.func,
+  removePergunta: PropTypes.func,
   loadPergunta: PropTypes.func,
   loadUsuarioPergunta: PropTypes.func,
   pergunta: PropTypes.object,
@@ -41,5 +62,5 @@ export default connect(
       usuario: getUsuariosByFilter(state, { perguntaId: ownProps.id })[0],
     };
   },
-  { loadUsuarioPergunta, loadPergunta }
+  { loadUsuarioPergunta, loadPergunta, editPergunta, removePergunta, downvotePergunta, upvotePergunta }
 )(Question);

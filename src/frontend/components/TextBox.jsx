@@ -23,6 +23,7 @@ class TextAreaBox extends Component {
     if (this.props.session) {
       this.props.onSubmit(this.state);
     }
+    this.setState({ text: '' });
   }
   render() {
     return (

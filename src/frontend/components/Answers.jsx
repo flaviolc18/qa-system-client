@@ -25,7 +25,7 @@ class Answers extends Component {
   }
   render() {
     if (!this.props.respostas || this.props.respostas.length <= 0) {
-      return <div>Nenhuma resposta foi cadastrada ate o momento!</div>;
+      return <div>Loading</div>;
     }
 
     return <div>{this.renderRespostas()}</div>;
