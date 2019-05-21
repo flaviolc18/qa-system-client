@@ -14,10 +14,10 @@ test(
 
     const { _id: perguntaId } = await seed.entidades.pergunta({ usuarioId });
 
-    const resposta = seed.fixtures.resposta({ usuarioId, perguntaId });
-
+    const _resposta = seed.fixtures.resposta({ usuarioId, perguntaId });
+    const { dataCriacao, ...resposta } = _resposta;
     const {
-      _doc: { _id, __v, ...createdResposta },
+      _doc: { _id, __v, dataCriacao: a, ...createdResposta },
     } = await respostaModel.create(resposta);
 
     t.strictSame(createdResposta, resposta);

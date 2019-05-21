@@ -86,6 +86,83 @@ test('api.respostas.delete', async t => {
   t.end();
 });
 
+test('api.respostas.downvote', async t => {
+  const fastify = await initServer(t);
+
+  const resposta = await seed.entidades.resposta();
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/respostas/downvote/${resposta._id}`,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+test('api.respostas.upvote', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: '/api/respostas/upvote/',
+    method: 'GET',
+  });
+
+  t.same(statusCode, 400);
+
+  t.end();
+});
+test('api.respostas.downvote', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: '/api/respostas/downvote/',
+    method: 'GET',
+  });
+
+  t.same(statusCode, 400);
+
+  t.end();
+});
+test('api.repostas.downvote', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/repostas/downvote/${randomObjectId()}`,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 404);
+
+  t.end();
+});
+test('api.repostas.upvote', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/repostas/upvote/${randomObjectId()}`,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 404);
+
+  t.end();
+});
+test('api.perguntas.upvote', async t => {
+  const fastify = await initServer(t);
+
+  const resposta = await seed.entidades.resposta();
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/respostas/upvote/${resposta._id}`,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
 test('api.respostas.delete: passa id inválido', async t => {
   const fastify = await initServer(t);
 
