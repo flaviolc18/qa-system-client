@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { navigate } from '@reach/router';
 
 import { postPergunta } from '../redux/perguntas.redux';
-import { getSession } from '../redux/app.redux';
+import { getSession } from '../redux/sessions.redux';
 import TextAreaBox from '../components/TextBox';
 
 class QuestionPost extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadSession, getSession, logout } from '../redux/app.redux';
+import { loadSession, getSession, logout } from '../redux/sessions.redux';
 import Navbar from './Navbar';
 import Feed from './Feed';
 import { navigate } from '@reach/router';
@@ -17,7 +17,11 @@ class FullPage extends Component {
   }
   componentDidMount() {
     this.props.loadSession().then(() => {
-      this.setState({ isSessionChecked: true });
+      this.setState({ isSessionChecked: true }, () => {
+        if (this.props.location.pathname === '/login') {
+          navigate('/home');
+        }
+      });
     });
   }
 
@@ -26,7 +30,11 @@ class FullPage extends Component {
       return;
     }
     this.props.loadSession().then(() => {
-      this.setState({ isSessionChecked: true });
+      this.setState({ isSessionChecked: true }, () => {
+        if (this.props.location.pathname === '/login') {
+          navigate('/home');
+        }
+      });
     });
   }
 

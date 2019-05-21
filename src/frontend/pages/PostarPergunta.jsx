@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { postPergunta } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
 import { navigate } from '@reach/router';
-import { getSession } from '../redux/app.redux';
+import { getSession } from '../redux/sessions.redux';
 
 class PostarPergunta extends Component {
   constructor(props) {

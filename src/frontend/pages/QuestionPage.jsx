@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { postResposta } from '../redux/respostas.redux';
-import { getSession } from '../redux/app.redux';
+import { getSession } from '../redux/sessions.redux';
 import Question from '../components/Question';
 import TextBox from '../components/TextBox';
 import Answers from '../components/Answers';
@@ -24,7 +24,7 @@ class QuestionPage extends Component {
         perguntaId: this.props.id,
       };
 
-      this.props.postResposta(resposta);
+      this.props.postResposta(resposta, { perguntaId: resposta.perguntaId });
     }
   }
 
