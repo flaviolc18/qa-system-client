@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { loadableReady } from '@loadable/component';
 
 import store from './redux/store';
 
@@ -9,9 +10,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import './app.scss';
 
-ReactDOM.hydrate(
-  <Provider store={store}>
-    <Index />
-  </Provider>,
-  document.getElementById('root')
-);
+loadableReady(() => {
+  const root = document.getElementById('root');
+  ReactDOM.hydrate(
+    <Provider store={store}>
+      <Index />
+    </Provider>,
+    root
+  );
+});

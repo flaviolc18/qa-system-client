@@ -1,6 +1,7 @@
 import { serialize } from '../../helpers/serializer';
 
 export function assignById(state, objs) {
+  if (!objs) return state;
   return objs.reduce(
     (newState, obj) => ({
       ...newState,
@@ -10,10 +11,12 @@ export function assignById(state, objs) {
   );
 }
 export function assignAllIds(state, objs) {
+  if (!objs) return state;
   return [...new Set(state.concat(objs.map(obj => obj._id)))];
 }
 
 export function assignByFilter(state, { response, filters }) {
+  if (!response.elements) return state;
   const key = serialize(filters);
   const ids = response.elements.map(element => element._id);
   if (!ids) {
@@ -31,6 +34,7 @@ export function assignByFilter(state, { response, filters }) {
 }
 
 export function assignTotalSizeByFilter(state, action) {
+  if (!action.response.total) return state;
   const key = serialize(action.filters);
   if (state[key]) {
     return Object.assign({}, state, { [key]: state[key] + action.response.total });

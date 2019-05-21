@@ -18,7 +18,7 @@ class FullPage extends Component {
   componentDidMount() {
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
-        if (this.props.location.pathname === '/login') {
+        if (this.props.location.pathname === '/login' && this.props.session) {
           navigate('/home');
         }
       });
@@ -31,7 +31,7 @@ class FullPage extends Component {
     }
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
-        if (this.props.location.pathname === '/login') {
+        if (this.props.location.pathname === '/login' && this.props.session) {
           navigate('/home');
         }
       });

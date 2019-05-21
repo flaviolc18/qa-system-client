@@ -1,14 +1,14 @@
 import React from 'react';
 import { Router } from '@reach/router';
+import loadable from '@loadable/component';
 
-import FullPage from '../components/FullPage';
-
-import Home from './Home';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import QuestionPage from './QuestionPage';
-import QuestionPost from './QuestionPost';
-import Perfil from './Perfil';
+const FullPage = loadable(() => import('../components/FullPage'));
+const Home = loadable(() => import('./Home'));
+const SignIn = loadable(() => import('./SignIn'));
+const SignUp = loadable(() => import('./SignUp'));
+const QuestionPage = loadable(() => import('./QuestionPage'));
+const QuestionPost = loadable(() => import('./QuestionPost'));
+const Perfil = loadable(() => import('./Perfil'));
 
 const NotFount = () => (
   <div className="row justify-content-md-center">
