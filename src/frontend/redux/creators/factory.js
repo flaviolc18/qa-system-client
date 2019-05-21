@@ -7,6 +7,8 @@ import {
   assignTotalSizeByFilter,
   assignByFilter,
   assignLoadingState,
+  deleteById,
+  deleteAllIds,
 } from '../helpers/state-transformation';
 import { serialize } from '../../helpers/serializer';
 
@@ -95,13 +97,15 @@ function buildActionEdit({ buildURLs, context }) {
 }
 
 function getOneById(state, context, id) {
-  return state[context].byIds[id];
+  const obj = state[context].byIds[id];
+  return obj ? obj : null;
 }
 
 function getByFilters(state, context, filters) {
   const ids = state[context] ? state[context].byFilters[serialize(filters)] : [];
   if (ids) {
-    const objects = ids.map(id => getOneById(state, context, id));
+    let objects = ids.map(id => getOneById(state, context, id));
+    objects = objects.filter(obj => obj !== null);
     return objects;
   }
   return [];
@@ -138,20 +142,6 @@ export function actionsFactory({
 
 export function reducerFactory({ context }) {
   return combineReducers({
-    totalByFilters: createReducer(
-      {},
-      {
-        [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
-          return assignTotalSizeByFilter(state, action);
-        },
-        [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { total: 0 } });
-        },
-        [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { total: 0 } });
-        },
-      }
-    ),
     byIds: createReducer(
       {},
       {
@@ -161,8 +151,8 @@ export function reducerFactory({ context }) {
         [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
           return state;
         },
-        [deletePrefix + '_' + context + '_' + 'SUCCESS']: state => {
-          return state;
+        [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+          return deleteById(state, action.response.elements);
         },
       }
     ),
@@ -173,10 +163,21 @@ export function reducerFactory({ context }) {
       [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
         return state;
       },
-      [deletePrefix + '_' + context + '_' + 'SUCCESS']: state => {
-        return state;
+      [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+        return deleteAllIds(state, action.response.elements);
       },
     }),
+    totalByFilters: createReducer(
+      {},
+      {
+        [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+          return assignTotalSizeByFilter(state, action);
+        },
+        [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
+          return assignByFilter(state, { filters: action.filters, response: { total: 0 } });
+        },
+      }
+    ),
     byFilters: createReducer(
       {},
       {
@@ -184,9 +185,6 @@ export function reducerFactory({ context }) {
           return assignByFilter(state, action);
         },
         [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { elements: [] } });
-        },
-        [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
           return assignByFilter(state, { filters: action.filters, response: { elements: [] } });
         },
       }

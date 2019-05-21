@@ -8,14 +8,15 @@ class Image extends Component {
     super(props);
   }
   componentDidMount() {
+    if (!this.props.id) return;
     if (!this.props.image) {
       this.props.loadImagem({ id: this.props.id });
     }
   }
 
   componentDidUpdate(oldProps) {
+    if (!this.props.id) return;
     if (oldProps.image === this.props.image) return;
-
     if (!this.props.image) {
       this.props.loadImagem({ id: this.props.id });
     }

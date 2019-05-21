@@ -29,6 +29,7 @@ export const upvotePergunta = actions.load[3];
 export const downvotePergunta = actions.load[4];
 
 export const removePergunta = actions.remove[0];
+
 export const loadPergunta = actions.load[0];
 export const postPergunta = actions.create[0];
 export const getPergunta = getters.getOneById;

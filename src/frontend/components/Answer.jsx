@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { downvoteResposta, editResposta, removeResposta, upvoteResposta } from '../redux/respostas.redux';
 import Post from './Post';
-/*
-            removePost={this.props.removePergunta}
-            editPost={this.props.editPergunta}
-            upVote={this.props.upvotePergunta}
-            downVote={this.props.downvotePergunta}
-            titulo={this.props.pergunta.titulo}
-*/
 
 class Answer extends Component {
   render() {
@@ -44,6 +37,6 @@ Answer.propTypes = {
 };
 
 export default connect(
-  () => {},
+  () => ({}),
   { removeResposta, editResposta, upvoteResposta, downvoteResposta }
 )(Answer);

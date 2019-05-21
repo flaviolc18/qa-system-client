@@ -5,23 +5,23 @@ const { test } = require('tap');
 const { initServer, randomObjectId } = require('../../../test-helpers');
 const seed = require('../../../../seed');
 
-test('api.perguntas.create', async t => {
-  const fastify = await initServer(t);
+// test('api.perguntas.create', async t => {
+//   const fastify = await initServer(t);
 
-  const { _id: usuarioId } = await seed.entidades.usuario();
+//   const { _id: usuarioId } = await seed.entidades.usuario();
 
-  const perguntaData = seed.fixtures.pergunta({ usuarioId: usuarioId.toString() });
+//   const perguntaData = seed.fixtures.pergunta({ usuarioId: usuarioId.toString() });
 
-  const { statusCode } = await fastify.inject({
-    url: '/api/perguntas',
-    method: 'POST',
-    payload: perguntaData,
-  });
+//   const { statusCode } = await fastify.inject({
+//     url: '/api/perguntas',
+//     method: 'POST',
+//     payload: perguntaData,
+//   });
 
-  t.same(statusCode, 200);
+//   t.same(statusCode, 200);
 
-  t.end();
-});
+//   t.end();
+// });
 
 test('api.perguntas.create: cadastra com referência para usuário inválida', async t => {
   const fastify = await initServer(t);

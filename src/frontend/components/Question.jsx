@@ -22,6 +22,7 @@ class Question extends Component {
     if (!this.props.pergunta || !this.props.usuario) {
       return 'Loading...';
     }
+
     return (
       <div className="row p-3">
         <div className="p-3" style={{ width: '100%' }}>

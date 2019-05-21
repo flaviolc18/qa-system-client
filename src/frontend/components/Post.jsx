@@ -55,9 +55,11 @@ class Votes extends Component {
   }
   removePost(e) {
     e.preventDefault();
-    this.props.removePost({ id: this.props.post._id }).then(() => {
-      if (this.props.redirect) {
-        navigate(this.props.path);
+
+    return this.props.removePost({ id: this.props.post._id }).then(resp => {
+      const { __v, ...response } = resp.elements[0];
+      if (this.props.redirect && this.props.post._id === response._id) {
+        return navigate(this.props.path);
       }
     });
   }

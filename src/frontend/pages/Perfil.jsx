@@ -74,6 +74,7 @@ class Perfil extends Component {
       </div>
     );
   }
+
   render() {
     if (!this.props.usuario) {
       return '';

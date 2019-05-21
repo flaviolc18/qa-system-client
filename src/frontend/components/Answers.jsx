@@ -13,17 +13,26 @@ class Answers extends Component {
   }
 
   componentDidMount() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     this.props.loadRespostasByPergunta({ perguntaId: this.props.perguntaId });
     this.props.loadUsuariosByPerguntaRespostas({ perguntaId: this.props.perguntaId });
   }
 
   renderRespostas() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     return this.props.respostas.map((resposta, index) => {
       const usuario = this.props.usuarios[index];
       return <Answer key={'answer' + index} resposta={this.props.respostas[index]} user={usuario} />;
     });
   }
   render() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     if (!this.props.respostas || this.props.respostas.length <= 0) {
       return <div>Loading</div>;
     }
