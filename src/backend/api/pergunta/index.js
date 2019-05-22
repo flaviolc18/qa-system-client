@@ -7,5 +7,4 @@ module.exports = async function(fastify) {
   fastify.register(require('./find-pergunta'));
   fastify.register(require('./update-pergunta'));
   fastify.register(require('./delete-pergunta'));
-  fastify.register(require('./vote-post'));
 };
