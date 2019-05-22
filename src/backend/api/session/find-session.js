@@ -5,7 +5,7 @@ module.exports = async function(fastify) {
     const session = await fastify.core.models.session.find(sessioId);
 
     if (!session) {
-      throw fastify.httpErrors.notFound();
+      return fastify.getResponseObject({});
     }
 
     return fastify.getResponseObject(session);

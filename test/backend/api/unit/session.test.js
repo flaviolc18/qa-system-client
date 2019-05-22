@@ -53,7 +53,7 @@ test('api.session.find', async t => {
     headers: { cookie: 'session=' + randomObjectId() },
   });
 
-  t.same(statusCode, 404);
+  t.same(statusCode, 200);
 
   t.end();
 });
