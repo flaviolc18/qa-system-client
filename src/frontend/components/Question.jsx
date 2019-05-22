@@ -24,22 +24,18 @@ class Question extends Component {
     }
 
     return (
-      <div className="row p-3">
-        <div className="p-3" style={{ width: '100%' }}>
-          <Post
-            redirect={true}
-            path="/home"
-            removePost={this.props.removePergunta}
-            editPost={this.props.editPergunta}
-            upVote={this.props.upvotePergunta}
-            downVote={this.props.downvotePergunta}
-            votes={{ upvotes: this.props.pergunta.upvotes, downvotes: this.props.pergunta.downvotes }}
-            titulo={this.props.pergunta.titulo}
-            post={this.props.pergunta}
-            user={this.props.usuario}
-          />
-        </div>
-      </div>
+      <Post
+        redirect={true}
+        path="/home"
+        removePost={this.props.removePergunta}
+        editPost={this.props.editPergunta}
+        upVote={this.props.upvotePergunta}
+        downVote={this.props.downvotePergunta}
+        votes={{ upvotes: this.props.pergunta.upvotes, downvotes: this.props.pergunta.downvotes }}
+        titulo={this.props.pergunta.titulo}
+        post={this.props.pergunta}
+        user={this.props.usuario}
+      />
     );
   }
 }

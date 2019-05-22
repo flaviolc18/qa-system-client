@@ -26,7 +26,20 @@ class Answers extends Component {
     }
     return this.props.respostas.map((resposta, index) => {
       const usuario = this.props.usuarios[index];
-      return <Answer key={'answer' + index} resposta={this.props.respostas[index]} user={usuario} />;
+      return (
+        <li
+          style={{
+            backgroundColor: 'rgba(1,1,1,0.1)',
+            borderRadius: '5px',
+            paddingTop: '15px',
+            paddingBottom: '15px',
+            marginBottom: '15px',
+          }}
+          key={'answer' + index}
+        >
+          <Answer resposta={this.props.respostas[index]} user={usuario} />
+        </li>
+      );
     });
   }
   render() {
@@ -37,7 +50,13 @@ class Answers extends Component {
       return <div>Loading</div>;
     }
 
-    return <div>{this.renderRespostas()}</div>;
+    return (
+      <div>
+        <ul style={{ listStyle: 'none' }} className="list-group">
+          {this.renderRespostas()}
+        </ul>
+      </div>
+    );
   }
 }
 Answers.propTypes = {

@@ -10,19 +10,15 @@ class Answer extends Component {
       return 'Loading...';
     }
     return (
-      <div className="row p-3">
-        <div className="p-3" style={{ width: '100%', borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
-          <Post
-            removePost={this.props.removeResposta}
-            editPost={this.props.editResposta}
-            upVote={this.props.upvoteResposta}
-            downVote={this.props.downvoteResposta}
-            votes={{ upvotes: this.props.resposta.upvotes, downvotes: this.props.resposta.downvotes }}
-            post={this.props.resposta}
-            user={this.props.user}
-          />
-        </div>
-      </div>
+      <Post
+        removePost={this.props.removeResposta}
+        editPost={this.props.editResposta}
+        upVote={this.props.upvoteResposta}
+        downVote={this.props.downvoteResposta}
+        votes={{ upvotes: this.props.resposta.upvotes, downvotes: this.props.resposta.downvotes }}
+        post={this.props.resposta}
+        user={this.props.user}
+      />
     );
   }
 }

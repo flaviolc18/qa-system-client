@@ -30,8 +30,10 @@ class QuestionPage extends Component {
 
   render() {
     return (
-      <div className="p-3">
+      <div>
         <Question id={this.props.id} />
+        <div className="pb-4" />
+        <h2 style={{ color: 'gray' }}>Respostas:</h2>
         <Answers perguntaId={this.props.id} />
         <TextBox buttonMessage="Responder!" onSubmit={state => this.postAnswer(state.text)} />
       </div>

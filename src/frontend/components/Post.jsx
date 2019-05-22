@@ -7,20 +7,21 @@ import ProfilePicture from './ProfilePicture';
 
 function Box({ usuarioId, name, date }) {
   return (
-    <div>
-      <div style={{ display: 'inline-box' }}>
+    <div style={{ color: 'dark-gray' }} className="row p-0 m-0 align-items-center">
+      <div className="col p-0 pr-2 m-0">
+        <ProfilePicture
+          onClick={e => {
+            e.preventDefault();
+            navigate('/usuarios/' + usuarioId);
+          }}
+          style={{ height: '45px', width: '45px', borderRadius: '100%' }}
+          usuarioId={usuarioId}
+        />
+      </div>
+      <div className="col-md-auto align-self-start p-0 m-0 pr-2">
         <div>{name}</div>
         <div>{new Date(date).toLocaleDateString()}</div>
       </div>
-
-      <ProfilePicture
-        onClick={e => {
-          e.preventDefault();
-          navigate('/usuarios/' + usuarioId);
-        }}
-        style={{ display: 'inline-box', height: '70px', width: '70px', borderRadius: '100%' }}
-        usuarioId={usuarioId}
-      />
     </div>
   );
 }
@@ -89,22 +90,36 @@ class Votes extends Component {
       );
     }
   }
+  renderUpVoteButtons() {
+    if (!this.props.session || !this.props.usuarioId) return '';
+
+    return (
+      <li>
+        <button onClick={this.upVote} style={{ color: 'green', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
+          <i className="fas fa-thumbs-up" />
+        </button>
+        {this.props.votes.upvotes}
+      </li>
+    );
+  }
+  renderDownVoteButtons() {
+    if (!this.props.session || !this.props.usuarioId) return '';
+    return (
+      <li>
+        <button onClick={this.downVote} style={{ color: 'red', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
+          <i className="fas fa-thumbs-down" />
+        </button>
+        {this.props.votes.downvotes}
+      </li>
+    );
+  }
+
   render() {
     return (
       <div style={{ paddingRight: '10px' }}>
         <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
-          <li>
-            <button onClick={this.upVote} style={{ color: 'green', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-              <i className="fas fa-thumbs-up" />
-            </button>
-            {this.props.votes.upvotes}
-          </li>
-          <li>
-            <button onClick={this.downVote} style={{ color: 'red', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-              <i className="fas fa-thumbs-down" />
-            </button>
-            {this.props.votes.downvotes}
-          </li>
+          {this.renderUpVoteButtons()}
+          {this.renderDownVoteButtons()}
           {this.edit()}
           {this.remove()}
         </ul>
@@ -157,33 +172,47 @@ class Post extends Component {
   }
   renderEdit() {
     return (
-      <form onSubmit={this.edit}>
-        {this.props.titulo ? (
-          <input className="form-control" name="titulo" onChange={this.onEdit} type="text" value={this.state.titulo} />
-        ) : (
-          ''
-        )}
-        {this.props.post.descricao ? (
-          <input
-            className="form-control"
-            name="descricao"
-            onChange={this.onEdit}
-            type="text"
-            value={this.state.descricao}
-          />
-        ) : (
-          ''
-        )}
-        <button className="btn btn-success" type="submit">
-          Update
-        </button>
-      </form>
+      <div style={{ overflow: 'hidden' }}>
+        <form onSubmit={this.edit}>
+          <div className="form-group">
+            {this.props.titulo ? (
+              <div className="pb-2">
+                <input
+                  className="form-control"
+                  name="titulo"
+                  onChange={this.onEdit}
+                  type="text"
+                  value={this.state.titulo}
+                />
+              </div>
+            ) : (
+              ''
+            )}
+            {this.props.post.descricao ? (
+              <div className="pb-2">
+                <input
+                  className="form-control"
+                  name="descricao"
+                  onChange={this.onEdit}
+                  type="text"
+                  value={this.state.descricao}
+                />
+              </div>
+            ) : (
+              ''
+            )}
+            <button style={{ float: 'right' }} className="btn btn-success" type="submit">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
   renderPost() {
     const { post, titulo } = this.props;
     return (
-      <div style={{ float: 'left' }}>
+      <div style={{ overflow: 'hidden' }}>
         {titulo ? <h3>{titulo}</h3> : ''}
         {post.descricao ? <h5>{post.descricao}</h5> : ''}
       </div>
@@ -201,8 +230,8 @@ class Post extends Component {
   render() {
     const { post, user, votes } = this.props;
     return (
-      <div>
-        <div style={{ float: 'left' }}>
+      <div className="row p-0 m-0">
+        <div className="col-md-auto p-0 m-0">
           <Votes
             session={this.props.session}
             usuarioId={user._id}
@@ -216,8 +245,8 @@ class Post extends Component {
             path={this.props.path}
           />
         </div>
-        {this.renderBody()}
-        <div style={{ float: 'right' }}>
+        <div className="col p-0 m-0 align-self-start">{this.renderBody()}</div>
+        <div className="col-md-auto p-0 m-0">
           <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
         </div>
       </div>
