@@ -9,7 +9,8 @@ module.exports = ({ usuarioId, ...dadosPergunta } = {}) => ({
   
   Desde já, obrigada.`,
   dataCriacao: new Date(),
-  vote: 0,
+  upvotes: 0,
+  downvotes: 0,
   usuarioId,
   ...dadosPergunta,
 });
