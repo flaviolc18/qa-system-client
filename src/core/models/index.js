@@ -1,9 +1,10 @@
 'use strict';
 
 module.exports = {
-  usuario: require('./usuario'),
+  imagem: require('./imagem'),
   pergunta: require('./pergunta'),
   resposta: require('./resposta'),
   session: require('./session'),
-  imagem: require('./imagem'),
+  usuario: require('./usuario'),
+  votes: require('./votes'),
 };
