@@ -20,7 +20,6 @@ export function deleteById(state, objs) {
 
 export function assignAllIds(state, objs) {
   if (!objs) return state;
-
   return [...new Set(state.concat(objs.map(obj => obj._id)))];
 }
 

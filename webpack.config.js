@@ -2,6 +2,7 @@
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const path = require('path');
 
@@ -9,7 +10,9 @@ const appConfig = {
   entry: './src/frontend/app.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    chunkFilename: '[name].bundle.js',
     filename: 'bundle.js',
+    publicPath: '/assets/',
   },
   module: {
     rules: [
@@ -40,6 +43,7 @@ const appConfig = {
     extensions: ['*', '.js', '.jsx'],
   },
   plugins: [
+    new LoadablePlugin(),
     new HtmlWebpackPlugin({
       template: './src/shared/template.html',
       filename: 'index.html',

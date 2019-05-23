@@ -1,22 +1,33 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-
+import { ChunkExtractor } from '@loadable/server';
 import Index from './pages/Index';
 import { ServerLocation } from '@reach/router';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './redux/root-reducer';
 
+const path = require('path');
+const statsFile = path.resolve('./dist/loadable-stats.json');
+const extractor = new ChunkExtractor({ statsFile });
+
 export default function render(url) {
   const store = createStore(rootReducer);
 
-  const html = renderToString(
+  const jsx = extractor.collectChunks(
     <ServerLocation url={url}>
       <Provider store={store}>
         <Index />
       </Provider>
     </ServerLocation>
   );
+
+  const html = renderToString(jsx);
+
+  const scriptTags = extractor.getScriptTags();
+  const linkTags = extractor.getLinkTags();
+  const styleTags = extractor.getStyleTags();
+
   const preloadedState = store.getState();
 
   return `
@@ -32,14 +43,15 @@ export default function render(url) {
 
       <title>Não faço a Menor Ideia</title>
       <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Great+Vibes|Kaushan+Script|Pacifico&display=swap" rel="stylesheet">    
-      <link href="/assets/main.css" rel="stylesheet" type="text/css"/>
-  </head>
+${linkTags}
+${styleTags}
+      </head>
   <body>
     <div id="root">${html}</div>
     <script>
       window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
     </script>
-    <script type="text/javascript" src="/assets/bundle.js"></script>
+    ${scriptTags}
   </body>
   </html>
 `;
