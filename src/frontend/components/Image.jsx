@@ -8,12 +8,15 @@ class Image extends Component {
     super(props);
   }
   componentDidMount() {
+    if (!this.props.id) return;
     if (!this.props.image) {
       this.props.loadImagem({ id: this.props.id });
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(oldProps) {
+    if (!this.props.id) return;
+    if (oldProps.image === this.props.image) return;
     if (!this.props.image) {
       this.props.loadImagem({ id: this.props.id });
     }
@@ -23,11 +26,7 @@ class Image extends Component {
       let style = this.props.style;
       return <div style={{ backgroundColor: 'gray', ...style }} />;
     }
-    return (
-      <div>
-        <img style={this.props.style} src={this.props.image.buffer} />
-      </div>
-    );
+    return <img style={this.props.style} src={this.props.image.buffer} />;
   }
 }
 
