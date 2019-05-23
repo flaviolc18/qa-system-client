@@ -16,5 +16,5 @@ function getResponseObject(elements) {
     return { elements: [elements], total: 1 };
   }
 
-  return elements;
+  return { elements: [], total: 0 };
 }

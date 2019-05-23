@@ -145,7 +145,7 @@ export function reducerFactory({ context }) {
           return assignTotalSizeByFilter(state, action);
         },
         [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { total: 0 } });
+          return assignByFilter(state, { filters: action.filters, response: { elements: [], total: 0 } });
         },
       }
     ),
@@ -156,7 +156,7 @@ export function reducerFactory({ context }) {
           return assignById(state, action.response.elements);
         },
         [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-          return;
+          return null;
         },
       }
     ),
@@ -165,7 +165,7 @@ export function reducerFactory({ context }) {
         return assignAllIds(state, action.response.elements);
       },
       [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-        return;
+        return null;
       },
     }),
     byFilters: createReducer(
@@ -175,7 +175,7 @@ export function reducerFactory({ context }) {
           return assignByFilter(state, action);
         },
         [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { elements: [] } });
+          return assignByFilter(state, { filters: action.filters, response: { elements: [], total: 0 } });
         },
       }
     ),
