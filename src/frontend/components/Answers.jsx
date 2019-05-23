@@ -13,22 +13,50 @@ class Answers extends Component {
   }
 
   componentDidMount() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     this.props.loadRespostasByPergunta({ perguntaId: this.props.perguntaId });
     this.props.loadUsuariosByPerguntaRespostas({ perguntaId: this.props.perguntaId });
   }
 
   renderRespostas() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     return this.props.respostas.map((resposta, index) => {
       const usuario = this.props.usuarios[index];
-      return <Answer key={'answer' + index} resposta={this.props.respostas[index]} user={usuario} />;
+      return (
+        <li
+          style={{
+            backgroundColor: 'rgba(1,1,1,0.1)',
+            borderRadius: '5px',
+            paddingTop: '15px',
+            paddingBottom: '15px',
+            marginBottom: '15px',
+          }}
+          key={'answer' + index}
+        >
+          <Answer resposta={this.props.respostas[index]} user={usuario} />
+        </li>
+      );
     });
   }
   render() {
+    if (!this.props.perguntaId) {
+      return '';
+    }
     if (!this.props.respostas || this.props.respostas.length <= 0) {
-      return <div>Nenhuma resposta foi cadastrada ate o momento!</div>;
+      return <div>Loading</div>;
     }
 
-    return <div>{this.renderRespostas()}</div>;
+    return (
+      <div>
+        <ul style={{ listStyle: 'none' }} className="list-group">
+          {this.renderRespostas()}
+        </ul>
+      </div>
+    );
   }
 }
 Answers.propTypes = {
