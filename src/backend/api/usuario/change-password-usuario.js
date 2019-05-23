@@ -1,8 +1,5 @@
 'use strict';
 
-const bcrypt = require('bcryptjs');
-const { saltWorkFactor } = require('../../../core/constants');
-
 module.exports = async function(fastify) {
   fastify.post('/usuarios/change-password/:usuarioId', {}, async function({
     params: { usuarioId },
@@ -16,10 +13,7 @@ module.exports = async function(fastify) {
         throw fastify.httpErrors.unauthorized();
       }
 
-      const salt = bcrypt.genSaltSync(saltWorkFactor);
-      const hash = bcrypt.hashSync(newPassword, salt);
-
-      const updatedUsuario = await fastify.core.models.usuario.update({ _id: usuarioId }, { password: hash });
+      const updatedUsuario = await fastify.core.models.usuario.update({ _id: usuarioId }, { password: newPassword });
 
       return fastify.getResponseObject(updatedUsuario);
     } catch ({ message }) {

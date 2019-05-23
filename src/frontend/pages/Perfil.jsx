@@ -12,70 +12,10 @@ import { uploadImagem } from '../redux/imagens.redux';
 import { Link } from '@reach/router';
 
 class Perfil extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isMouseOverProfilePicture: false,
-    };
-    this.upload = this.upload.bind(this);
-    this.renderEditButton = this.renderEditButton.bind(this);
-  }
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId });
   }
 
-  upload(e) {
-    if (!(this.props.session && this.props.usuarioId === this.props.session.usuarioId)) {
-      return '';
-    }
-
-    const image = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = e => {
-      const buffer = e.target.result;
-      const body = {
-        nome: image.name,
-        buffer,
-      };
-      this.props.uploadImagem(body).then(response => {
-        this.props.updateUsuario({ id: this.props.usuarioId }, { fotoPerfil: response.elements[0]._id });
-      });
-    };
-  }
-
-  renderUpdateProfilePictureLabel() {
-    if (
-      !(
-        this.props.session &&
-        this.props.usuarioId === this.props.session.usuarioId &&
-        this.state.isMouseOverProfilePicture
-      )
-    ) {
-      return '';
-    }
-    return (
-      <div
-        htmlFor={'uploadInput'}
-        className="ui icon button"
-        style={{
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          position: 'absolute',
-          width: '300px',
-          borderRadius: '100%',
-          height: '300px',
-          top: '0px',
-          opacity: '50%',
-          color: 'black',
-        }}
-      >
-        <label htmlFor={'uploadInput'} className="ui icon button">
-          <div style={{ margin: '150px 120px', color: 'white' }}>Atualizar Foto</div>
-        </label>
-        <input type="file" id={'uploadInput'} style={{ display: 'none' }} onChange={this.upload} />
-      </div>
-    );
-  }
   renderEditButton() {
     if (this.props.session && this.props.session.usuarioId === this.props.usuarioId) {
       return <Link to={'/editar-perfil/' + this.props.usuarioId}>Editar</Link>;
@@ -92,16 +32,10 @@ class Perfil extends Component {
       <div>
         <div className="row" style={{ width: '100%' }}>
           <div style={{ overflow: 'hidden' }} className="col">
-            <span
-              onMouseLeave={() => this.setState({ isMouseOverProfilePicture: false })}
-              onMouseEnter={() => this.setState({ isMouseOverProfilePicture: true })}
-            >
-              <ProfilePicture
-                style={{ width: '300px', borderRadius: '100%', height: '300px' }}
-                usuarioId={this.props.usuarioId}
-              />
-              {this.renderUpdateProfilePictureLabel()}
-            </span>
+            <ProfilePicture
+              style={{ width: '300px', borderRadius: '100%', height: '300px' }}
+              usuarioId={this.props.usuarioId}
+            />
           </div>
 
           <div style={{ paddingTop: '40px' }} className="col">

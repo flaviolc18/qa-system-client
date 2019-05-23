@@ -32,8 +32,12 @@ class ChangePassword extends Component {
       return;
     }
     const { confirmPassord, ...body } = this.state;
-    this.props.changePasswordUsuario({ id: this.props.usuarioId }, body).then(() => {
-      navigate('/usuarios/' + this.props.usuarioId);
+    this.props.changePasswordUsuario({ id: this.props.usuarioId }, body).then(response => {
+      if (response.elements && response.elements[0]) {
+        navigate('/usuarios/' + this.props.usuarioId);
+      } else {
+        alert('Senha atual incorreta!');
+      }
     });
   }
   render() {
