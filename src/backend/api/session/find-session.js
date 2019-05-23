@@ -5,10 +5,7 @@ module.exports = async function(fastify) {
     const session = await fastify.core.models.session.find(sessioId);
 
     if (!session) {
-      // FIXME: o client sempre espera um responseObject mesmo quando não existe, deveria ele tratar para receber um 404?
-      // throw fastify.httpErrors.notFound();
-
-      return fastify.getResponseObject({});
+      throw fastify.httpErrors.notFound();
     }
 
     return fastify.getResponseObject(session);
