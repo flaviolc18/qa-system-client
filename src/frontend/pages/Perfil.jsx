@@ -9,6 +9,7 @@ import PerguntasUsuario from '../components/PerguntasUsuario';
 import RespostasUsuario from '../components/RespostasUsuario';
 import Tabs from '../components/Tabs';
 import { uploadImagem } from '../redux/imagens.redux';
+import { Link } from '@reach/router';
 
 class Perfil extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Perfil extends Component {
       isMouseOverProfilePicture: false,
     };
     this.upload = this.upload.bind(this);
+    this.renderEditButton = this.renderEditButton.bind(this);
   }
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId });
@@ -74,6 +76,13 @@ class Perfil extends Component {
       </div>
     );
   }
+  renderEditButton() {
+    if (this.props.session && this.props.session.usuarioId === this.props.usuarioId) {
+      return <Link to={'/editar-perfil/' + this.props.usuarioId}>Editar</Link>;
+    } else {
+      return '';
+    }
+  }
   render() {
     if (!this.props.usuario) {
       return '';
@@ -97,8 +106,9 @@ class Perfil extends Component {
 
           <div style={{ paddingTop: '40px' }} className="col">
             <h4>{usuario.username}</h4>
-            <h6>Email: {usuario.email}</h6>
             <h6>Reputação: {usuario.reputacao}</h6>
+            <h6>Descrição: {usuario.descricao}</h6>
+            {this.renderEditButton()}
           </div>
         </div>
 
