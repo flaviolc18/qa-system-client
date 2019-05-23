@@ -186,7 +186,7 @@ export function reducerFactory({ context }) {
           return assignByFilter(state, action);
         },
         [loadPrefix + '_' + context + '_' + 'FAILURE']: (state, action) => {
-          return assignByFilter(state, { filters: action.filters, response: { elements: [] } });
+          return assignByFilter(state, { filters: action.filters, response: { elements: [], total: 0 } });
         },
       }
     ),
