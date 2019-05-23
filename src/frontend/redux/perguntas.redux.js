@@ -6,17 +6,21 @@ let loadPerguntaURL = filters => '/api/perguntas/' + filters.id;
 let loadPerguntasUsuarioURL = filters => '/api/perguntas/usuarios/' + filters.usuarioId;
 let loadPerguntasURL = () => '/api/perguntas';
 let postPerguntaURL = () => '/api/perguntas';
-
+let editPerguntaURL = filters => '/perguntas/' + filters.perguntaId;
+let deletePerguntaURL = filters => '/perguntas/' + filters.perguntaId;
 let actions = actionsFactory({
   context,
   buildURLs: {
     loadOneURLs: [loadPerguntaURL, loadPerguntasUsuarioURL, loadPerguntasURL],
     createOneURLs: [postPerguntaURL],
+    editOneURLs: [editPerguntaURL],
+    removeOneURLs: [deletePerguntaURL],
   },
 });
 
 let getters = gettersFactory({ context });
-
+export const editPergunta = actions.edit[0];
+export const removePergunta = actions.remove[0];
 export const loadPergunta = actions.load[0];
 export const loadPerguntasUsuario = actions.load[1];
 export const loadPerguntas = actions.load[2];
