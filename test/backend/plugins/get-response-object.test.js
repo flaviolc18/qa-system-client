@@ -18,12 +18,12 @@ const testCases = [
   {
     description: 'elemento objeto vazio',
     elementsP: {},
-    expectedResult: {},
+    expectedResult: { elements: [], total: 0 },
   },
   {
     description: 'elemento undefined',
     elementsP: undefined,
-    expectedResult: undefined,
+    expectedResult: { elements: [], total: 0 },
   },
 ];
 
