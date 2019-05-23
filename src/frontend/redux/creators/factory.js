@@ -7,7 +7,10 @@ import {
   assignTotalSizeByFilter,
   assignByFilter,
   assignLoadingState,
+  deleteById,
+  deleteAllIds,
 } from '../helpers/state-transformation';
+
 import { serialize } from '../../helpers/serializer';
 
 const loadPrefix = 'LOAD';
@@ -95,13 +98,15 @@ function buildActionEdit({ buildURLs, context }) {
 }
 
 function getOneById(state, context, id) {
-  return state[context].byIds[id];
+  const obj = state[context].byIds[id];
+  return obj ? obj : null;
 }
 
 function getByFilters(state, context, filters) {
   const ids = state[context] ? state[context].byFilters[serialize(filters)] : [];
   if (ids) {
-    const objects = ids.map(id => getOneById(state, context, id));
+    let objects = ids.map(id => getOneById(state, context, id));
+    objects = objects.filter(obj => obj !== null);
     return objects;
   }
   return [];
@@ -138,6 +143,31 @@ export function actionsFactory({
 
 export function reducerFactory({ context }) {
   return combineReducers({
+    byIds: createReducer(
+      {},
+      {
+        [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+          return assignById(state, action.response.elements);
+        },
+        [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
+          return state;
+        },
+        [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+          return deleteById(state, action.response.elements);
+        },
+      }
+    ),
+    allIds: createReducer([], {
+      [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+        return assignAllIds(state, action.response.elements);
+      },
+      [loadPrefix + '_' + context + '_' + 'FAILURE']: state => {
+        return state;
+      },
+      [deletePrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
+        return deleteAllIds(state, action.response.elements);
+      },
+    }),
     totalByFilters: createReducer(
       {},
       {
@@ -149,25 +179,6 @@ export function reducerFactory({ context }) {
         },
       }
     ),
-    byIds: createReducer(
-      {},
-      {
-        [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
-          return assignById(state, action.response.elements);
-        },
-        [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-          return;
-        },
-      }
-    ),
-    allIds: createReducer([], {
-      [loadPrefix + '_' + context + '_' + 'SUCCESS']: (state, action) => {
-        return assignAllIds(state, action.response.elements);
-      },
-      [loadPrefix + '_' + context + '_' + 'FAILURE']: () => {
-        return;
-      },
-    }),
     byFilters: createReducer(
       {},
       {
