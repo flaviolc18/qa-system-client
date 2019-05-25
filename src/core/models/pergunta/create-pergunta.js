@@ -11,6 +11,11 @@ module.exports = async function(perguntaData) {
     throw new Error('Referência para usuário inválida');
   }
 
+  let tags = perguntaData.tags.filter(tag => tag !== '');
+
+  tags = [...new Set(tags)];
+  const data = { ...perguntaData, tags };
+
   const defaultValues = {
     dataCriacao: new Date(),
     downvotes: 0,
@@ -18,7 +23,7 @@ module.exports = async function(perguntaData) {
   };
 
   //FIXME: trocar ordem
-  const pergunta = new PerguntaModel({ ...defaultValues, ...perguntaData });
+  const pergunta = new PerguntaModel({ ...defaultValues, ...data });
 
   return pergunta.save();
 };

@@ -12,20 +12,30 @@ class QuestionPost extends Component {
     super(props);
     this.state = {
       title: '',
+      tags: '',
     };
     this.post = this.post.bind(this);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
-  onChangeTitle(e) {
+  onChange(e) {
     e.preventDefault();
-    this.setState({ title: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   post(state) {
     if (this.props.session) {
+      let tags = this.state.tags.split(',');
+      tags = tags.filter(tag => tag !== '');
+      tags = [...new Set(tags)];
+
+      if (tags.length <= 0) {
+        alert('É nescessário definir ao menos uma Tag para a pergunta!');
+      }
+
       const questionBody = {
         titulo: this.state.title,
         descricao: state.text,
+        tags,
         usuarioId: this.props.session.usuarioId,
       };
 
@@ -45,8 +55,9 @@ class QuestionPost extends Component {
         Titulo:
         <br />
         <input
-          onChange={this.onChangeTitle}
+          onChange={this.onChange}
           disabled={this.props.session ? false : true}
+          name="title"
           type="text"
           className="form-control"
           style={{ resize: 'none', width: '100%', height: '50px', fontSize: '30px' }}
@@ -54,6 +65,15 @@ class QuestionPost extends Component {
         <br />
         Descrição:
         <TextAreaBox onSubmit={this.post} />
+        Tags:
+        <input
+          onChange={this.onChange}
+          name="tags"
+          disabled={this.props.session ? false : true}
+          type="text"
+          className="form-control"
+          style={{ resize: 'none', width: '100%', height: '50px', fontSize: '30px' }}
+        />
       </div>
     );
   }

@@ -13,21 +13,29 @@ class PostarPergunta extends Component {
     super(props);
     this.state = {
       title: '',
+      tags: '',
     };
     this.post = this.post.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
   }
-  onChangeTitle(e) {
+  onChange(e) {
     e.preventDefault();
-    this.setState({ title: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   post(state) {
     if (this.props.session) {
+      const tags = this.state.tags.split(',');
+      if (tags.length <= 0) {
+        alert('Tags is required');
+        return;
+      }
+
       const questionBody = {
         titulo: this.state.title,
         descricao: state.text,
         dataCriacao: new Date(),
+        tags,
         upvotes: 0,
         downvotes: 0,
         usuarioId: this.props.session.usuarioId,
@@ -49,7 +57,17 @@ class PostarPergunta extends Component {
         Titulo:
         <br />
         <input
-          onChange={this.onChangeTitle}
+          onChange={this.onChange}
+          name="title"
+          disabled={this.props.session ? false : true}
+          type="text"
+          className="form-control"
+          style={{ resize: 'none', width: '100%', height: '50px', fontSize: '30px' }}
+        />
+        Tags:
+        <input
+          onChange={this.onChange}
+          name="tags"
           disabled={this.props.session ? false : true}
           type="text"
           className="form-control"
