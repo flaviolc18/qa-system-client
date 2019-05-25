@@ -27,18 +27,9 @@ class Answers extends Component {
     return this.props.respostas.map((resposta, index) => {
       const usuario = this.props.usuarios[index];
       return (
-        <li
-          style={{
-            backgroundColor: 'rgba(1,1,1,0.1)',
-            borderRadius: '5px',
-            paddingTop: '15px',
-            paddingBottom: '15px',
-            marginBottom: '15px',
-          }}
-          key={'answer' + index}
-        >
+        <div key={'answer' + index}>
           <Answer resposta={this.props.respostas[index]} user={usuario} />
-        </li>
+        </div>
       );
     });
   }

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getSession } from '../redux/sessions.redux';
+import { navigate } from '@reach/router';
 
-import Box from './Box';
+import ProfilePicture from './ProfilePicture';
 import ActionButton from './ActionButton';
 
 class Post extends Component {
@@ -11,70 +12,34 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      editing: false,
-      titulo: '',
-      descricao: '',
+      text: props.post.descricao,
     };
-
-    this.onEdit = this.onEdit.bind(this);
-    this.edit = this.edit.bind(this);
   }
 
-  onEdit(e) {
-    e.preventDefault();
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  edit(e) {
-    e.preventDefault();
-    this.props
-      .editPost({ id: this.props.post._id }, { titulo: this.state.titulo, descricao: this.state.descricao })
-      .then(() => {
-        this.setState({ editing: false });
-      });
-  }
   renderEdit() {
-    return (
-      <div style={{ overflow: 'hidden' }}>
-        <form onSubmit={this.edit}>
-          <div className="form-group">
-            {this.props.titulo && (
-              <div className="pb-2">
-                <input
-                  className="form-control"
-                  name="titulo"
-                  onChange={this.onEdit}
-                  type="text"
-                  value={this.state.titulo}
-                />
-              </div>
-            )}
-            {this.props.post.descricao && (
-              <div className="pb-2">
-                <input
-                  className="form-control"
-                  name="descricao"
-                  onChange={this.onEdit}
-                  type="text"
-                  value={this.state.descricao}
-                />
-              </div>
-            )}
-            <button style={{ float: 'right' }} className="btn btn-success" type="submit">
-              Update
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  renderTitulo() {
-    const { titulo } = this.props;
+    //FIXME: usar Textbox
     return (
       <div>
-        <h3>{titulo}</h3>
-        <hr className="colored-line" />
+        <div className="pb-2">
+          <input
+            className="form-control"
+            name="text"
+            onChange={e => {
+              this.setState({ text: e.target.value });
+            }}
+            type="text"
+            value={this.state.text}
+          />
+        </div>
+        <button
+          onClick={() => {
+            this.props.onFinishEdit(this.state.text);
+          }}
+          style={{ float: 'right' }}
+          className="btn btn-success"
+        >
+          Update
+        </button>
       </div>
     );
   }
@@ -83,39 +48,39 @@ class Post extends Component {
     const { post } = this.props;
     return (
       <div style={{ overflow: 'hidden' }}>
-        <h5>{post.descricao}</h5>
+        <p>{post.descricao}</p>
       </div>
     );
   }
 
   renderVoteButtons() {
-    const { post, user, votes, session, upVote, downVote } = this.props;
+    const { post, user, session, onUpvote, onDownvote } = this.props;
     return (
       <div>
         <div className="m-2">
           <ActionButton
-            onClick={() => upVote({ id: post._id })}
+            onClick={() => onUpvote({ id: post._id })}
             icon={'fa-thumbs-up'}
             visible={session && user._id}
             color={'green'}
           />
-          {votes.upvotes}
+          {post.upvotes}
         </div>
         <div className="m-2">
           <ActionButton
-            onClick={() => downVote({ id: post._id })}
+            onClick={() => onDownvote({ id: post._id })}
             icon={'fa-thumbs-down'}
             visible={session && user._id}
             color={'red'}
           />
-          {votes.downvotes}
+          {post.downvotes}
         </div>
       </div>
     );
   }
 
   renderCrudButtons() {
-    const { post, user, session, removePost, onEditClick } = this.props;
+    const { post, user, session, onRemovePost, onEditClick } = this.props;
 
     return (
       <div>
@@ -129,7 +94,7 @@ class Post extends Component {
         </div>
         <div>
           <ActionButton
-            onClick={() => removePost({ id: post._id })}
+            onClick={() => onRemovePost({ id: post._id })}
             icon={'fa-trash'}
             visible={session && user._id && session.usuarioId === user._id}
             color={'red'}
@@ -140,37 +105,51 @@ class Post extends Component {
   }
 
   render() {
-    const { post, user, titulo, isEditing } = this.props;
+    const { post, user, isEditing } = this.props;
     return (
-      <div>
-        <div className="col"> {this.state.editing && titulo ? this.renderEdit() : this.renderTitulo()}</div>
-
-        <div className="row m-0 p-0">
+      <div className="row m-2">
+        <div className="mr-2">
+          <ProfilePicture style={{ height: '45px', width: '45px', borderRadius: '5%' }} usuarioId={user._id} />
           {this.renderVoteButtons()}
-
-          <div className="col"> {isEditing ? this.renderEdit() : this.renderPost()}</div>
-
-          <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
+        </div>
+        <div className="col">
+          <div className="card">
+            <div className="card-header">
+              {/* esse anchor deve linkar o perfil do usuario */}
+              <a className="font-weight-bold">{user.username}</a>
+              {` posted on ${new Date(post.dataCriacao).toLocaleDateString()}`}
+            </div>
+            <div className="card-body">{isEditing ? this.renderEdit() : this.renderPost()}</div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
+/*
+      <div>
+        <div className="row m-0 p-0">
+          {this.renderVoteButtons()}
+          {this.renderCrudButtons()}
+
+          <div className="col"> {isEditing ? this.renderEdit() : this.renderPost()}</div>
+
+          <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
+        </div>
+      </div>
+
+*/
+
 Post.propTypes = {
-  redirect: PropTypes.bool,
-  path: PropTypes.string,
   session: PropTypes.object,
-  votes: PropTypes.object,
-  upVote: PropTypes.func,
-  editPost: PropTypes.func,
-  removePost: PropTypes.func,
-  downVote: PropTypes.func,
-  titulo: PropTypes.string,
+  onUpvote: PropTypes.func,
+  onRemovePost: PropTypes.func,
+  onDownvote: PropTypes.func,
   post: PropTypes.object,
   user: PropTypes.object,
-  index: PropTypes.number,
   isEditing: PropTypes.bool,
+  onFinishEdit: PropTypes.func,
   onEditClick: PropTypes.func,
 };
 

@@ -12,20 +12,22 @@ class Answer extends Component {
     };
   }
 
+  onFinishEdit(editedText) {
+    this.props.editResposta({ id: this.props.resposta._id }, { descricao: editedText }).then(() => {
+      this.setState({ isEditing: false });
+    });
+  }
+
   render() {
     if (!this.props.user || !this.props.resposta) {
       return 'Loading...';
     }
     return (
       <Post
-        removePost={this.props.removeResposta}
-        editPost={() => {
-          this.props.editResposta();
-          this.setState({ isEditing: false });
-        }}
-        upVote={this.props.upvoteResposta}
-        downVote={this.props.downvoteResposta}
-        votes={{ upvotes: this.props.resposta.upvotes, downvotes: this.props.resposta.downvotes }}
+        onRemovePost={this.props.removeResposta}
+        onFinishEdit={this.onFinishEdit}
+        onUpvote={this.props.upvoteResposta}
+        onDownvote={this.props.downvoteResposta}
         post={this.props.resposta}
         user={this.props.user}
         isEditing={this.state.isEditing}
