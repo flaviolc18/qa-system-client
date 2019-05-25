@@ -11,6 +11,7 @@ module.exports = ({ usuarioId, ...dadosPergunta } = {}) => ({
   dataCriacao: new Date(),
   upvotes: 0,
   downvotes: 0,
+  tags: [],
   usuarioId,
   ...dadosPergunta,
 });
