@@ -42,7 +42,8 @@ class Answers extends Component {
     }
 
     return (
-      <div>
+      <div className="mt-4">
+        <h5>{`${this.props.respostas.length} Respostas`}</h5>
         <ul style={{ listStyle: 'none' }} className="list-group">
           {this.renderRespostas()}
         </ul>

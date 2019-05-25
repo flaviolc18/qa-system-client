@@ -10,6 +10,8 @@ class Answer extends Component {
     this.state = {
       isEditing: false,
     };
+
+    this.onFinishEdit = this.onFinishEdit.bind(this);
   }
 
   onFinishEdit(editedText) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getSession } from '../redux/sessions.redux';
-import { navigate } from '@reach/router';
+import { Link } from '@reach/router';
 
 import ProfilePicture from './ProfilePicture';
 import ActionButton from './ActionButton';
@@ -83,7 +83,7 @@ class Post extends Component {
     const { post, user, session, onRemovePost, onEditClick } = this.props;
 
     return (
-      <div>
+      <div className="row">
         <div>
           <ActionButton
             onClick={onEditClick}
@@ -115,9 +115,13 @@ class Post extends Component {
         <div className="col">
           <div className="card">
             <div className="card-header">
-              {/* esse anchor deve linkar o perfil do usuario */}
-              <a className="font-weight-bold">{user.username}</a>
-              {` posted on ${new Date(post.dataCriacao).toLocaleDateString()}`}
+              <div className="row m-0">
+                <Link to={'/usuarios/' + user._id} className="font-weight-bold mr-1">
+                  {user.username}
+                </Link>
+                {` posted on ${new Date(post.dataCriacao).toLocaleDateString()}`}
+                <div className="ml-auto">{this.renderCrudButtons()}</div>
+              </div>
             </div>
             <div className="card-body">{isEditing ? this.renderEdit() : this.renderPost()}</div>
           </div>
@@ -126,20 +130,6 @@ class Post extends Component {
     );
   }
 }
-
-/*
-      <div>
-        <div className="row m-0 p-0">
-          {this.renderVoteButtons()}
-          {this.renderCrudButtons()}
-
-          <div className="col"> {isEditing ? this.renderEdit() : this.renderPost()}</div>
-
-          <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
-        </div>
-      </div>
-
-*/
 
 Post.propTypes = {
   session: PropTypes.object,

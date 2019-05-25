@@ -8,8 +8,8 @@ let loadPerguntasURL = () => '/api/perguntas';
 let postPerguntaURL = () => '/api/perguntas';
 let editPerguntaURL = filters => '/api/perguntas/' + filters.id;
 let deletePerguntaURL = filters => '/api/perguntas/' + filters.id;
-let upvotePerguntaURL = filters => '/api/perguntas/upvote/' + filters.id;
-let downvotePerguntaURL = filters => '/api/perguntas/downvote/' + filters.id;
+let upvotePerguntaURL = filters => `/api/posts/${filters.id}/upvote`;
+let downvotePerguntaURL = filters => `/api/posts/${filters.id}/downvote`;
 
 let actions = actionsFactory({
   context,

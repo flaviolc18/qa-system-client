@@ -7,8 +7,8 @@ let loadRespostasByUsuarioURL = filters => '/api/respostas/usuarios/' + filters.
 let postRespostaURL = () => '/api/respostas';
 let editRespostaURL = filters => '/api/respostas/' + filters.id;
 let deleteRespostaURL = filters => '/api/respostas/' + filters.id;
-let upvoteRespostaURL = filters => '/api/respostas/upvote/' + filters.id;
-let downvoteRespostaURL = filters => '/api/respostas/downvote/' + filters.id;
+let upvoteRespostaURL = filters => `/api/posts/${filters.id}/upvote`;
+let downvoteRespostaURL = filters => `/api/posts/${filters.id}/downvote`;
 
 let actions = actionsFactory({
   context,
