@@ -30,6 +30,7 @@ module.exports = {
       },
       tags: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Array contendo Tags da Pergunta',
       },
     },

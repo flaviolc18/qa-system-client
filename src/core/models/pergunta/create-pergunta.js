@@ -13,7 +13,15 @@ module.exports = async function(perguntaData) {
 
   let tags = perguntaData.tags.filter(tag => tag !== '');
 
+  tags = tags.map(tag => {
+    if (tag[0] === ' ') {
+      return tag.slice(1);
+    }
+
+    return tag;
+  });
   tags = [...new Set(tags)];
+
   const data = { ...perguntaData, tags };
 
   const defaultValues = {
