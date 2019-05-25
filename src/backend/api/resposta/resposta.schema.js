@@ -12,6 +12,10 @@ module.exports = {
         type: 'number',
         description: 'Número de upvotes da resposta',
       },
+      dataCriacao: {
+        type: 'string',
+        description: 'Texto da pergunta',
+      },
       downvotes: {
         type: 'number',
         description: 'Número de downvotes da resposta',
