@@ -14,6 +14,13 @@ import PropTypes from 'prop-types';
 import Post from './Post';
 
 class Question extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false,
+    };
+  }
+
   componentDidMount() {
     this.props.loadPergunta({ id: this.props.id });
     this.props.loadUsuarioPergunta({ perguntaId: this.props.id });
@@ -28,13 +35,18 @@ class Question extends Component {
         redirect={true}
         path="/home"
         removePost={this.props.removePergunta}
-        editPost={this.props.editPergunta}
+        onFinishEditing={editedText => {
+          this.props.editPergunta();
+          this.setState({ isEditing: false });
+        }}
         upVote={this.props.upvotePergunta}
         downVote={this.props.downvotePergunta}
         votes={{ upvotes: this.props.pergunta.upvotes, downvotes: this.props.pergunta.downvotes }}
         titulo={this.props.pergunta.titulo}
         post={this.props.pergunta}
         user={this.props.usuario}
+        isEditing={this.state.isEditing}
+        onEditClick={() => this.setState({ isEditing: true })}
       />
     );
   }

@@ -5,6 +5,13 @@ import { downvoteResposta, editResposta, removeResposta, upvoteResposta } from '
 import Post from './Post';
 
 class Answer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false,
+    };
+  }
+
   render() {
     if (!this.props.user || !this.props.resposta) {
       return 'Loading...';
@@ -12,12 +19,17 @@ class Answer extends Component {
     return (
       <Post
         removePost={this.props.removeResposta}
-        editPost={this.props.editResposta}
+        editPost={() => {
+          this.props.editResposta();
+          this.setState({ isEditing: false });
+        }}
         upVote={this.props.upvoteResposta}
         downVote={this.props.downvoteResposta}
         votes={{ upvotes: this.props.resposta.upvotes, downvotes: this.props.resposta.downvotes }}
         post={this.props.resposta}
         user={this.props.user}
+        isEditing={this.state.isEditing}
+        onEditClick={() => this.setState({ isEditing: true })}
       />
     );
   }
