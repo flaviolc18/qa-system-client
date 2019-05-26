@@ -9,6 +9,5 @@ module.exports = async function(query) {
     throw new Error('Resposta não encontrada');
   }
 
-
   return deletedResposta;
 };
