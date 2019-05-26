@@ -40,13 +40,12 @@ class FullPage extends Component {
 
   renderNavbar() {
     const loggedLinks = [
-      { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
       { label: 'Postar Pergunta', class: 'navigation', type: 'link', to: '/postar-pergunta' },
+
       {
         label: () => (
           <ProfilePicture
             style={{
-              boxShadow: '0px 0px 10px 2px rgb(1,1,1,0.5)',
               height: '40px',
               width: '40px',
               borderRadius: '100%',
@@ -72,13 +71,24 @@ class FullPage extends Component {
       { label: 'Login', class: 'navigation', type: 'link', to: '/login' },
       { label: 'Registrar-se', class: 'navigation', type: 'link', to: '/registro-usuario' },
     ];
+    const sharedLinks = [
+      { label: 'Home', class: 'navigation', type: 'link', to: '/home' },
+      {
+        class: 'action',
+        type: 'search',
+        to: '/search',
+        searchKey: 'tags',
+      },
+    ];
+
+    let links = this.props.session ? sharedLinks.concat(loggedLinks) : sharedLinks.concat(unloggedLinks);
 
     return (
       <Navbar
         key={this.props.session ? 'nav-logged' : 'nav-unlogged'}
         to="/home"
         title={'Não faço a menor ideia?'}
-        links={this.props.session ? loggedLinks : unloggedLinks}
+        links={links}
       />
     );
   }

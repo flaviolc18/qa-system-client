@@ -13,15 +13,23 @@
   margin-right: 10px;
 }
 .navbar-nav {
-  display: inline;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 .navbar-item {
   display: inline-block;
-  line-height: 60px;
+  line-height: 40px;
+  border-radius: 5px;
+  margin: 10px;
 }
-
+.navbar-item:hover {
+  background: rgba(1, 1, 1, 0.7);
+}
 .navbar-link {
   padding: 10px;
+
   color: white;
 }
 
@@ -29,16 +37,12 @@
   color: white;
   text-decoration: none;
 }
-.navbar-item:hover {
-  background: rgba(1, 1, 1, 0.7);
-}
 
 .action-button {
   border: none;
   outline: none;
   color: white;
   background: rgba(1, 1, 1, 0.5);
-  //height: 60px;
 }
 .navbar-dropdown {
   list-style: none;

@@ -1,7 +1,7 @@
 import { actionsFactory, reducerFactory, gettersFactory } from './creators/factory';
-
 const context = 'perguntas';
 
+let searchPerguntaURL = filters => '/api/perguntas/search/' + filters.search;
 let loadPerguntaURL = filters => '/api/perguntas/' + filters.id;
 let loadPerguntasUsuarioURL = filters => '/api/perguntas/usuarios/' + filters.usuarioId;
 let loadPerguntasURL = () => '/api/perguntas';
@@ -14,7 +14,14 @@ let downvotePerguntaURL = filters => '/api/perguntas/downvote/' + filters.id;
 let actions = actionsFactory({
   context,
   buildURLs: {
-    loadOneURLs: [loadPerguntaURL, loadPerguntasUsuarioURL, loadPerguntasURL, upvotePerguntaURL, downvotePerguntaURL],
+    loadOneURLs: [
+      loadPerguntaURL,
+      loadPerguntasUsuarioURL,
+      loadPerguntasURL,
+      upvotePerguntaURL,
+      downvotePerguntaURL,
+      searchPerguntaURL,
+    ],
     createOneURLs: [postPerguntaURL],
     editOneURLs: [editPerguntaURL],
     removeOneURLs: [deletePerguntaURL],
@@ -27,6 +34,7 @@ export const loadPerguntasUsuario = actions.load[1];
 export const loadPerguntas = actions.load[2];
 export const upvotePergunta = actions.load[3];
 export const downvotePergunta = actions.load[4];
+export const searchPergunta = actions.load[5];
 
 export const removePergunta = actions.remove[0];
 

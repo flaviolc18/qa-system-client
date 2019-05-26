@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Location, Link } from '@reach/router';
+import { Location, Link, navigate } from '@reach/router';
 import { connect } from 'react-redux';
 import { getSession } from '../redux/sessions.redux';
+import { serialize } from '../helpers/serializer';
 
 class Navbar extends Component {
   constructor(props) {
@@ -23,12 +24,6 @@ class Navbar extends Component {
     this.actions = this.actions.filter(e => e != undefined);
   }
 
-  computeLinks() {
-    return this.computeElements(this.links);
-  }
-  computeActions() {
-    return this.computeElements(this.actions);
-  }
   computeElements(links) {
     return links.map((link, index) => {
       switch (link.type) {
@@ -37,7 +32,7 @@ class Navbar extends Component {
         case 'dropdown':
           return <Dropdown key={index} label={link.label} links={link.links} />;
         case 'search':
-          return <Search />;
+          return <Search searchKey={link.searchKey} to={link.to} key={index} />;
         case 'button':
           return (
             <button className="action-button" key={index} onClick={() => link.action()}>
@@ -51,10 +46,11 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark">
-        <div className="navbar-title"> {this.props.title}</div>
-        <ul className="navbar-nav">{this.computeLinks()}</ul>
-        <div style={{ width: 'auto', margin: '0 auto' }} />
-        <ul className="navbar-nav">{this.computeActions()}</ul>
+        <nav style={{ width: '1200px', margin: '0 auto' }} className="navbar">
+          <ul className="navbar-nav">{this.computeElements(this.links)}</ul>
+          <div style={{ width: 'auto', margin: '0 auto' }} />
+          <ul className="navbar-nav">{this.computeElements(this.actions)}</ul>
+        </nav>
       </nav>
     );
   }
@@ -84,16 +80,52 @@ Navlink.propTypes = {
   to: PropTypes.string,
 };
 
-const Search = () => (
-  <form className="form-inline my-2 my-lg-0">
-    <div className="row">
-      <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
-        Search
-      </button>
-    </div>
-  </form>
-);
+class Search extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchBarText: '',
+    };
+    this.onSearch = this.onSearch.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onSearch(e) {
+    e.preventDefault();
+    navigate(this.props.to + '/' + serialize({ [this.props.searchKey]: this.state.searchBarText }));
+  }
+
+  onChange(e) {
+    e.preventDefault();
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.onSearch} className="form-inline my-2 my-lg-0">
+        <div className="row p-0 m-0 mr-4">
+          <input
+            name="searchBarText"
+            onChange={this.onChange}
+            value={this.state.searchBarText}
+            className="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </div>
+      </form>
+    );
+  }
+}
+
+Search.propTypes = {
+  to: PropTypes.string,
+  searchKey: PropTypes.string,
+};
 
 class Dropdown extends Component {
   computeElementsDropdown(links) {

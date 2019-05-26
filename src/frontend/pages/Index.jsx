@@ -9,6 +9,7 @@ const SignUp = loadable(() => import('./SignUp'));
 const QuestionPage = loadable(() => import('./QuestionPage'));
 const QuestionPost = loadable(() => import('./QuestionPost'));
 const Perfil = loadable(() => import('./Perfil'));
+const SearchQuestion = loadable(() => import('./SearchQuestion'));
 
 const NotFount = () => (
   <div className="row justify-content-md-center">
@@ -27,6 +28,7 @@ const Index = () => (
       <Home path="home" />
       <QuestionPage path="perguntas/:id" />
       <QuestionPost path="postar-pergunta" />
+      <SearchQuestion path="search/:filter" />
       <NotFount default />
     </FullPage>
   </Router>
