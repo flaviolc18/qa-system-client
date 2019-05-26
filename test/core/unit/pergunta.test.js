@@ -14,9 +14,13 @@ test(
 
     const pergunta = seed.fixtures.pergunta({ usuarioId });
 
+    pergunta.tags[0] = ' 1';
+
     const {
       _doc: { _id, __v, ...createdPergunta },
     } = await perguntaModel.create(pergunta);
+
+    pergunta.tags[0] = '1';
 
     t.strictSame(createdPergunta, pergunta);
 
