@@ -1,0 +1,25 @@
+.question-list-item-title {
+  color: black;
+}
+.question-list-item-title:hover {
+  color: 'gray';
+  text-decoration: none;
+}
+.tags {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tag {
+  text-align: center;
+  border-radius: 3px;
+  color: #4f6136;
+  border: 1px solid #4f6136;
+  margin-right: 10px;
+  padding: 5px;
+}
+.tag:hover {
+  text-decoration: none;
+  color: #4f6136;
+  background-color: #81916c;
+}
