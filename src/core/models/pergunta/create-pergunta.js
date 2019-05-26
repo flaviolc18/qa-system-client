@@ -11,7 +11,7 @@ module.exports = async function(perguntaData) {
     throw new Error('Referência para usuário inválida');
   }
 
-  let tags = perguntaData.tags.filter(tag => tag !== '');
+  let tags = perguntaData.tags.filter(tag => tag !== '' && tag !== ' ');
 
   tags = tags.map(tag => {
     if (tag[0] === ' ') {

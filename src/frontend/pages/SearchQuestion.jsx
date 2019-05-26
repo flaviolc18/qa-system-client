@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { searchPergunta, getPerguntaByFilters } from '../redux/perguntas.redux';
+
 class SearchQuestion extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +12,11 @@ class SearchQuestion extends Component {
     this.props.searchPergunta({ search: this.props.filter });
   }
 
+  componentDidUpdate(oldProps) {
+    if (this.props.filter !== oldProps.filter) {
+      this.props.searchPergunta({ search: this.props.filter });
+    }
+  }
   render() {
     if (!this.props.perguntas) {
       return '';
@@ -18,7 +24,6 @@ class SearchQuestion extends Component {
 
     return (
       <div>
-        Questions
         {this.props.perguntas.map((p, i) => {
           return <div key={i}>{p.titulo}</div>;
         })}

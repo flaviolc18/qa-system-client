@@ -1,7 +1,7 @@
 'use strict';
 
 const { test } = require('tap');
-
+const { serialize } = require('../../../../src/backend/helpers/serializer');
 const { initServer, randomObjectId } = require('../../../test-helpers');
 const seed = require('../../../../seed');
 
@@ -86,6 +86,90 @@ test('api.perguntas.findAll', async t => {
     method: 'GET',
   });
 
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta({ tags: '1' });
+
+  const filter = serialize({ tags: '1, 2,3,, ,' });
+  const { statusCode } = await fastify.inject({
+    url: '/api/perguntas/search/' + filter,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta({ tags: '1, 2' });
+
+  const filter = serialize({ tags: '1, 2,3,, ,' });
+  const { statusCode } = await fastify.inject({
+    url: '/api/perguntas/search/' + filter,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta({});
+
+  const { statusCode } = await fastify.inject({
+    url: '/api/perguntas/search/',
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta();
+  await seed.entidades.pergunta();
+
+  const filter = serialize({ titulo: 'a' });
+  const { statusCode } = await fastify.inject({
+    url: '/api/perguntas/search/' + filter,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta();
+
+  await seed.entidades.pergunta();
+
+  const filter = serialize({ titulo: 'asdsadsasadasd' });
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/search/' + filter,
+    method: 'GET',
+  });
+  const response = JSON.parse(payload);
+
+  t.same(response.total, 0);
   t.same(statusCode, 200);
 
   t.end();

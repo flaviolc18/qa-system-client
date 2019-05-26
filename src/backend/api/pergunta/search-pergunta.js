@@ -9,30 +9,28 @@ module.exports = async function(fastify) {
     if (filter.tags) {
       let tags = filter.tags;
 
-      if (!Array.isArray(tags)) {
-        tags = tags.split(',');
+      tags = tags.split(',');
 
-        tags = tags.filter(tag => tag !== '');
+      tags = tags.filter(tag => tag !== '' && tag !== ' ');
 
-        tags = tags.map(tag => {
-          if (tag[0] === ' ') {
-            return tag.slice(1);
-          }
+      tags = tags.map(tag => {
+        if (tag[0] === ' ') {
+          return tag.slice(1);
+        }
 
-          return tag;
-        });
+        return tag;
+      });
 
-        tags = [...new Set(tags)];
-      }
+      tags = [...new Set(tags)];
 
       filter.tags = { $elemMatch: { $in: tags } };
     }
 
-    const perguntas = await fastify.core.models.pergunta.find(filter).sort({ upvotes: 1 });
-
-    if (!perguntas) {
-      throw fastify.httpErrors.notFound();
+    if (filter.titulo) {
+      filter.titulo = { $regex: filter.titulo, $options: 'i' };
     }
+
+    const perguntas = await fastify.core.models.pergunta.findAll(filter).sort({ upvotes: 1 });
 
     return fastify.getResponseObject(perguntas);
   });

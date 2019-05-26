@@ -77,7 +77,7 @@ class FullPage extends Component {
         class: 'action',
         type: 'search',
         to: '/search',
-        searchKey: 'tags',
+        searchKey: 'titulo',
       },
     ];
 

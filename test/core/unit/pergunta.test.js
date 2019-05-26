@@ -25,6 +25,56 @@ test(
 );
 
 test(
+  'model.pergunta.create',
+  withDB(async t => {
+    const { _id: usuarioId } = await seed.entidades.usuario();
+
+    const pergunta = seed.fixtures.pergunta({ usuarioId, tags: ['1, 2,3, 4'] });
+
+    const {
+      _doc: { _id, __v, ...createdPergunta },
+    } = await perguntaModel.create(pergunta);
+
+    pergunta.tags = pergunta.tags.slice(',').map(t => {
+      if (t[0] === ' ') {
+        return t.slice(1);
+      }
+
+      return t;
+    });
+
+    t.strictSame(createdPergunta, pergunta);
+
+    t.end();
+  })
+);
+
+test(
+  'model.pergunta.create',
+  withDB(async t => {
+    const { _id: usuarioId } = await seed.entidades.usuario();
+    const pergunta = seed.fixtures.pergunta({ usuarioId, tags: ['1', ' 2', ''] });
+
+    const {
+      _doc: { _id, __v, ...createdPergunta },
+    } = await perguntaModel.create(pergunta);
+
+    pergunta.tags = pergunta.tags.map(t => {
+      if (t[0] === ' ') {
+        return t.slice(1);
+      }
+
+      return t;
+    });
+
+    pergunta.tags = pergunta.tags.filter(t => t !== '' && t !== ' ');
+    t.strictSame(createdPergunta, pergunta);
+
+    t.end();
+  })
+);
+
+test(
   'model.pergunta.create: cadastra com id de usuário inválido',
   withDB(async t => {
     const usuarioId = randomObjectId();
