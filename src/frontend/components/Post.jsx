@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getSession } from '../redux/sessions.redux';
 import { Link } from '@reach/router';
+
+import { getSession } from '../redux/sessions.redux';
+import { loadVote, upvotePost, downvotePost, unvotePost, getVoteByFilters } from '../redux/votes.redux';
 
 import ProfilePicture from './ProfilePicture';
 import ActionButton from './ActionButton';
+import Modal from './Modal';
+
+const UPVOTE = 1;
+const DOWNVOTE = -1;
 
 class Post extends Component {
   constructor(props) {
@@ -14,6 +20,13 @@ class Post extends Component {
     this.state = {
       text: props.post.descricao,
     };
+    this.onUpvoteClick = this.onUpvoteClick.bind(this);
+    this.onDownvoteClick = this.onDownvoteClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { loadVote, post } = this.props;
+    loadVote({ id: post._id });
   }
 
   renderEdit() {
@@ -53,25 +66,47 @@ class Post extends Component {
     );
   }
 
+  onUpvoteClick() {
+    const { post, vote, loadPost } = this.props;
+    const isVoteUpvote = vote && vote.vote === UPVOTE;
+
+    return this.props[`${isVoteUpvote ? 'unvote' : 'upvote'}Post`]({ id: post._id }).then(() =>
+      loadPost({ id: post._id })
+    );
+  }
+
+  onDownvoteClick() {
+    const { post, vote, loadPost } = this.props;
+    const isVoteDownvote = vote && vote.vote === DOWNVOTE;
+
+    return this.props[`${isVoteDownvote ? 'unvote' : 'downvote'}Post`]({ id: post._id }).then(() =>
+      loadPost({ id: post._id })
+    );
+  }
+
   renderVoteButtons() {
-    const { post, user, session, onUpvote, onDownvote } = this.props;
+    const { post, user, session, vote } = this.props;
+
+    const isVoteUpvote = vote && vote.vote === UPVOTE;
+    const isVoteDownvote = vote && vote.vote === DOWNVOTE;
+
     return (
       <div>
         <div className="m-2">
           <ActionButton
-            onClick={() => onUpvote({ id: post._id })}
+            onClick={this.onUpvoteClick}
             icon={'fa-thumbs-up'}
             visible={session && user._id}
-            color={'green'}
+            color={isVoteUpvote ? 'green' : 'gray'}
           />
           {post.upvotes}
         </div>
         <div className="m-2">
           <ActionButton
-            onClick={() => onDownvote({ id: post._id })}
+            onClick={this.onDownvoteClick}
             icon={'fa-thumbs-down'}
             visible={session && user._id}
-            color={'red'}
+            color={isVoteDownvote ? 'red' : 'gray'}
           />
           {post.downvotes}
         </div>
@@ -93,8 +128,15 @@ class Post extends Component {
           />
         </div>
         <div>
+          <Modal
+            title={'Deseja remover?'}
+            modalId={`remove-modal-${post._id}`}
+            bodyText={'A remoção deste post não pode ser desfeita.'}
+            onConfirm={() => onRemovePost({ id: post._id })}
+          />
           <ActionButton
-            onClick={() => onRemovePost({ id: post._id })}
+            dataToggle="modal"
+            dataTarget={`#remove-modal-${post._id}`}
             icon={'fa-trash'}
             visible={session && user._id && session.usuarioId === user._id}
             color={'red'}
@@ -106,6 +148,7 @@ class Post extends Component {
 
   render() {
     const { post, user, isEditing } = this.props;
+
     return (
       <div className="row m-2">
         <div className="mr-2">
@@ -133,9 +176,13 @@ class Post extends Component {
 
 Post.propTypes = {
   session: PropTypes.object,
-  onUpvote: PropTypes.func,
+  vote: PropTypes.object,
   onRemovePost: PropTypes.func,
-  onDownvote: PropTypes.func,
+  loadPost: PropTypes.func,
+  loadVote: PropTypes.func,
+  upvotePost: PropTypes.func,
+  downvotePost: PropTypes.func,
+  unvotePost: PropTypes.func,
   post: PropTypes.object,
   user: PropTypes.object,
   isEditing: PropTypes.bool,
@@ -144,10 +191,11 @@ Post.propTypes = {
 };
 
 export default connect(
-  state => {
+  (state, ownProps) => {
     return {
       session: getSession(state),
+      vote: getVoteByFilters(state, { id: ownProps.post._id })[0],
     };
   },
-  {}
+  { loadVote, upvotePost, downvotePost, unvotePost }
 )(Post);

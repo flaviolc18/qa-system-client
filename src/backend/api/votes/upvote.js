@@ -5,9 +5,9 @@ module.exports = async function(fastify) {
     try {
       const { usuarioId } = (await fastify.core.models.session.find(sessionId)) || {};
 
-      await fastify.core.models.votes.upvote({ postId, usuarioId });
+      const vote = await fastify.core.models.votes.upvote({ postId, usuarioId });
 
-      return {};
+      return fastify.getResponseObject(vote);
     } catch (message) {
       throw fastify.httpErrors.badRequest(message);
     }

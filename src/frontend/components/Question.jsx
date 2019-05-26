@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {
-  loadPergunta,
-  getPergunta,
-  editPergunta,
-  removePergunta,
-  downvotePergunta,
-  upvotePergunta,
-} from '../redux/perguntas.redux';
-import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
+import { loadPergunta, getPergunta, editPergunta, removePergunta } from '../redux/perguntas.redux';
 
 import Post from './Post';
 
@@ -74,8 +68,7 @@ class Question extends Component {
         <Post
           onRemovePost={this.props.removePergunta}
           onFinishEdit={this.onFinishEdit}
-          onUpvote={this.props.upvotePergunta}
-          onDownvote={this.props.downvotePergunta}
+          loadPost={this.props.loadPergunta}
           post={this.props.pergunta}
           user={this.props.usuario}
           isEditing={this.state.isEditing}
@@ -87,8 +80,6 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-  upvotePergunta: PropTypes.func,
-  downvotePergunta: PropTypes.func,
   editPergunta: PropTypes.func,
   removePergunta: PropTypes.func,
   loadPergunta: PropTypes.func,
@@ -105,5 +96,10 @@ export default connect(
       usuario: getUsuariosByFilter(state, { perguntaId: ownProps.id })[0],
     };
   },
-  { loadUsuarioPergunta, loadPergunta, editPergunta, removePergunta, downvotePergunta, upvotePergunta }
+  {
+    loadUsuarioPergunta,
+    loadPergunta,
+    editPergunta,
+    removePergunta,
+  }
 )(Question);
