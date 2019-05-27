@@ -13,6 +13,6 @@ module.exports = async function(fastify) {
       .setCookie('session', session._id, {
         path: '/',
       })
-      .send(usuario);
+      .send(fastify.getResponseObject(usuario));
   });
 };

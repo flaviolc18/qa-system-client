@@ -28,7 +28,7 @@ const registroBody = [
     placeHolder: 'Confirme sua Senha',
   },
   {
-    label: 'Descriçao',
+    label: 'descricao',
     defaultValue: '',
     class: 'input',
     type: 'text-area',
@@ -43,14 +43,14 @@ class SignUp extends Component {
       alert('As senhas não são iguais!');
       return;
     }
-
+    console;
     const userData = {
       username: state.Nome,
       email: state.Email,
       password: state.Senha,
       descricao: state.descricao,
       reputacao: 0,
-      profilePicture: '1234',
+      profilePicture: '',
     };
 
     http.post('/api/usuarios/signup', userData).then(response => {
