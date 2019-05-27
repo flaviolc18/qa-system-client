@@ -21,11 +21,71 @@ test('api.usuarios.signup', async t => {
   t.end();
 });
 
-test('api.usuarios.delete', async t => {
+test('api.usuarios.changePassword', async t => {
   const fastify = await initServer(t);
 
   const usuario = await seed.entidades.usuario();
 
+  const { statusCode } = await fastify.inject({
+    url: `/api/usuarios/change-password/${usuario._id}`,
+    method: 'POST',
+    payload: { password: 'passwordTeste123', newPassword: 'passwordTeste1234' },
+  });
+
+  t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.usuarios.changePassword', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/usuarios/change-password/${randomObjectId()}`,
+    method: 'POST',
+    payload: { password: 'passwordTeste123', nesPassword: 'passwordTeste1234' },
+  });
+
+  t.same(statusCode, 404);
+
+  t.end();
+});
+
+test('api.usuarios.changePassword', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/usuarios/change-password/${usuario._id}`,
+    method: 'POST',
+    payload: { password: 'passwordTeste', nesPassword: 'passwordTeste1234' },
+  });
+
+  t.same(statusCode, 404);
+
+  t.end();
+});
+
+test('api.usuarios.changePassword', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/usuarios/change-password/${usuario._id}`,
+    method: 'POST',
+  });
+
+  t.same(statusCode, 500);
+
+  t.end();
+});
+
+test('api.usuarios.delete', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
   const { statusCode } = await fastify.inject({
     url: `/api/usuarios/${usuario._id}`,
     method: 'DELETE',

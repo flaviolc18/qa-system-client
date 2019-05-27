@@ -25,6 +25,11 @@ const testCases = [
     elementsP: undefined,
     expectedResult: { elements: [], total: 0 },
   },
+  {
+    description: 'elemento undefined',
+    elementsP: null,
+    expectedResult: { elements: [], total: 0 },
+  },
 ];
 
 for (const { description, expectedResult, elementsP } of testCases) {

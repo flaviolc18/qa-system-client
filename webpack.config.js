@@ -45,7 +45,7 @@ const appConfig = {
   plugins: [
     new LoadablePlugin(),
     new HtmlWebpackPlugin({
-      template: './src/shared/template.html',
+      template: path.join(__dirname, './src/shared/template.html'),
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin({

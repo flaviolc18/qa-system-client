@@ -14,7 +14,7 @@ module.exports = {
       },
       dataCriacao: {
         type: 'string',
-        description: 'Texto da pergunta',
+        description: 'Data de criação da pergunta',
       },
       upvotes: {
         type: 'number',
