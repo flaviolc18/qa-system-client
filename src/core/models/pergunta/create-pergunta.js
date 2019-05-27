@@ -17,8 +17,7 @@ module.exports = async function(perguntaData) {
     upvotes: 0,
   };
 
-  //FIXME: trocar ordem
-  const pergunta = new PerguntaModel({ ...defaultValues, ...perguntaData });
+  const pergunta = new PerguntaModel({ ...perguntaData, ...defaultValues });
 
   return pergunta.save();
 };

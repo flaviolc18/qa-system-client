@@ -12,13 +12,14 @@ test(
   withDB(async t => {
     const { _id: usuarioId } = await seed.entidades.usuario();
 
-    const pergunta = seed.fixtures.pergunta({ usuarioId });
+    const { dataCriacao: dataCriacaoFixture, ...pergunta } = seed.fixtures.pergunta({ usuarioId });
 
     const {
-      _doc: { _id, __v, ...createdPergunta },
+      _doc: { _id, __v, dataCriacao, ...createdPergunta },
     } = await perguntaModel.create(pergunta);
 
     t.strictSame(createdPergunta, pergunta);
+    t.ok(dataCriacao - dataCriacaoFixture < 250);
 
     t.end();
   })
