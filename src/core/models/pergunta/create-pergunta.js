@@ -31,7 +31,7 @@ module.exports = async function(perguntaData) {
   };
 
   //FIXME: trocar ordem
-  const pergunta = new PerguntaModel({ ...defaultValues, ...data });
+  const pergunta = new PerguntaModel({ ...data, ...defaultValues });
 
   return pergunta.save();
 };

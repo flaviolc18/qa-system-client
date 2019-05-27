@@ -5,4 +5,5 @@ import { perguntas } from './perguntas.redux';
 import { respostas } from './respostas.redux';
 import { usuarios } from './usuarios.redux';
 import { imagens } from './imagens.redux';
-export default combineReducers({ app, perguntas, respostas, usuarios, imagens });
+import { votes } from './votes.redux';
+export default combineReducers({ app, perguntas, respostas, usuarios, imagens, votes });
