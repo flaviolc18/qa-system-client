@@ -9,7 +9,7 @@ module.exports = async function(fastify) {
     params: { usuarioId },
   }) {
     try {
-      const usuario = await fastify.core.models.usuario.delete(usuarioId);
+      const usuario = await fastify.core.models.usuario.delete({ _id: usuarioId });
 
       return fastify.getResponseObject(usuario);
     } catch ({ message }) {

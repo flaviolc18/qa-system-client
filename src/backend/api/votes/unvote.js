@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports = async function(fastify) {
-  fastify.get('/posts/:postId/unvote', async function({ params: { postId }, cookies: { session: sessionId } }) {
+  fastify.delete('/posts/:postId/unvote', async function({ params: { postId }, cookies: { session: sessionId } }) {
     try {
       const { usuarioId } = (await fastify.core.models.session.find(sessionId)) || {};
 
-      await fastify.core.models.votes.unvote({ postId, usuarioId });
+      const vote = await fastify.core.models.votes.unvote({ postId, usuarioId });
 
-      return {};
+      return fastify.getResponseObject(vote);
     } catch (message) {
       throw fastify.httpErrors.badRequest(message);
     }
