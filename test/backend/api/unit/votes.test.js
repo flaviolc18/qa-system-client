@@ -107,7 +107,7 @@ test('api.votes.unvote', async t => {
 
   const { statusCode } = await fastify.inject({
     url: `/api/posts/${perguntaId}/unvote`,
-    method: 'GET',
+    method: 'DELETE',
     headers: { cookie },
   });
 
@@ -126,13 +126,59 @@ test('api.votes.unvote: exception', async t => {
 
   const { statusCode, payload } = await fastify.inject({
     url: `/api/posts/${perguntaId}/unvote`,
-    method: 'GET',
+    method: 'DELETE',
   });
 
   const { message } = JSON.parse(payload);
 
   t.same(statusCode, 400);
   t.same(message, 'Error: Documento "Vote" não encontrado');
+
+  t.end();
+});
+
+test('api.votes.find', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = seed.fixtures.usuario();
+  const { _id: usuarioId } = await seed.entidades.usuario(usuario);
+  const { _id: perguntaId } = await seed.entidades.pergunta({ usuarioId });
+  const cookie = await getCookie({ fastify, payload: { username: usuario.username, password: usuario.password } });
+
+  await fastify.core.models.votes.upvote({ postId: perguntaId, usuarioId });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: `/api/posts/${perguntaId}/vote`,
+    method: 'GET',
+    headers: { cookie },
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 1);
+
+  t.end();
+});
+
+test('api.votes.find: chama a api sem cookie', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = seed.fixtures.usuario();
+  const { _id: usuarioId } = await seed.entidades.usuario(usuario);
+  const { _id: perguntaId } = await seed.entidades.pergunta({ usuarioId });
+
+  await fastify.core.models.votes.upvote({ postId: perguntaId, usuarioId });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: `/api/posts/${perguntaId}/vote`,
+    method: 'GET',
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 0);
 
   t.end();
 });

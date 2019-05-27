@@ -8,6 +8,10 @@ module.exports = {
         type: 'string',
         description: 'Texto da resposta',
       },
+      dataCriacao: {
+        type: 'string',
+        description: 'Data de criação da resposta',
+      },
       upvotes: {
         type: 'number',
         description: 'Número de upvotes da resposta',

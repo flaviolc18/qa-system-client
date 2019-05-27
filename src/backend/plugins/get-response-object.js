@@ -12,7 +12,7 @@ function getResponseObject(elements) {
     return { elements, total: elements.length };
   }
 
-  if (typeof elements === 'object' && Object.keys(elements).length !== 0) {
+  if (typeof elements === 'object' && elements && Object.keys(elements).length !== 0) {
     return { elements: [elements], total: 1 };
   }
 

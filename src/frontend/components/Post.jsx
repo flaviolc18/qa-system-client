@@ -1,253 +1,173 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { navigate } from '@reach/router';
+import { Link } from '@reach/router';
+
 import { getSession } from '../redux/sessions.redux';
+import { loadVote, upvotePost, downvotePost, unvotePost, getVoteByFilters } from '../redux/votes.redux';
+
 import ProfilePicture from './ProfilePicture';
+import ActionButton from './ActionButton';
+import Modal from './Modal';
 
-function Box({ usuarioId, name, date }) {
-  return (
-    <div style={{ color: 'dark-gray' }} className="row p-0 m-0 align-items-center">
-      <div className="col p-0 pr-2 m-0">
-        <ProfilePicture
-          onClick={e => {
-            e.preventDefault();
-            navigate('/usuarios/' + usuarioId);
-          }}
-          style={{ height: '45px', width: '45px', borderRadius: '100%' }}
-          usuarioId={usuarioId}
-        />
-      </div>
-      <div className="col-md-auto align-self-start p-0 m-0 pr-2">
-        <div>{name}</div>
-        <div>{new Date(date).toLocaleDateString()}</div>
-      </div>
-    </div>
-  );
-}
-
-Box.propTypes = {
-  usuarioId: PropTypes.string,
-  name: PropTypes.string,
-  date: PropTypes.string,
-  src: PropTypes.string,
-};
-
-class Votes extends Component {
-  constructor(props) {
-    super(props);
-    this.upVote = this.upVote.bind(this);
-    this.downVote = this.downVote.bind(this);
-    this.editPost = this.editPost.bind(this);
-    this.removePost = this.removePost.bind(this);
-    this.edit = this.edit.bind(this);
-  }
-  upVote(e) {
-    e.preventDefault();
-    this.props.upVote({ id: this.props.post._id });
-  }
-  downVote(e) {
-    e.preventDefault();
-    this.props.downVote({ id: this.props.post._id });
-  }
-  editPost(e) {
-    e.preventDefault();
-    this.props.editPost();
-  }
-  removePost(e) {
-    e.preventDefault();
-
-    return this.props.removePost({ id: this.props.post._id }).then(resp => {
-      const { __v, ...response } = resp.elements[0];
-      if (this.props.redirect && this.props.post._id === response._id) {
-        return navigate(this.props.path);
-      }
-    });
-  }
-  edit() {
-    if (!this.props.session || !this.props.usuarioId) return '';
-
-    if (this.props.session.usuarioId === this.props.usuarioId) {
-      return (
-        <li>
-          <button onClick={this.editPost} style={{ color: 'black', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-            <i className="fas fa-edit" />
-          </button>
-        </li>
-      );
-    }
-    return '';
-  }
-  remove() {
-    if (!this.props.session || !this.props.usuarioId) return '';
-    if (this.props.session.usuarioId === this.props.usuarioId) {
-      return (
-        <li>
-          <button onClick={this.removePost} style={{ color: 'red', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-            <i className="fas fa-trash" />
-          </button>
-        </li>
-      );
-    }
-  }
-  renderUpVoteButtons() {
-    if (!this.props.session || !this.props.usuarioId) return '';
-
-    return (
-      <li>
-        <button onClick={this.upVote} style={{ color: 'green', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-          <i className="fas fa-thumbs-up" />
-        </button>
-        {this.props.votes.upvotes}
-      </li>
-    );
-  }
-  renderDownVoteButtons() {
-    if (!this.props.session || !this.props.usuarioId) return '';
-    return (
-      <li>
-        <button onClick={this.downVote} style={{ color: 'red', border: '0', backgroundColor: 'rgba(1,1,1,0)' }}>
-          <i className="fas fa-thumbs-down" />
-        </button>
-        {this.props.votes.downvotes}
-      </li>
-    );
-  }
-
-  render() {
-    return (
-      <div style={{ paddingRight: '10px' }}>
-        <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
-          {this.renderUpVoteButtons()}
-          {this.renderDownVoteButtons()}
-          {this.edit()}
-          {this.remove()}
-        </ul>
-      </div>
-    );
-  }
-}
-Votes.defaultProps = {
-  votes: {
-    upvotes: 0,
-    downvotes: 0,
-  },
-};
-Votes.propTypes = {
-  redirect: PropTypes.bool,
-  path: PropTypes.string,
-  post: PropTypes.object,
-  upVote: PropTypes.func,
-  downVote: PropTypes.func,
-  editPost: PropTypes.func,
-  removePost: PropTypes.func,
-  session: PropTypes.object,
-  usuarioId: PropTypes.string,
-  votes: PropTypes.object,
-};
+const UPVOTE = 1;
+const DOWNVOTE = -1;
 
 class Post extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      editing: false,
-      titulo: '',
-      descricao: '',
+      text: props.post.descricao,
     };
-    this.onEdit = this.onEdit.bind(this);
-    this.startEdit = this.startEdit.bind(this);
-    this.edit = this.edit.bind(this);
+    this.onUpvoteClick = this.onUpvoteClick.bind(this);
+    this.onDownvoteClick = this.onDownvoteClick.bind(this);
   }
-  onEdit(e) {
-    e.preventDefault();
-    this.setState({ [e.target.name]: e.target.value });
+
+  componentDidMount() {
+    const { loadVote, post } = this.props;
+    loadVote({ id: post._id });
   }
-  edit(e) {
-    e.preventDefault();
-    this.props
-      .editPost({ id: this.props.post._id }, { titulo: this.state.titulo, descricao: this.state.descricao })
-      .then(() => {
-        this.setState({ editing: false });
-      });
-  }
+
   renderEdit() {
+    //FIXME: usar Textbox
     return (
-      <div style={{ overflow: 'hidden' }}>
-        <form onSubmit={this.edit}>
-          <div className="form-group">
-            {this.props.titulo ? (
-              <div className="pb-2">
-                <input
-                  className="form-control"
-                  name="titulo"
-                  onChange={this.onEdit}
-                  type="text"
-                  value={this.state.titulo}
-                />
-              </div>
-            ) : (
-              ''
-            )}
-            {this.props.post.descricao ? (
-              <div className="pb-2">
-                <input
-                  className="form-control"
-                  name="descricao"
-                  onChange={this.onEdit}
-                  type="text"
-                  value={this.state.descricao}
-                />
-              </div>
-            ) : (
-              ''
-            )}
-            <button style={{ float: 'right' }} className="btn btn-success" type="submit">
-              Update
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-  renderPost() {
-    const { post, titulo } = this.props;
-    return (
-      <div style={{ overflow: 'hidden' }}>
-        {titulo ? <h3>{titulo}</h3> : ''}
-        {post.descricao ? <h5>{post.descricao}</h5> : ''}
-      </div>
-    );
-  }
-  renderBody() {
-    if (this.state.editing) {
-      return this.renderEdit();
-    }
-    return this.renderPost();
-  }
-  startEdit() {
-    this.setState({ editing: true, titulo: this.props.titulo, descricao: this.props.post.descricao });
-  }
-  render() {
-    const { post, user, votes } = this.props;
-    return (
-      <div className="row p-0 m-0">
-        <div className="col-md-auto p-0 m-0">
-          <Votes
-            session={this.props.session}
-            usuarioId={user._id}
-            post={post}
-            upVote={this.props.upVote}
-            downVote={this.props.downVote}
-            editPost={this.startEdit}
-            removePost={this.props.removePost}
-            votes={votes}
-            redirect={this.props.redirect}
-            path={this.props.path}
+      <div>
+        <div className="pb-2">
+          <input
+            className="form-control"
+            name="text"
+            onChange={e => {
+              this.setState({ text: e.target.value });
+            }}
+            type="text"
+            value={this.state.text}
           />
         </div>
-        <div className="col p-0 m-0 align-self-start">{this.renderBody()}</div>
-        <div className="col-md-auto p-0 m-0">
-          <Box usuarioId={user._id} name={user.username} date={post.dataCriacao} src={user.profilePicture} />
+        <button
+          onClick={() => {
+            this.props.onFinishEdit(this.state.text);
+          }}
+          style={{ float: 'right' }}
+          className="btn btn-success"
+        >
+          Update
+        </button>
+      </div>
+    );
+  }
+
+  renderPost() {
+    const { post } = this.props;
+    return (
+      <div style={{ overflow: 'hidden' }}>
+        <p>{post.descricao}</p>
+      </div>
+    );
+  }
+
+  onUpvoteClick() {
+    const { post, vote, loadPost } = this.props;
+    const isVoteUpvote = vote && vote.vote === UPVOTE;
+
+    return this.props[`${isVoteUpvote ? 'unvote' : 'upvote'}Post`]({ id: post._id }).then(() =>
+      loadPost({ id: post._id })
+    );
+  }
+
+  onDownvoteClick() {
+    const { post, vote, loadPost } = this.props;
+    const isVoteDownvote = vote && vote.vote === DOWNVOTE;
+
+    return this.props[`${isVoteDownvote ? 'unvote' : 'downvote'}Post`]({ id: post._id }).then(() =>
+      loadPost({ id: post._id })
+    );
+  }
+
+  renderVoteButtons() {
+    const { post, user, session, vote } = this.props;
+
+    const isVoteUpvote = vote && vote.vote === UPVOTE;
+    const isVoteDownvote = vote && vote.vote === DOWNVOTE;
+
+    return (
+      <div>
+        <div className="m-2">
+          <ActionButton
+            onClick={this.onUpvoteClick}
+            icon={'fa-thumbs-up'}
+            visible={session && user._id}
+            color={isVoteUpvote ? 'green' : 'gray'}
+          />
+          {post.upvotes}
+        </div>
+        <div className="m-2">
+          <ActionButton
+            onClick={this.onDownvoteClick}
+            icon={'fa-thumbs-down'}
+            visible={session && user._id}
+            color={isVoteDownvote ? 'red' : 'gray'}
+          />
+          {post.downvotes}
+        </div>
+      </div>
+    );
+  }
+
+  renderCrudButtons() {
+    const { post, user, session, onRemovePost, onEditClick } = this.props;
+
+    return (
+      <div className="row">
+        <div>
+          <ActionButton
+            onClick={onEditClick}
+            icon={'fa-edit'}
+            visible={session && user._id && session.usuarioId === user._id}
+            color={'black'}
+          />
+        </div>
+        <div>
+          <Modal
+            title={'Deseja remover?'}
+            modalId={`remove-modal-${post._id}`}
+            bodyText={'A remoção deste post não pode ser desfeita.'}
+            onConfirm={() => onRemovePost({ id: post._id })}
+          />
+          <ActionButton
+            dataToggle="modal"
+            dataTarget={`#remove-modal-${post._id}`}
+            icon={'fa-trash'}
+            visible={session && user._id && session.usuarioId === user._id}
+            color={'red'}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    const { post, user, isEditing } = this.props;
+
+    return (
+      <div className="row m-2">
+        <div className="mr-2">
+          <ProfilePicture style={{ height: '45px', width: '45px', borderRadius: '5%' }} usuarioId={user._id} />
+          {this.renderVoteButtons()}
+        </div>
+        <div className="col">
+          <div className="card">
+            <div className="card-header">
+              <div className="row m-0">
+                <Link to={'/usuarios/' + user._id} className="font-weight-bold mr-1">
+                  {user.username}
+                </Link>
+                {` posted on ${new Date(post.dataCriacao).toLocaleDateString()}`}
+                <div className="ml-auto">{this.renderCrudButtons()}</div>
+              </div>
+            </div>
+            <div className="card-body">{isEditing ? this.renderEdit() : this.renderPost()}</div>
+          </div>
         </div>
       </div>
     );
@@ -255,25 +175,27 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  redirect: PropTypes.bool,
-  path: PropTypes.string,
   session: PropTypes.object,
-  votes: PropTypes.object,
-  upVote: PropTypes.func,
-  editPost: PropTypes.func,
-  removePost: PropTypes.func,
-  downVote: PropTypes.func,
-  titulo: PropTypes.string,
+  vote: PropTypes.object,
+  onRemovePost: PropTypes.func,
+  loadPost: PropTypes.func,
+  loadVote: PropTypes.func,
+  upvotePost: PropTypes.func,
+  downvotePost: PropTypes.func,
+  unvotePost: PropTypes.func,
   post: PropTypes.object,
   user: PropTypes.object,
-  index: PropTypes.number,
+  isEditing: PropTypes.bool,
+  onFinishEdit: PropTypes.func,
+  onEditClick: PropTypes.func,
 };
 
 export default connect(
-  state => {
+  (state, ownProps) => {
     return {
       session: getSession(state),
+      vote: getVoteByFilters(state, { id: ownProps.post._id })[0],
     };
   },
-  {}
+  { loadVote, upvotePost, downvotePost, unvotePost }
 )(Post);
