@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { navigate } from '@reach/router';
 
 import { getUsuariosByFilter, loadUsuarioPergunta } from '../redux/usuarios.redux';
 import { loadPergunta, getPergunta, editPergunta, removePergunta } from '../redux/perguntas.redux';
@@ -16,6 +17,7 @@ class Question extends Component {
     };
 
     this.onFinishEdit = this.onFinishEdit.bind(this);
+    this.onRemovePergunta = this.onRemovePergunta.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +59,10 @@ class Question extends Component {
       });
   }
 
+  onRemovePergunta(query) {
+    this.props.removePergunta(query).then(() => navigate('/home'));
+  }
+
   render() {
     if (!this.props.pergunta || !this.props.usuario) {
       return 'Loading...';
@@ -66,7 +72,7 @@ class Question extends Component {
       <div>
         {this.renderTitulo()}
         <Post
-          onRemovePost={this.props.removePergunta}
+          onRemovePost={this.onRemovePergunta}
           onFinishEdit={this.onFinishEdit}
           loadPost={this.props.loadPergunta}
           post={this.props.pergunta}

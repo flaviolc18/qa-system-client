@@ -127,7 +127,7 @@ class Post extends Component {
             color={'black'}
           />
         </div>
-        <div>
+        <div> 
           <Modal
             title={'Deseja remover?'}
             modalId={`remove-modal-${post._id}`}
