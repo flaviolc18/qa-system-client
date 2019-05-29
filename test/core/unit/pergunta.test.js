@@ -43,6 +43,9 @@ test(
 
       return t;
     });
+    if (new Date(createdPergunta.dataCriacao) - new Date(pergunta.dataCriacao) <= 10) {
+      createdPergunta.dataCriacao = pergunta.dataCriacao;
+    }
 
     t.strictSame(createdPergunta, pergunta);
 
@@ -69,6 +72,11 @@ test(
     });
 
     pergunta.tags = pergunta.tags.filter(t => t !== '' && t !== ' ');
+
+    if (new Date(createdPergunta.dataCriacao) - new Date(pergunta.dataCriacao) <= 10) {
+      createdPergunta.dataCriacao = pergunta.dataCriacao;
+    }
+
     t.strictSame(createdPergunta, pergunta);
 
     t.end();
