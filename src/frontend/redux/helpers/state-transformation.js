@@ -36,7 +36,7 @@ export function deleteAllIds(state, objs) {
 }
 
 export function assignByFilter(state, { response, filters }) {
-  if (!response.elements) return state;
+  if (!response.elements || response.elements.length === 0) return [];
   const key = serialize(filters);
   const ids = response.elements.map(element => element._id);
   if (!ids) {
@@ -54,7 +54,7 @@ export function assignByFilter(state, { response, filters }) {
 }
 
 export function assignTotalSizeByFilter(state, action) {
-  if (!action.response.total) return state;
+  if (!action.response || !action.response.total) return 0;
   const key = serialize(action.filters);
   if (state[key]) {
     return Object.assign({}, state, { [key]: state[key] + action.response.total });
