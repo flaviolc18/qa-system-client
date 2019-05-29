@@ -51,7 +51,9 @@ test(
       _doc: { __v, ...updatedUsuario },
     } = await usuarioModel.update({ _id: usuario._id }, alteracoes);
 
-    t.strictSame(updatedUsuario, { ...usuario, ...alteracoes });
+    usuario.username = alteracoes.username;
+
+    t.strictSame(updatedUsuario, usuario);
 
     t.end();
   })
@@ -64,6 +66,7 @@ test(
     const alteracoes = { password: 'outraSenha' };
 
     const updatedUsuario = await usuarioModel.update({ _id: usuario._id }, alteracoes);
+
     const foundUsuarios = await usuarioModel.findAll();
 
     t.ok(await updatedUsuario.comparePassword(alteracoes.password));

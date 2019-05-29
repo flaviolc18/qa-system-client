@@ -9,7 +9,12 @@ const SignUp = loadable(() => import('./SignUp'));
 const QuestionPage = loadable(() => import('./QuestionPage'));
 const QuestionPost = loadable(() => import('./QuestionPost'));
 const Perfil = loadable(() => import('./Perfil'));
+<<<<<<< HEAD
 const SearchQuestion = loadable(() => import('./SearchQuestion'));
+=======
+const EditPerfil = loadable(() => import('./EditPerfil'));
+const ChangePassword = loadable(() => import('./ChangePassword'));
+>>>>>>> 25a44d0749dffc0b5680706734b3a5a4eb45bdf1
 
 const NotFount = () => (
   <div className="row justify-content-md-center">
@@ -29,6 +34,8 @@ const Index = () => (
       <QuestionPage path="perguntas/:id" />
       <QuestionPost path="postar-pergunta" />
       <SearchQuestion path="search/:filter" />
+      <EditPerfil path="editar-perfil/:usuarioId" />
+      <ChangePassword path="mudar-senha/:usuarioId" />
       <NotFount default />
     </FullPage>
   </Router>
