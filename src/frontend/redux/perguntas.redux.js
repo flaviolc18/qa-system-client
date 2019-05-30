@@ -1,7 +1,6 @@
 import { actionsFactory, reducerFactory, gettersFactory } from './creators/factory';
 const context = 'perguntas';
 
-let searchPerguntaURL = filters => '/api/perguntas/search/' + filters.search;
 let loadPerguntaURL = filters => '/api/perguntas/' + filters.id;
 let loadPerguntasUsuarioURL = filters => '/api/perguntas/usuarios/' + filters.usuarioId;
 let loadPerguntasURL = () => '/api/perguntas';
