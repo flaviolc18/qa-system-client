@@ -11,12 +11,10 @@ function serialize(obj, prefix) {
   let p;
 
   for (p in obj) {
-    const k = prefix ? prefix + '[' + p + ']' : p,
-      v = obj[p];
+    const key = prefix || p;
+    const value = obj[p];
 
-    str.push(
-      v !== null && typeof v === 'object' ? serialize(v, k) : encodeURIComponent(k) + '=' + encodeURIComponent(v)
-    );
+    str.push(Array.isArray(value) ? serialize(value, key) : encodeURIComponent(key) + '=' + encodeURIComponent(value));
   }
 
   return str.join('&');

@@ -5,6 +5,7 @@ const TagModel = require('./tag.model');
 exports.generate = generateTags;
 exports.update = updateTags;
 exports.find = findTag;
+exports.findAll = findAllTags;
 
 function generateTags(tagNames) {
   return Promise.all(
@@ -50,6 +51,10 @@ async function updateTags(oldTagIds, newTagNames) {
 
 function findTag(query) {
   return TagModel.findOne(query);
+}
+
+function findAllTags(query) {
+  return TagModel.find(query);
 }
 
 function incrementQuantidadeUsos(tagName) {
