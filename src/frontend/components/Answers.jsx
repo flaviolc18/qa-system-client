@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadRespostasByPergunta, getRespostaByPergunta } from '../redux/respostas.redux';
-import { loadUsuariosByPerguntaRespostas, getUsuario } from '../redux/usuarios.redux';
 import Answer from './Answer';
 
 class Answers extends Component {
@@ -17,7 +16,6 @@ class Answers extends Component {
       return '';
     }
     this.props.loadRespostasByPergunta({ perguntaId: this.props.perguntaId });
-    this.props.loadUsuariosByPerguntaRespostas({ perguntaId: this.props.perguntaId });
   }
 
   renderRespostas() {
@@ -25,10 +23,9 @@ class Answers extends Component {
       return '';
     }
     return this.props.respostas.map((resposta, index) => {
-      const usuario = this.props.usuarios[index];
       return (
         <div key={'answer' + index}>
-          <Answer resposta={this.props.respostas[index]} user={usuario} />
+          <Answer resposta={resposta} />
         </div>
       );
     });
@@ -36,9 +33,6 @@ class Answers extends Component {
   render() {
     if (!this.props.perguntaId) {
       return '';
-    }
-    if (!this.props.respostas || this.props.respostas.length <= 0) {
-      return <div>Loading</div>;
     }
 
     return (
@@ -55,17 +49,12 @@ Answers.propTypes = {
   loadRespostasByPergunta: PropTypes.func,
   perguntaId: PropTypes.string,
   respostas: PropTypes.array,
-  usuarios: PropTypes.array,
-  loadUsuariosByPerguntaRespostas: PropTypes.func,
 };
 export default connect(
   (state, ownProps) => {
     return {
       respostas: getRespostaByPergunta(state, { perguntaId: ownProps.perguntaId }),
-      usuarios: getRespostaByPergunta(state, { perguntaId: ownProps.perguntaId }).map(({ usuarioId }) =>
-        getUsuario(state, usuarioId)
-      ),
     };
   },
-  { loadRespostasByPergunta, loadUsuariosByPerguntaRespostas }
+  { loadRespostasByPergunta }
 )(Answers);

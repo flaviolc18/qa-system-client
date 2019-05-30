@@ -26,7 +26,7 @@ class Post extends Component {
 
   componentDidMount() {
     const { loadVote, post } = this.props;
-    loadVote({ id: post._id });
+    loadVote({ postId: post._id });
   }
 
   renderEdit() {
@@ -70,7 +70,7 @@ class Post extends Component {
     const { post, vote, loadPost } = this.props;
     const isVoteUpvote = vote && vote.vote === UPVOTE;
 
-    return this.props[`${isVoteUpvote ? 'unvote' : 'upvote'}Post`]({ id: post._id }).then(() =>
+    return this.props[`${isVoteUpvote ? 'unvote' : 'upvote'}Post`]({ postId: post._id }).then(() =>
       loadPost({ id: post._id })
     );
   }
@@ -79,7 +79,7 @@ class Post extends Component {
     const { post, vote, loadPost } = this.props;
     const isVoteDownvote = vote && vote.vote === DOWNVOTE;
 
-    return this.props[`${isVoteDownvote ? 'unvote' : 'downvote'}Post`]({ id: post._id }).then(() =>
+    return this.props[`${isVoteDownvote ? 'unvote' : 'downvote'}Post`]({ postId: post._id }).then(() =>
       loadPost({ id: post._id })
     );
   }
@@ -194,7 +194,7 @@ export default connect(
   (state, ownProps) => {
     return {
       session: getSession(state),
-      vote: getVoteByFilters(state, { id: ownProps.post._id })[0],
+      vote: getVoteByFilters(state, { postId: ownProps.post._id })[0],
     };
   },
   { loadVote, upvotePost, downvotePost, unvotePost }
