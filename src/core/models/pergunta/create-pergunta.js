@@ -11,16 +11,7 @@ module.exports = async function(perguntaData) {
     throw new Error('Referência para usuário inválida');
   }
 
-  let tags = perguntaData.tags.filter(tag => tag !== '');
-
-  tags = tags.map(tag => {
-    if (tag[0] === ' ') {
-      return tag.slice(1);
-    }
-
-    return tag;
-  });
-  tags = [...new Set(tags)];
+  const tags = [...new Set(perguntaData.tags.filter(tag => tag && tag !== '').map(tag => tag.trim()))];
 
   const data = { ...perguntaData, tags };
 
@@ -30,7 +21,6 @@ module.exports = async function(perguntaData) {
     upvotes: 0,
   };
 
-  //FIXME: trocar ordem
   const pergunta = new PerguntaModel({ ...data, ...defaultValues });
 
   return pergunta.save();
