@@ -11,18 +11,9 @@ module.exports = async function(perguntaData) {
     throw new Error('Referência para usuário inválida');
   }
 
-  let tags = perguntaData.tags.filter(tag => tag !== '' && tag !== ' ');
-
-  tags = tags.map(tag => {
-    if (tag[0] === ' ') {
-      return tag.slice(1);
-    }
-
-    return tag;
-  });
-  tags = [...new Set(tags)];
-
-  const data = { ...perguntaData, tags };
+  if (Array.isArray(perguntaData.tags)) {
+    perguntaData.tags = [...new Set(perguntaData.tags.map(tag => tag.trim()).filter(tag => tag))];
+  }
 
   const defaultValues = {
     dataCriacao: new Date(),
@@ -30,8 +21,7 @@ module.exports = async function(perguntaData) {
     upvotes: 0,
   };
 
-  //FIXME: trocar ordem
-  const pergunta = new PerguntaModel({ ...data, ...defaultValues });
+  const pergunta = new PerguntaModel({ ...perguntaData, ...defaultValues });
 
   return pergunta.save();
 };

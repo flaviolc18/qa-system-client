@@ -10,4 +10,5 @@ module.exports = async function(fastify) {
   fastify.register(require('./logout-usuario'));
   fastify.register(require('./signup-usuario'));
   fastify.register(require('./update-usuario'));
+  fastify.register(require('./change-password-usuario'));
 };
