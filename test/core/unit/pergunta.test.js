@@ -14,13 +14,9 @@ test(
 
     const { dataCriacao: dataCriacaoFixture, ...pergunta } = seed.fixtures.pergunta({ usuarioId });
 
-    pergunta.tags[0] = ' 1';
-
     const {
       _doc: { _id, __v, dataCriacao, ...createdPergunta },
     } = await perguntaModel.create(pergunta);
-
-    pergunta.tags[0] = '1';
 
     t.strictSame(createdPergunta, pergunta);
     t.ok(dataCriacao - dataCriacaoFixture < 250);
@@ -124,6 +120,24 @@ test(
 
     t.strictSame(deletedPergunta, pergunta);
     t.strictSame(foundPerguntas.length, 0);
+
+    t.end();
+  })
+);
+
+test(
+  'model.pergunta.create: cadastra pergunta sem tags',
+  withDB(async t => {
+    const { _id: usuarioId } = await seed.entidades.usuario();
+
+    const { dataCriacao: dataCriacaoFixture, tags, ...pergunta } = seed.fixtures.pergunta({ usuarioId });
+
+    const {
+      _doc: { _id, __v, dataCriacao, ...createdPergunta },
+    } = await perguntaModel.create(pergunta);
+
+    t.strictSame(createdPergunta, { ...pergunta, tags: [] });
+    t.ok(dataCriacao - dataCriacaoFixture < 250);
 
     t.end();
   })

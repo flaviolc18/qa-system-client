@@ -11,7 +11,7 @@ const perguntaSchema = mongoose.Schema({
   downvotes: { type: Number, default: 0 },
   usuarioId: ObjectId,
   dataCriacao: Date,
-  tags: Array,
+  tags: { type: Array, default: [] },
 });
 
 module.exports = mongoose.model('Pergunta', perguntaSchema);
