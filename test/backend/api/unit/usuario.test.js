@@ -322,16 +322,14 @@ test('api.usuarios.perguntas: passa id inválido', async t => {
   t.end();
 });
 
-test('api.usuarios.perguntas.respostas', async t => {
+test('api.usuarios.respostas', async t => {
   const fastify = await initServer(t);
 
   const usuario = await seed.entidades.usuario();
-  const pergunta = await seed.entidades.pergunta({ usuarioId: usuario._id });
-
-  await seed.entidades.resposta({ perguntaId: pergunta._id, usuarioId: usuario._id });
+  const resposta = await seed.entidades.resposta({ usuarioId: usuario._id });
 
   const { statusCode } = await fastify.inject({
-    url: `/api/usuarios/perguntas/${pergunta._id}/respostas`,
+    url: `/api/usuarios/respostas/${resposta._id}`,
     method: 'GET',
   });
 
@@ -340,11 +338,11 @@ test('api.usuarios.perguntas.respostas', async t => {
   t.end();
 });
 
-test('api.usuarios.perguntas.respostas: passa id inválido', async t => {
+test('api.usuarios.respostas: passa id inválido', async t => {
   const fastify = await initServer(t);
 
   const { statusCode, payload } = await fastify.inject({
-    url: `/api/usuarios/perguntas/${randomObjectId()}/respostas`,
+    url: `/api/usuarios/respostas/${randomObjectId()}`,
     method: 'GET',
   });
 

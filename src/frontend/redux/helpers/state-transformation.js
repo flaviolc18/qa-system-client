@@ -36,12 +36,11 @@ export function deleteAllIds(state, objs) {
 }
 
 export function assignByFilter(state, { response, filters }) {
-  if (!response.elements || response.elements.length === 0) return [];
   const key = serialize(filters);
-  const ids = response.elements.map(element => element._id);
-  if (!ids) {
+  if (!response.total || response.total === 0) {
     return Object.assign({}, state, { [key]: [] });
   }
+  const ids = response.elements.map(element => element._id);
 
   if (state[key]) {
     let novoValor = [...new Set(state[key].concat(ids))];
@@ -54,8 +53,10 @@ export function assignByFilter(state, { response, filters }) {
 }
 
 export function assignTotalSizeByFilter(state, action) {
-  if (!action.response || !action.response.total) return 0;
   const key = serialize(action.filters);
+  if (!action.response || action.response.total === 0) {
+    return Object.assign({}, state, { [key]: 0 });
+  }
   if (state[key]) {
     return Object.assign({}, state, { [key]: state[key] + action.response.total });
   }

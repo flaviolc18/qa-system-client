@@ -2,10 +2,10 @@ import { actionsFactory, reducerFactory, gettersFactory } from './creators/facto
 
 const context = 'votes';
 
-let loadVotePostURL = filters => `/api/posts/${filters.id}/vote`;
-let upvotePostURL = filters => `/api/posts/${filters.id}/upvote`;
-let downvotePostURL = filters => `/api/posts/${filters.id}/downvote`;
-let unvotePostURL = filters => `/api/posts/${filters.id}/unvote`;
+let loadVotePostURL = filters => `/api/posts/${filters.postId}/vote`;
+let upvotePostURL = filters => `/api/posts/${filters.postId}/upvote`;
+let downvotePostURL = filters => `/api/posts/${filters.postId}/downvote`;
+let unvotePostURL = filters => `/api/posts/${filters.postId}/unvote`;
 
 let actions = actionsFactory({
   context,
