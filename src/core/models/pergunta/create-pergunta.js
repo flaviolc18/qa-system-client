@@ -1,18 +1,19 @@
 'use strict';
 
-const findUsuario = require('../usuario/find-usuario');
+const { find: findUsuario } = require('../usuario');
+const { generate: generateTags } = require('../tags');
 
 const PerguntaModel = require('./pergunta.model');
 
-module.exports = async function(perguntaData) {
+module.exports = async function({ tags, ...perguntaData }) {
   const usuario = await findUsuario({ _id: perguntaData.usuarioId });
 
   if (!usuario) {
     throw new Error('Referência para usuário inválida');
   }
 
-  if (Array.isArray(perguntaData.tags)) {
-    perguntaData.tags = [...new Set(perguntaData.tags.map(tag => tag.trim()).filter(tag => tag))];
+  if (tags) {
+    perguntaData.tags = await generateTags(tags);
   }
 
   const defaultValues = {

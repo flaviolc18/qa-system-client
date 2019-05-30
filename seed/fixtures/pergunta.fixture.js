@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = ({ usuarioId, ...dadosPergunta } = {}) => ({
+module.exports = ({ usuarioId, tags = [], ...dadosPergunta } = {}) => ({
   titulo: 'Não tenho a menor ideia de como era a Baixa Idade Média',
   descricao: `Olá,
 
@@ -11,7 +11,7 @@ module.exports = ({ usuarioId, ...dadosPergunta } = {}) => ({
   dataCriacao: new Date(),
   upvotes: 0,
   downvotes: 0,
-  tags: ['1', '2', '3', '4'],
+  tags,
   usuarioId,
   ...dadosPergunta,
 });

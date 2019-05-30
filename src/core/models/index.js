@@ -7,4 +7,5 @@ module.exports = {
   session: require('./session'),
   usuario: require('./usuario'),
   votes: require('./votes'),
+  tags: require('./tags'),
 };

@@ -32,3 +32,25 @@ test(
     await t.end();
   })
 );
+
+test(
+  'model.pergunta.update: atualiza o array de tags',
+  withDB(async t => {
+    const pergunta = await seed.entidades.pergunta();
+    const tagNames = ['teste1', 'teste2'];
+    const alteracoes = { tags: tagNames };
+
+    const {
+      _doc: { tags },
+    } = await core.models.pergunta.update({ _id: pergunta._id }, alteracoes);
+
+    (await Promise.all(tags.map(async tagId => core.models.tags.find(tagId)))).forEach(
+      ({ nome, quantidadeUsos }, index) => {
+        t.same(nome, tagNames[index]);
+        t.same(quantidadeUsos, 1);
+      }
+    );
+
+    t.end();
+  })
+);
