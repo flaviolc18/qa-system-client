@@ -11,7 +11,7 @@ import {
   deleteAllIds,
 } from '../helpers/state-transformation';
 
-import { serialize } from '../../helpers/serializer';
+import { serialize } from '../../../utils';
 
 const loadPrefix = 'LOAD';
 const createPrefix = 'CREATE';

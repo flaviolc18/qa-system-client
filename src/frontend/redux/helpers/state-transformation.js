@@ -1,4 +1,4 @@
-import { serialize } from '../../helpers/serializer';
+import { serialize } from '../../../utils';
 
 export function assignById(state, objs) {
   if (!objs) return state;
