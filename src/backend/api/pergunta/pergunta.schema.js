@@ -28,6 +28,11 @@ module.exports = {
         type: 'string',
         description: 'Id do usuario que postou a pergunta',
       },
+      tags: {
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Array contendo Tags da Pergunta',
+      },
     },
   },
   params: {

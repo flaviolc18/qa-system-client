@@ -11,6 +11,10 @@ module.exports = async function(perguntaData) {
     throw new Error('Referência para usuário inválida');
   }
 
+  if (Array.isArray(perguntaData.tags)) {
+    perguntaData.tags = [...new Set(perguntaData.tags.map(tag => tag.trim()).filter(tag => tag))];
+  }
+
   const defaultValues = {
     dataCriacao: new Date(),
     downvotes: 0,
