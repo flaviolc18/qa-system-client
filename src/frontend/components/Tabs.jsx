@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link, navigate } from '@reach/router';
 
-import { serialize, deserialize } from '../helpers/serializer';
+import { serialize, deserialize } from '../../utils';
 
 class Tabs extends Component {
   constructor(props) {

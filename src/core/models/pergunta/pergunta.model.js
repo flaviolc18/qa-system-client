@@ -9,9 +9,9 @@ const perguntaSchema = mongoose.Schema({
   descricao: String,
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },
-  usuarioId: ObjectId,
+  usuarioId: { type: ObjectId, ref: 'Usuario' },
   dataCriacao: Date,
-  tags: { type: Array, default: [] },
+  tags: [{ type: ObjectId, ref: 'Tag' }],
 });
 
 module.exports = mongoose.model('Pergunta', perguntaSchema);

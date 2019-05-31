@@ -4,6 +4,7 @@ const { test } = require('tap');
 
 const { initServer, randomObjectId } = require('../../../test-helpers');
 const seed = require('../../../../seed');
+const utils = require('../../../../src/utils');
 
 test('api.perguntas.create', async t => {
   const fastify = await initServer(t);
@@ -93,22 +94,6 @@ test('api.perguntas.delete: passa id inválido', async t => {
   t.end();
 });
 
-test('api.perguntas.findAll', async t => {
-  const fastify = await initServer(t);
-
-  await seed.entidades.pergunta({ nome: 'pergunta 1' });
-  await seed.entidades.pergunta({ nome: 'pergunta 2' });
-
-  const { statusCode } = await fastify.inject({
-    url: '/api/perguntas',
-    method: 'GET',
-  });
-
-  t.same(statusCode, 200);
-
-  t.end();
-});
-
 test('api.perguntas.find', async t => {
   const fastify = await initServer(t);
 
@@ -187,6 +172,70 @@ test('api.perguntas.usuarios', async t => {
   });
 
   t.same(statusCode, 200);
+
+  t.end();
+});
+
+test('api.perguntas.search: pesquisa por tags', async t => {
+  const fastify = await initServer(t);
+
+  const { _id: usuarioId } = await seed.entidades.usuario();
+
+  const perguntaData = seed.fixtures.pergunta({ usuarioId, tags: ['teste1', 'teste2'] });
+
+  await fastify.core.models.pergunta.create(perguntaData);
+
+  const filter = utils.serialize({ tags: ['teste1', 'teste2'] });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/search?' + filter,
+    method: 'GET',
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 1);
+
+  t.end();
+});
+
+test('api.perguntas.search: pesquisa por keyword', async t => {
+  const fastify = await initServer(t);
+
+  const keyword = 'titulo esotérico';
+
+  await seed.entidades.pergunta({ titulo: 'um titulo esotérico aí' });
+
+  const filter = utils.serialize({ keyword });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/search?' + filter,
+    method: 'GET',
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 1);
+
+  t.end();
+});
+
+test('api.perguntas.search: pesquisa sem filtro', async t => {
+  const fastify = await initServer(t);
+
+  await seed.entidades.pergunta();
+
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/search?',
+    method: 'GET',
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 0);
 
   t.end();
 });

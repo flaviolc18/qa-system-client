@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getImagensByFilters, loadImagemNome, loadImagem } from '../redux/imagens.redux';
+import { getImagensByFilters, loadImagem } from '../redux/imagens.redux';
 
 class Image extends Component {
   constructor(props) {
@@ -34,7 +34,6 @@ Image.propTypes = {
   style: PropTypes.object,
   id: PropTypes.string.isRequired,
   image: PropTypes.object,
-  loadImagemNome: PropTypes.func,
   loadImagem: PropTypes.func,
 };
 
@@ -44,5 +43,5 @@ export default connect(
       image: getImagensByFilters(state, { id: ownProps.id })[0],
     };
   },
-  { loadImagemNome, loadImagem }
+  { loadImagem }
 )(Image);
