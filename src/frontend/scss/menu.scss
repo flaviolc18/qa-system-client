@@ -1,0 +1,14 @@
+.menuLink {
+  color: gray;
+  padding: 10px;
+}
+
+.menuLink.active {
+  color: black;
+  padding: 10px;
+}
+
+.menuLink:hover {
+  text-decoration: none;
+  color: black;
+}
