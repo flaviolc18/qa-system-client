@@ -2,7 +2,10 @@
 
 const { mongoose } = require('../../database');
 const bcrypt = require('bcryptjs');
+
 const { saltWorkFactor } = require('../../constants');
+
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const usuarioSchema = mongoose.Schema({
   email: { type: String, required: true, index: { unique: true } },
@@ -10,7 +13,7 @@ const usuarioSchema = mongoose.Schema({
   password: { type: String, required: true },
   descricao: String,
   reputacao: Number,
-  fotoPerfil: String,
+  imagemId: { type: ObjectId, ref: 'Imagem' },
 });
 
 usuarioSchema.pre('save', function(next) {
