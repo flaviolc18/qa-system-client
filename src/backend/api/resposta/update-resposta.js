@@ -8,11 +8,24 @@ module.exports = async function(fastify) {
   fastify.post('/respostas/:respostaId', schemaHelper.update('resposta.update'), async function({
     params: { respostaId },
     body: respostaData,
+    cookies: { session: sessionId },
   }) {
-    try {
-      const resposta = await fastify.core.models.resposta.update({ _id: respostaId }, respostaData);
+    const resposta = await fastify.core.models.resposta.find({ _id: respostaId });
 
-      return fastify.getResponseObject(resposta);
+    if (!resposta) {
+      throw fastify.httpErrors.notFound();
+    }
+
+    const { usuarioId } = await fastify.core.models.session.find(sessionId);
+
+    if (!usuarioId.equals(resposta.usuarioId)) {
+      throw fastify.httpErrors.unauthorized('Somente o usuário que postou a resposta pode editá-la');
+    }
+
+    try {
+      const respostaAtualizada = await fastify.core.models.resposta.update({ _id: respostaId }, respostaData);
+
+      return fastify.getResponseObject(respostaAtualizada);
     } catch ({ message }) {
       throw fastify.httpErrors.badRequest(message);
     }

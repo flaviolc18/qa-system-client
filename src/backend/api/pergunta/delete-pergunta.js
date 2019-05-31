@@ -7,13 +7,22 @@ module.exports = async function(fastify) {
 
   fastify.delete('/perguntas/:perguntaId', schemaHelper.delete('pergunta.delete'), async function({
     params: { perguntaId },
+    cookies: { session: sessionId },
   }) {
-    try {
-      const pergunta = await fastify.core.models.pergunta.delete({ _id: perguntaId });
+    const pergunta = await fastify.core.models.pergunta.find({ _id: perguntaId });
 
-      return fastify.getResponseObject(pergunta);
-    } catch ({ message }) {
+    if (!pergunta) {
       throw fastify.httpErrors.notFound();
     }
+
+    const { usuarioId } = await fastify.core.models.session.find(sessionId);
+
+    if (!usuarioId.equals(pergunta.usuarioId)) {
+      throw fastify.httpErrors.unauthorized('Somente o usuário que postou a pergunta pode deletá-la');
+    }
+
+    const perguntaDeletada = await fastify.core.models.pergunta.delete({ _id: perguntaId });
+
+    return fastify.getResponseObject(perguntaDeletada);
   });
 };

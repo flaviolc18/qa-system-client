@@ -131,6 +131,15 @@ test(
 );
 
 test(
+  'model.resposta.update: atualiza com id inválido',
+  withDB(async t => {
+    await t.rejects(respostaModel.update({ _id: randomObjectId() }, {}), new Error('Resposta não encontrada'));
+
+    t.end();
+  })
+);
+
+test(
   'model.resposta.findAll',
   withDB(async t => {
     const resposta = await seed.entidades.resposta();
@@ -160,6 +169,15 @@ test(
 
     t.strictSame(deletedResposta, resposta);
     t.strictSame(foundRespostas.length, 0);
+
+    t.end();
+  })
+);
+
+test(
+  'model.resposta.delete: deleta com id inválido',
+  withDB(async t => {
+    await t.rejects(respostaModel.delete({ _id: randomObjectId() }), new Error('Resposta não encontrada'));
 
     t.end();
   })
