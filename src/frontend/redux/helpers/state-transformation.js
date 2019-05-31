@@ -43,7 +43,7 @@ export function assignByFilter(state, { response, filters }) {
   const ids = response.elements.map(element => element._id);
 
   if (state[key]) {
-    let novoValor = [...new Set(state[key].concat(ids))];
+    let novoValor = [...new Set([...ids, ...state[key]])];
     return Object.assign({}, state, { [key]: novoValor });
   }
 

@@ -239,3 +239,28 @@ test('api.perguntas.search: pesquisa sem filtro', async t => {
 
   t.end();
 });
+
+test('api.perguntas.trending', async t => {
+  const fastify = await initServer(t);
+
+  const titulos = ['titulo 2', 'titulo 3', 'titulo 1'];
+
+  await seed.entidades.pergunta({ titulo: titulos[1], upvotes: 2, downvotes: 3 });
+  await seed.entidades.pergunta({ titulo: titulos[0], upvotes: 3, downvotes: 3 });
+  await seed.entidades.pergunta({ titulo: titulos[2], upvotes: 4, downvotes: 1 });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/trending',
+    method: 'GET',
+  });
+
+  const { elements, total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 3);
+  elements.forEach(({ titulo }, index) => {
+    t.same(titulo, titulos[index]);
+  });
+
+  t.end();
+});

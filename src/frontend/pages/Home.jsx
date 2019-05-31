@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from '@reach/router';
 
-import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
 
 class Home extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    this.props.loadPerguntas({});
+    this.props.loadPerguntasTrending();
   }
   onChange(e) {
     e.preventDefault();
@@ -51,7 +51,7 @@ class Home extends Component {
     return (
       <div>
         <h1>
-          <i className="fas fa-align-left" /> Perguntas Recentes:
+          <i className="fas fa-align-left" /> Trending perguntas:
         </h1>
         <div className="p-3" />
         <div className="pl-5 pr-5">{this.renderPerguntas()}</div>
@@ -61,7 +61,7 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  loadPerguntas: PropTypes.func,
+  loadPerguntasTrending: PropTypes.func,
   perguntas: PropTypes.array,
 };
 
@@ -71,5 +71,5 @@ export default connect(
       perguntas: getPerguntaByFilters(state, {}),
     };
   },
-  { loadPerguntas }
+  { loadPerguntasTrending }
 )(Home);
