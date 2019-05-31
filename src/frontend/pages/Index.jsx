@@ -25,7 +25,7 @@ const Index = () => (
     <FullPage path="/">
       <SignIn path="login" />
       <Perfil path="usuarios/:usuarioId" />
-      <SignUp path="registro-usuario" />
+      <SignUp path="registrar" />
       <Home path="home" />
       <QuestionPage path="perguntas/:id" />
       <QuestionPost path="postar-pergunta" />

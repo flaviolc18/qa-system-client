@@ -42,6 +42,7 @@ export default function render(url) {
       />
 
       <title>Não faço a Menor Ideia</title>
+      <link href="https://fonts.googleapis.com/css?family=Raleway|Source+Sans+Pro&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Great+Vibes|Kaushan+Script|Pacifico&display=swap" rel="stylesheet">    
 ${linkTags}
 ${styleTags}
