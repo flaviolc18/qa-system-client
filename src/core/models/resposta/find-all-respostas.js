@@ -2,6 +2,6 @@
 
 const RespostaModel = require('./resposta.model');
 
-module.exports = function(query) {
-  return RespostaModel.find(query);
+module.exports = function(query, options) {
+  return RespostaModel.find(query, null, options);
 };
