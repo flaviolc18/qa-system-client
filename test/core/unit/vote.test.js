@@ -25,7 +25,7 @@ test(
     t.same(perguntaAtualizada.upvotes, 1);
     t.same(perguntaAtualizada.downvotes, 0);
 
-    await t.end();
+    t.end();
   })
 );
 
