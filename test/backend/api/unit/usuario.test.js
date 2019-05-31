@@ -37,13 +37,13 @@ test('api.usuarios.changePassword', async t => {
   t.end();
 });
 
-test('api.usuarios.changePassword', async t => {
+test('api.usuarios.changePassword: tenta alterar senha de um usuário inexistente', async t => {
   const fastify = await initServer(t);
 
   const { statusCode } = await fastify.inject({
     url: `/api/usuarios/change-password/${randomObjectId()}`,
     method: 'POST',
-    payload: { password: 'passwordTeste123', nesPassword: 'passwordTeste1234' },
+    payload: { password: 'passwordTeste123', newPassword: 'passwordTeste1234' },
   });
 
   t.same(statusCode, 404);
@@ -51,33 +51,21 @@ test('api.usuarios.changePassword', async t => {
   t.end();
 });
 
-test('api.usuarios.changePassword', async t => {
+test('api.usuarios.changePassword: tenta alterar senha passando uma senha atual incorreta', async t => {
   const fastify = await initServer(t);
 
-  const usuario = await seed.entidades.usuario();
+  const usuario = await seed.entidades.usuario({ password: 'passwordCorreta' });
 
-  const { statusCode } = await fastify.inject({
+  const { statusCode, payload } = await fastify.inject({
     url: `/api/usuarios/change-password/${usuario._id}`,
     method: 'POST',
-    payload: { password: 'passwordTeste', nesPassword: 'passwordTeste1234' },
+    payload: { password: 'passwordIncorreta', newPassword: 'passwordTeste1234' },
   });
 
-  t.same(statusCode, 404);
+  const { message } = JSON.parse(payload);
 
-  t.end();
-});
-
-test('api.usuarios.changePassword', async t => {
-  const fastify = await initServer(t);
-
-  const usuario = await seed.entidades.usuario();
-
-  const { statusCode } = await fastify.inject({
-    url: `/api/usuarios/change-password/${usuario._id}`,
-    method: 'POST',
-  });
-
-  t.same(statusCode, 500);
+  t.same(statusCode, 401);
+  t.same(message, 'Senha incorreta');
 
   t.end();
 });
@@ -187,8 +175,28 @@ test('api.usuarios.update: passa id inválido', async t => {
 
   const { message } = JSON.parse(payload);
 
-  t.same(message, 'Not Found');
+  t.same(message, 'Usuário não encontrado');
   t.same(statusCode, 404);
+
+  t.end();
+});
+
+test('api.usuarios.update: tenta alterar senha', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
+  const alteracoes = { password: 'novaSenha' };
+
+  const { statusCode, payload } = await fastify.inject({
+    url: `/api/usuarios/${usuario._id}`,
+    method: 'POST',
+    payload: alteracoes,
+  });
+
+  const { message } = JSON.parse(payload);
+
+  t.same(message, 'Não é possível alterar senha por esta API');
+  t.same(statusCode, 400);
 
   t.end();
 });
