@@ -1,14 +1,13 @@
 'use strict';
 
-const respostaSchema = require('./resposta.schema');
+const schema = { querystring: { skip: { type: 'integer' }, limit: { type: 'integer' } } };
 
 module.exports = async function(fastify) {
-  const schemaHelper = fastify.schemaHelper(respostaSchema);
-
-  fastify.get('/respostas/usuarios/:usuarioId', schemaHelper.findAll('resposta.findAll.usuarios'), async function({
+  fastify.get('/respostas/usuarios/:usuarioId', { schema }, async function({
     params: { usuarioId },
+    query: { skip = 0, limit = 10 },
   }) {
-    const respostas = await fastify.core.models.resposta.findAll({ usuarioId });
+    const respostas = await fastify.core.models.resposta.findAll({ usuarioId }, { skip, limit });
 
     return fastify.getResponseObject(respostas);
   });
