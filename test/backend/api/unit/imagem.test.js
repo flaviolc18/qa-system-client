@@ -37,30 +37,12 @@ test('api.imagem.upload', async t => {
 test('api.imagem.find', async t => {
   const fastify = await initServer(t);
 
-  await fastify.inject({
-    url: '/api/imagem',
-    method: 'POST',
-    payload: { nome: 'teste', data: 'data' },
-  });
-
-  const { statusCode } = await fastify.inject({
-    url: '/api/imagem/nome/teste',
-    method: 'GET',
-  });
-
-  t.same(statusCode, 200);
-
-  t.end();
-});
-
-test('api.imagem.find', async t => {
-  const fastify = await initServer(t);
-
   const { payload } = await fastify.inject({
     url: '/api/imagem',
     method: 'POST',
     payload: { nome: 'teste', data: 'data' },
   });
+
   const { elements } = JSON.parse(payload);
 
   const { statusCode } = await fastify.inject({
@@ -107,15 +89,10 @@ test('api.imagem.find', async t => {
 test('api.imagem.delete', async t => {
   const fastify = await initServer(t);
 
-  await fastify.inject({
+  const { payload } = await fastify.inject({
     url: '/api/imagem',
     method: 'POST',
     payload: { nome: 'teste', data: 'data' },
-  });
-
-  const { payload } = await fastify.inject({
-    url: '/api/imagem/nome/teste',
-    method: 'GET',
   });
 
   const { elements } = JSON.parse(payload);

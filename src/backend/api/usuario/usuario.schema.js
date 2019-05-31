@@ -24,7 +24,7 @@ module.exports = {
         type: 'number',
         description: 'reputacao do usuário',
       },
-      fotoPerfil: {
+      imagemId: {
         type: 'string',
         description: 'nome para a foto de perfil do usuario',
       },

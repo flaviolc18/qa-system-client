@@ -27,7 +27,7 @@ class EditPerfilt extends Component {
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId }).then(response => {
       const usuario = response.elements[0];
-      this.props.loadImagem({ id: usuario.fotoPerfil }).then(response => {
+      this.props.loadImagem({ id: usuario.imagemId }).then(response => {
         this.setState({
           username: usuario.username,
           descricao: usuario.descricao,
@@ -58,7 +58,7 @@ class EditPerfilt extends Component {
     if (image) {
       this.props.uploadImagem(this.state.image).then(response => {
         if (response.elements[0]) {
-          this.props.updateUsuario({ id: this.props.usuarioId }, { fotoPerfil: response.elements[0]._id });
+          this.props.updateUsuario({ id: this.props.usuarioId }, { imagemId: response.elements[0]._id });
         }
       });
     }
@@ -81,15 +81,15 @@ class EditPerfilt extends Component {
     if (!this.props.usuario) {
       return '';
     }
-    const imafgeBuffer = this.state.buffer;
+    const imageBuffer = this.state.buffer;
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <h3>Editar Pefil</h3>
         <div className="mb-4">
           <label>Foto de Perfil</label>
           <div>
-            {imafgeBuffer ? (
-              <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={imafgeBuffer} />
+            {imageBuffer ? (
+              <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={imageBuffer} />
             ) : (
               ''
             )}
