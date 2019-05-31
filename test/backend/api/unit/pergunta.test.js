@@ -361,3 +361,31 @@ test('api.perguntas.trending', async t => {
 
   t.end();
 });
+
+test('api.perguntas.trending: skip & limit', async t => {
+  const fastify = await initServer(t);
+
+  for (let i = 0; i < 10; i++) {
+    await seed.entidades.pergunta({ titulo: `titulo ${i}`, upvotes: i });
+  }
+
+  const options = { skip: 2, limit: 4 };
+
+  const { statusCode, payload } = await fastify.inject({
+    url: `/api/perguntas/trending?${utils.serialize(options)}`,
+    method: 'GET',
+  });
+
+  const { elements, total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 4);
+
+  const expectedTitulos = ['titulo 7', 'titulo 6', 'titulo 5', 'titulo 4'];
+
+  elements.forEach(({ titulo }, index) => {
+    t.same(titulo, expectedTitulos[index]);
+  });
+
+  t.end();
+});

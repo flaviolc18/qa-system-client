@@ -2,6 +2,6 @@
 
 const PerguntaModel = require('./pergunta.model');
 
-module.exports = function(query) {
-  return PerguntaModel.find(query);
+module.exports = function(query, options) {
+  return PerguntaModel.find(query, null, options);
 };
