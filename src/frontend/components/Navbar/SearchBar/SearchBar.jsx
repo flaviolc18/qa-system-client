@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { serialize } from '../../../helpers/serializer';
+import { serialize } from '../../../../utils/serializer';
 import { navigate } from '@reach/router';
 
 class Search extends Component {
