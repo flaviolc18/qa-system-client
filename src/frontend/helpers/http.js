@@ -1,4 +1,4 @@
-import { serialize } from './serializer';
+import { serialize } from '../../utils';
 const devServerUrl = 'http://localhost:3000';
 
 process.env.ENV;

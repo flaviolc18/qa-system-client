@@ -1,4 +1,4 @@
-import { deserialize } from './serializer';
+import { deserialize } from '../../utils';
 
 export function getSearch(location) {
   const search = location.search.substr(1);
