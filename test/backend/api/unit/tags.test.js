@@ -2,10 +2,10 @@
 
 const { test } = require('tap');
 
-const { initServer } = require('../../../test-helpers');
+const { initServer, randomObjectId } = require('../../../test-helpers');
 const seed = require('../../../../seed');
 
-test('api.votes.upvote', async t => {
+test('api.tags.pergunta', async t => {
   const fastify = await initServer(t);
 
   const tagNamesExpected = ['tag1', 'tag2', 'tag3'];
@@ -31,6 +31,19 @@ test('api.votes.upvote', async t => {
   });
 
   t.same(foundTagNames.length, tagNamesExpected.length);
+
+  t.end();
+});
+
+test('api.tags.pergunta: passa id de uma pergunta não cadastrada', async t => {
+  const fastify = await initServer(t);
+
+  const { statusCode } = await fastify.inject({
+    url: `/api/tags/pergunta/${randomObjectId()}`,
+    method: 'GET',
+  });
+
+  t.same(statusCode, 404);
 
   t.end();
 });
