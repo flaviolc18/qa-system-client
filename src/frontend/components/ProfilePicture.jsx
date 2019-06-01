@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Image from './Image';
-import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
+
+import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
+
+import Image from './Image';
 
 class ProfilePicture extends Component {
   componentDidMount() {
@@ -10,10 +12,13 @@ class ProfilePicture extends Component {
   }
 
   render() {
-    if (!this.props.usuario) {
-      return 'Carregando...';
+    const { usuario, style } = this.props;
+
+    if (!usuario) {
+      //TODO: usar <Loading />
+      return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
     }
-    return <Image style={this.props.style} id={this.props.usuario.imagemId} />;
+    return <Image style={style} id={usuario.imagemId} />;
   }
 }
 
