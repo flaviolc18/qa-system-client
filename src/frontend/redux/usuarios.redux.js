@@ -7,12 +7,14 @@ let updateUsuarioURL = filters => '/api/usuarios/' + filters.id;
 let loadUsuariosRespostaURL = filters => '/api/usuarios/respostas/' + filters.respostaId;
 let loadUsuarioPerguntaURL = filters => '/api/usuarios/perguntas/' + filters.perguntaId;
 let changePasswordURL = filters => '/api/usuarios/change-password/' + filters.id;
+let createUsuarioURL = () => '/api/usuarios/signup';
 
 let actions = actionsFactory({
   context,
   buildURLs: {
     loadOneURLs: [loadUsuarioURL, loadUsuariosRespostaURL, loadUsuarioPerguntaURL],
     editOneURLs: [updateUsuarioURL, changePasswordURL],
+    createOneURLs: [createUsuarioURL],
   },
 });
 
@@ -20,6 +22,8 @@ let getters = gettersFactory({ context });
 
 export const getUsuario = getters.getOneById;
 export const getUsuariosByFilter = getters.getByFilters;
+
+export const signUpUsuario = actions.create[0];
 
 export const loadUsuario = actions.load[0];
 export const loadUsuariosByResposta = actions.load[1];
