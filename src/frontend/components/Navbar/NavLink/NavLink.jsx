@@ -17,7 +17,7 @@ class NavLink extends Component {
 }
 
 NavLink.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   label: PropTypes.string,
   disabled: PropTypes.bool,
   active: PropTypes.bool,

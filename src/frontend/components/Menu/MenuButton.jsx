@@ -14,7 +14,7 @@ class MenuButton extends Component {
 MenuButton.propTypes = {
   style: PropTypes.object,
   onClick: PropTypes.func,
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 };
 
 export default MenuButton;

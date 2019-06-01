@@ -7,7 +7,7 @@ import { getSession } from '../../../redux/sessions.redux';
 class Navbar extends Component {
   render() {
     return (
-      <nav className="navbar navbar-dark bg-dark">
+      <nav className="navbar navbar-dark bg-dark" style={{ minWidth: '1200px' }}>
         <div className="navbar" style={{ margin: '0 auto' }}>
           {this.props.children}
         </div>

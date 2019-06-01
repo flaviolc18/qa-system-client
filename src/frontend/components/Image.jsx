@@ -32,7 +32,7 @@ class Image extends Component {
 
 Image.propTypes = {
   style: PropTypes.object,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   image: PropTypes.object,
   loadImagem: PropTypes.func,
 };
