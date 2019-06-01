@@ -7,6 +7,26 @@ body {
   background-color: white;
   min-height: 100%;
 }
+.input-text {
+  color: rgb(48, 48, 48);
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  border: 0;
+  padding: 10px;
+  background-color: rgb(240, 240, 240);
+}
+.text-box {
+  color: rgb(48, 48, 48);
+  border-radius: 20px;
+  border: 0;
+  padding: 10px;
+  background-color: rgb(240, 240, 240);
+}
+.input-text:focus,
+.text-box {
+  outline: none;
+}
 .login-modal {
   border-radius: 5px;
   padding: 20px;

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadResposta, editResposta, removeResposta } from '../redux/respostas.redux';
-import { loadUsuariosByResposta, getUsuariosByFilter } from '../redux/usuarios.redux';
+import { loadResposta, editResposta, removeResposta, getRespostaById } from '../redux/respostas.redux';
+import { getUsuariosByFilter, loadUsuario } from '../redux/usuarios.redux';
 
 import Post from './Post';
 
@@ -18,7 +18,8 @@ class Answer extends Component {
   }
 
   componentDidMount() {
-    this.props.loadUsuariosByResposta({ respostaId: this.props.resposta._id });
+    this.props.loadResposta({ id: this.props.resposta._id });
+    this.props.loadUsuario({ id: this.props.resposta.usuarioId });
   }
 
   onFinishEdit(editedText) {
@@ -28,7 +29,6 @@ class Answer extends Component {
   }
 
   render() {
-    //FIXME: isso não é loading
     if (!this.props.resposta || !this.props.usuario) {
       return 'Loading...';
     }
@@ -52,14 +52,15 @@ Answer.propTypes = {
   editResposta: PropTypes.func,
   resposta: PropTypes.object,
   usuario: PropTypes.object,
-  loadUsuariosByResposta: PropTypes.func,
+  loadUsuario: PropTypes.func,
 };
 
 export default connect(
   (state, ownProps) => {
     return {
-      usuario: getUsuariosByFilter(state, { respostaId: ownProps.resposta._id })[0],
+      resposta: getRespostaById(state, ownProps.resposta._id),
+      usuario: getUsuariosByFilter(state, { id: ownProps.resposta.usuarioId })[0],
     };
   },
-  { loadResposta, removeResposta, editResposta, loadUsuariosByResposta }
+  { loadResposta, loadUsuario, removeResposta, editResposta }
 )(Answer);

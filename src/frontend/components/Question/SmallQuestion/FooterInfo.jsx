@@ -25,7 +25,7 @@ function FooterInfo({ usuario, pergunta }) {
             {usuario.username}
           </Link>
         </div>
-        <div className="row-md-auto m-0 p-0">Postado em {`${new Date(pergunta.dataCriacao).toLocaleDateString()}`}</div>
+        <div className="row-md-auto m-0 p-0">postado em {`${new Date(pergunta.dataCriacao).toLocaleDateString()}`}</div>
       </div>
     </div>
   );
