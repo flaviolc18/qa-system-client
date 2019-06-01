@@ -12,10 +12,13 @@ class ProfilePicture extends Component {
   }
 
   render() {
-    if (!this.props.usuario) {
-      return 'Carregando...';
+    const { usuario, style } = this.props;
+
+    if (!usuario) {
+      //TODO: usar <Loading />
+      return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
     }
-    return <Image style={this.props.style} id={this.props.usuario.imagemId} />;
+    return <Image style={style} id={usuario.imagemId} />;
   }
 }
 

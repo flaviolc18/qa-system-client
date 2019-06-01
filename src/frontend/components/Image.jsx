@@ -9,7 +9,7 @@ class Image extends Component {
     super(props);
   }
   componentDidMount() {
-    const { id } = this.props;
+    const { id, loadImagem } = this.props;
     loadImagem({ id });
   }
 
@@ -25,6 +25,7 @@ class Image extends Component {
     const { imagem, style } = this.props;
 
     if (!imagem) {
+      //TODO: usar <Loading />
       return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
     }
 
