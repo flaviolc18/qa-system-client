@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getImagem, loadImagem } from '../redux/imagens.redux';
 
-const base64Flag = 'data:image/jpeg;base64,';
+import { base64Flag } from '../../utils';
 
 class Image extends Component {
   constructor(props) {
@@ -32,7 +32,6 @@ class Image extends Component {
     }
 
     const imageStr = Buffer.from(imagem.buffer).toString('base64');
-    console.log({ imagem });
 
     return <img style={style} src={base64Flag + imageStr} />;
   }

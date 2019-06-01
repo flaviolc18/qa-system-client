@@ -13,7 +13,8 @@ let actions = actionsFactory({
   context,
   buildURLs: {
     loadOneURLs: [loadUsuarioURL, loadUsuariosRespostaURL, loadUsuarioPerguntaURL],
-    editOneURLs: [updateUsuarioURL, changePasswordURL, changeProfilePictureURL],
+    editOneURLs: [updateUsuarioURL, changePasswordURL],
+    uploadOneURLs: [changeProfilePictureURL],
   },
 });
 
@@ -28,7 +29,8 @@ export const loadUsuarioPergunta = actions.load[2];
 
 export const updateUsuario = actions.edit[0];
 export const changePasswordUsuario = actions.edit[1];
-export const changeProfilePicture = actions.edit[2];
+
+export const changeProfilePicture = actions.upload[0];
 
 export const getUsuarioLoadingState = getters.getLoadingState;
 

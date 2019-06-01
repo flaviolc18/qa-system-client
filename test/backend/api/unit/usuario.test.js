@@ -1,6 +1,8 @@
 'use strict';
 
 const { test } = require('tap');
+const supertest = require('supertest');
+const path = require('path');
 
 const { initServer, randomObjectId } = require('../../../test-helpers');
 const seed = require('../../../../seed');
@@ -358,6 +360,61 @@ test('api.usuarios.respostas: passa id inválido', async t => {
 
   t.same(message, 'Not Found');
   t.same(statusCode, 404);
+
+  t.end();
+});
+
+test('api.usuarios.upload', async t => {
+  const fastify = await initServer(t);
+
+  const filePath = path.join(__dirname, '../../../../seed/arquivos/test.jpg');
+
+  const usuario = await seed.entidades.usuario();
+
+  const {
+    res: { statusCode },
+  } = await supertest(fastify.server)
+    .post(`/api/usuarios/${usuario._id}/upload`)
+    .field('Content-Type', 'multipart/form-data')
+    .attach('test', filePath);
+
+  t.same(statusCode, 200);
+  t.end();
+});
+
+test('api.usuarios.upload: passa id usuário inválido', async t => {
+  const fastify = await initServer(t);
+
+  const filePath = path.join(__dirname, '../../../../seed/arquivos/test.jpg');
+
+  const {
+    res: { statusCode, text },
+  } = await supertest(fastify.server)
+    .post(`/api/usuarios/${randomObjectId()}/upload`)
+    .field('Content-Type', 'multipart/form-data')
+    .attach('test', filePath);
+
+  const { message } = JSON.parse(text);
+
+  t.same(message, 'Referência para usuário inválida');
+  t.same(statusCode, 404);
+
+  t.end();
+});
+
+test('api.usuarios.upload: requisição não multipart', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
+
+  const {
+    res: { statusCode, text },
+  } = await supertest(fastify.server).post(`/api/usuarios/${usuario._id}/upload`);
+
+  const { error } = JSON.parse(text);
+
+  t.same(error, 'the request is not multipart');
+  t.same(statusCode, 400);
 
   t.end();
 });

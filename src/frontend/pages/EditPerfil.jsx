@@ -1,60 +1,62 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
+
+import { base64Flag } from '../../utils';
 
 import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { uploadImagem, loadImagem } from '../redux/imagens.redux';
-import { navigate } from '@reach/router';
 
 class EditPerfil extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: '',
       descricao: '',
       image: null,
+      imageSource: null,
     };
+
     this.onTextChange = this.onTextChange.bind(this);
     this.editUser = this.editUser.bind(this);
+    this.renderImage = this.renderImage.bind(this);
     this.onImageChange = this.onImageChange.bind(this);
-    this.renderUpdateProfilePictureLabel = this.renderUpdateProfilePictureLabel.bind(this);
   }
+
   onTextChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   }
+
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId }).then(response => {
-      if (response.total) {
-        const usuario = response.elements[0];
-        this.props.loadImagem({ id: usuario.imagemId }).then(response => {
-          this.setState({
-            username: usuario.username,
-            descricao: usuario.descricao,
-            imagem: response.elements[0],
-          });
+      const usuario = response.elements[0];
+      this.props.loadImagem({ id: usuario.imagemId }).then(response => {
+        const imagem = response.elements[0];
+
+        const imageStr = Buffer.from(imagem.buffer).toString('base64');
+
+        this.setState({
+          username: usuario.username,
+          descricao: usuario.descricao,
+          imageSource: base64Flag + imageStr,
         });
-      }
+      });
     });
   }
 
   onImageChange(e) {
-    const image = e.target.files[0];
+    if (event.target.files && event.target.files[0]) {
+      const image = e.target.files[0];
 
-    const formData = new FormData();
-    formData.append('image', image);
-    this.setState({ image });
-
-    // let reader = new FileReader();
-    // reader.readAsDataURL(image);
-    // reader.onload = e => {
-    //   const image = {
-    //     nome: image.name,
-    //     buffer: e.target.result,
-    //   };
-    //   this.setState({ image });
-    // };
+      let reader = new FileReader();
+      reader.onload = e => {
+        this.setState({ image, imageSource: e.target.result });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   editUser(e) {
@@ -65,7 +67,10 @@ class EditPerfil extends Component {
     const promises = [];
 
     if (image) {
-      promises.push(changeProfilePicture({ id: usuarioId }, image));
+      const formData = new FormData();
+      formData.append('image', image);
+
+      promises.push(changeProfilePicture({ id: usuarioId }, formData));
     }
 
     if (username || descricao) {
@@ -73,26 +78,31 @@ class EditPerfil extends Component {
     }
 
     if (promises.length) {
-      Promise.all(promises).then(() => navigate('/usuarios/' + usuarioId));
+      Promise.all(promises).then(() => {
+        navigate('/usuarios/' + usuarioId);
+      });
     }
+  }
+
+  renderImage() {
+    return this.state.imageSource ? (
+      <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={this.state.imageSource} />
+    ) : (
+      ''
+    );
   }
 
   render() {
     if (!this.props.usuario) {
       return '';
     }
-    const imageBuffer = this.state.buffer;
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <h3>Editar Pefil</h3>
         <div className="mb-4">
           <label>Foto de Perfil</label>
           <div>
-            {imageBuffer ? (
-              <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={imageBuffer} />
-            ) : (
-              ''
-            )}
+            {this.renderImage()}
             <div htmlFor={'uploadInput'}>
               <label htmlFor={'uploadInput'} />
               <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.onImageChange} />
