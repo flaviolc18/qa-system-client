@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { serialize } from '../../../utils/serializer';
+import { serialize, deserialize } from '../../../utils/serializer';
 import { navigate } from '@reach/router';
 
 class Search extends Component {
@@ -12,10 +12,29 @@ class Search extends Component {
     this.onSearch = this.onSearch.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+  componentDidMount() {
+    const query = deserialize(this.props.location.search.slice(1));
+
+    let value = query[this.props.searchKey];
+    value = value ? value : '';
+
+    this.setState({ searchBarText: value });
+  }
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.location.search === this.props.location.search) return;
+
+    const query = deserialize(this.props.location.search.slice(1));
+
+    let value = query[this.props.searchKey];
+    value = value ? value : '';
+
+    this.setState({ searchBarText: value });
+  }
 
   onSearch(e) {
     e.preventDefault();
-    navigate(this.props.to + '/' + serialize({ [this.props.searchKey]: this.state.searchBarText }));
+    navigate(this.props.to + '?' + serialize({ [this.props.searchKey]: this.state.searchBarText }));
   }
 
   onChange(e) {
@@ -46,6 +65,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+  location: PropTypes.object,
   to: PropTypes.string,
   searchKey: PropTypes.string,
 };

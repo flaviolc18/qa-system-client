@@ -1,0 +1,78 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { getUsuariosByFilter, loadUsuarioPergunta } from '../../../redux/usuarios.redux';
+import { getTagsByFilters, loadTags } from '../../../redux/tags.redux';
+
+import Titulo from './Title';
+import TagList from './TagList';
+import Votes from './Votes';
+import FooterInfo from './FooterInfo';
+
+class SmallQuestion extends Component {
+  componentDidMount() {
+    const {
+      pergunta: { _id: perguntaId },
+      loadUsuarioPergunta,
+      loadTags,
+    } = this.props;
+
+    loadUsuarioPergunta({ perguntaId });
+    loadTags({ perguntaId });
+  }
+
+  render() {
+    const { pergunta, usuario, tags } = this.props;
+    if (!pergunta || !usuario || !tags) {
+      return '';
+    }
+    return (
+      <div
+        style={{
+          margin: '10px',
+          border: '1px solid rgb(220,220,220)',
+        }}
+      >
+        <div className="row p-2 m-0" style={{ borderBottom: '1px solid rgb(220,220,220)' }}>
+          <div className="col p-0 m-0">
+            <FooterInfo usuario={usuario} pergunta={pergunta} />
+          </div>
+          <div className="col p-0 m-0">
+            <Votes pergunta={pergunta} />
+          </div>
+        </div>
+
+        <div className="row p-0 m-2">
+          <div className="col p-0 m-0">
+            <Titulo pergunta={pergunta} />
+            <div className="row p-0 m-0">
+              <TagList tags={tags} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+SmallQuestion.propTypes = {
+  pergunta: PropTypes.object,
+  usuario: PropTypes.object,
+  tags: PropTypes.array,
+  loadUsuarioPergunta: PropTypes.func,
+  loadTags: PropTypes.func,
+};
+
+export default connect(
+  (state, ownProps) => {
+    return {
+      usuario: getUsuariosByFilter(state, { perguntaId: ownProps.pergunta._id })[0],
+      tags: getTagsByFilters(state, { perguntaId: ownProps.pergunta._id }),
+    };
+  },
+  {
+    loadUsuarioPergunta,
+    loadTags,
+  }
+)(SmallQuestion);

@@ -80,7 +80,15 @@ class FullPage extends Component {
         </div>
       );
 
-    return [<SearchBar key={'unlogged-search-bar'} to="/" searchKey="title" />, user];
+    return [
+      <SearchBar
+        key={'unlogged-search-bar'}
+        to="/perguntas/pesquisar"
+        location={this.props.location}
+        searchKey="keyword"
+      />,
+      user,
+    ];
   }
 
   render() {
@@ -121,7 +129,7 @@ class FullPage extends Component {
                   </MenuLink>
 
                   <div className="pb-4" />
-                  <SearchBarMenu to="/" searchKey="tags" />
+                  <SearchBarMenu to="/perguntas/pesquisar" location={this.props.location} searchKey="tags" />
                 </MenuBody>
               </Menu>
             </div>

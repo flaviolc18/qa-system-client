@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
 
-import SmallQuestion from '../components/SmallQuestion';
+import SmallQuestion from '../components/Question/SmallQuestion/SmallQuestion';
 
 class Home extends Component {
   constructor(props) {

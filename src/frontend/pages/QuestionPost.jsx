@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 
 import { postPergunta } from '../redux/perguntas.redux';
 import { getSession } from '../redux/sessions.redux';
-import TextAreaBox from '../components/TextBox';
+import TextBox from '../components/TextBox/TextBox';
 
 class QuestionPost extends Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class QuestionPost extends Component {
         />
         <br />
         Descrição:
-        <TextAreaBox onSubmit={this.post} />
+        <TextBox onSubmit={this.post} />
         Tags:
         <input
           onChange={this.onChange}

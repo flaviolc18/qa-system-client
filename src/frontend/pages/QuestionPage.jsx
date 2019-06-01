@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { postResposta } from '../redux/respostas.redux';
 import { getSession } from '../redux/sessions.redux';
 import Question from '../components/Question';
-import TextBox from '../components/TextBox';
+import TextBox from '../components/TextBox/TextBox';
 import Answers from '../components/Answers';
 
 class QuestionPage extends Component {

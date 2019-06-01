@@ -14,7 +14,7 @@ class MenuButton extends Component {
 
 MenuButton.propTypes = {
   pathname: PropTypes.string,
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   to: PropTypes.string,
 };
 
