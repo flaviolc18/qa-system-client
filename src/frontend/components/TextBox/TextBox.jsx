@@ -11,47 +11,33 @@ class TextAreaBox extends Component {
       text: '',
     };
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
   onChange(e) {
     e.preventDefault();
 
     this.setState({ text: e.target.value });
   }
-  onSubmit(e) {
-    e.preventDefault();
-    if (this.props.session) {
-      this.props.onSubmit(this.state);
-    }
-    this.setState({ text: '' });
-  }
+
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
-          <textarea
-            disabled={this.props.session ? false : true}
-            className="form-control"
-            onChange={this.onChange}
-            style={{ resize: 'none', width: '100%', height: '200px' }}
-          />
-          <div className="pb-3" />
-
-          <button
-            className={'btn btn-success ' + (this.props.session ? '' : 'disabled')}
-            style={{ float: 'right' }}
-            type="submit"
-          >
-            Postar!
-          </button>
-        </form>
+        <textarea
+          ref={this.props.reference}
+          className="text-box"
+          disabled={this.props.session ? false : true}
+          onChange={this.onChange}
+          placeHolder={this.props.placeHolder}
+          style={{ resize: 'none', width: '100%', height: '200px' }}
+        />
+        <div className="pb-3" />
       </div>
     );
   }
 }
 
-TextAreaBox.defaultProps = {
-  buttonMessage: 'Postar!',
+TextAreaBox.propTypes = {
+  reference: PropTypes.object,
+  placeHolder: PropTypes.string,
 };
 
 TextAreaBox.propTypes = {
