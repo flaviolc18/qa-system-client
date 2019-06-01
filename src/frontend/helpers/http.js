@@ -5,7 +5,10 @@ const developmentURL = 'http://localhost';
 const serverBaseURL = `${process.env.ENV === 'production' ? productionURL : developmentURL}:${process.env.PORT ||
   3000}`;
 
+/* eslint no-console:0 */
+
 function request({ method, url, body }) {
+  console.log({ ENVIROMENT: process.env.ENV });
   const opts = {
     method,
     headers: {
