@@ -2,6 +2,6 @@
 
 const UsuarioModel = require('./usuario.model');
 
-module.exports = function(query) {
-  return UsuarioModel.find(query);
+module.exports = function(query, options) {
+  return UsuarioModel.find(query, null, options);
 };

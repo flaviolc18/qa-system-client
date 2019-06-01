@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from '@reach/router';
 
-import { loadPerguntas, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
+
+import SmallQuestion from '../components/Question/SmallQuestion';
 
 class Home extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    this.props.loadPerguntas({});
+    this.props.loadPerguntasTrending();
   }
   onChange(e) {
     e.preventDefault();
@@ -28,20 +29,7 @@ class Home extends Component {
   }
 
   renderPerguntas() {
-    return this.props.perguntas.map((pergunta, index) => {
-      return (
-        <div
-          style={{ margin: '4px', borderBottom: 'solid 1px rgb(205,205,205)', fontSize: '30px' }}
-          key={'pergunta' + index}
-        >
-          <div style={{ height: '40px' }} />
-          <Link style={{ color: 'black' }} to={'/perguntas/' + pergunta._id}>
-            {pergunta.titulo}
-          </Link>
-          <div style={{ fontSize: '15px', float: 'right' }}>{new Date(pergunta.dataCriacao).toLocaleDateString()}</div>
-        </div>
-      );
-    });
+    return this.props.perguntas.map((pergunta, index) => <SmallQuestion pergunta={pergunta} key={index} />);
   }
 
   render() {
@@ -49,19 +37,18 @@ class Home extends Component {
       return '';
     }
     return (
-      <div>
-        <h1>
-          <i className="fas fa-align-left" /> Perguntas Recentes:
-        </h1>
-        <div className="p-3" />
-        <div className="pl-5 pr-5">{this.renderPerguntas()}</div>
+      <div className="mt-5">
+        <h3>
+          <i className="fas fa-align-left" /> Trending perguntas:
+        </h3>
+        <div className="px-3 mt-5">{this.renderPerguntas()}</div>
       </div>
     );
   }
 }
 
 Home.propTypes = {
-  loadPerguntas: PropTypes.func,
+  loadPerguntasTrending: PropTypes.func,
   perguntas: PropTypes.array,
 };
 
@@ -71,5 +58,5 @@ export default connect(
       perguntas: getPerguntaByFilters(state, {}),
     };
   },
-  { loadPerguntas }
+  { loadPerguntasTrending }
 )(Home);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { searchPergunta, getPerguntaByFilters } from '../redux/perguntas.redux';
-import QuestionListItem from '../components/Question/SimpleQuestion';
+import SmallQuestion from '../components/Question/SmallQuestion';
 
 class SearchQuestion extends Component {
   componentDidMount() {
@@ -26,7 +26,7 @@ class SearchQuestion extends Component {
           {this.props.perguntas.map((question, i) => {
             return (
               <li key={i} className="list-group-item">
-                <QuestionListItem perguntaId={question._id} usuarioId={question.usuarioId} pergunta={question} />
+                <SmallQuestion pergunta={question} />
               </li>
             );
           })}
