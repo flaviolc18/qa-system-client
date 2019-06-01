@@ -4,7 +4,7 @@
   "description": "Implementacao de um sistema web de perguntas e respostas baseando na metodologia de desenvolvimento de software Extreme Programming",
   "scripts": {
     "lint": "prettier --write \"{src,test, dist}/**/*.js\" && eslint --fix \"{src,test, dist}/**/*.js\"",
-    "start": "fastify start src/backend/server.js",
+    "start": "node src/backend/server.js",
     "watch:frontend": "webpack --mode development -w",
     "watch:backend": "fastify start -w src/backend/server.js -p 9000 | pino-pretty",
     "livereload": "browser-sync start --proxy localhost:9000 --files \"dist\"",

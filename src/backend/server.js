@@ -19,63 +19,55 @@ const { default: render } = require('../../dist/app.ssr');
 
 /* eslint no-unused-vars:0 */
 
-module.exports = async function(fastify, opts) {
-  fastify.register(fastifyEnv, {
-    schema: {
-      type: 'object',
-      required: ['PORT', 'NODE_ENV'],
-      properties: {
-        PORT: {
-          type: 'string',
-          default: 3000,
-        },
-        NODE_ENV: {
-          type: 'string',
-          default: 'development',
-        },
-      },
-    },
-  });
+const Fastify = require('fastify');
 
-  fastify.decorate('core', core);
+const fastify = Fastify({
+  pluginTimeout: 10000,
+});
 
-  fastify.register(fastifyStatic, {
-    root: path.join(__dirname, '../../dist'),
-    prefix: '/assets',
-  });
+fastify.decorate('core', core);
 
-  fastify.register(
-    fastifyPlugin(async function() {
-      await core.database.connect();
+fastify.register(fastifyStatic, {
+  root: path.join(__dirname, '../../dist'),
+  prefix: '/assets',
+});
 
-      fastify.addHook('onClose', () => core.database.disconnect());
-    })
-  );
-  fastify.register(fastifyMultipart);
+fastify.register(
+  fastifyPlugin(async function() {
+    await core.database.connect();
 
-  fastify.register(fastifyCircuitBreaker);
-  fastify.register(fastifySensible);
+    fastify.addHook('onClose', () => core.database.disconnect());
+  })
+);
+fastify.register(fastifyMultipart);
 
-  fastify.register(fastifyCors, { credentials: true, origin: true });
+fastify.register(fastifyCircuitBreaker);
+fastify.register(fastifySensible);
 
-  fastify.register(fastifyCookie);
+fastify.register(fastifyCors, { credentials: true, origin: true });
 
-  fastify.register(fastifyHelmet, { hidePoweredBy: { setTo: 'PHP 4.2.0' } });
+fastify.register(fastifyCookie);
 
-  fastify.register(fastifyAutoLoad, {
-    dir: path.join(__dirname, 'plugins'),
-  });
+fastify.register(fastifyHelmet, { hidePoweredBy: { setTo: 'PHP 4.2.0' } });
 
-  fastify.register(fastifyAutoLoad, {
-    dir: path.join(__dirname, 'api'),
-    options: { prefix: '/api' },
-  });
+fastify.register(fastifyAutoLoad, {
+  dir: path.join(__dirname, 'plugins'),
+});
 
-  fastify.get('/api/*', async () => {
-    throw fastify.httpErrors.notFound();
-  });
+fastify.register(fastifyAutoLoad, {
+  dir: path.join(__dirname, 'api'),
+  options: { prefix: '/api' },
+});
 
-  fastify.get('/*', async (req, res) =>
-    res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url))
-  );
-};
+fastify.get('/api/*', async () => {
+  throw fastify.httpErrors.notFound();
+});
+
+fastify.get('/*', async (req, res) => res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url)));
+
+fastify.listen(process.env.PORT || 3000, '0.0.0.0', err => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+});
