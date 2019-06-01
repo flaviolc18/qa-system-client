@@ -12,7 +12,7 @@ const DB_CONFIG = {
     useCreateIndex: true,
   },
 };
-const CONNECTION_STRING = `mongodb://${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.name}`;
+const CONNECTION_STRING = process.env.MONGOLAB_URI || `mongodb://${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.name}`;
 
 module.exports = {
   connect: () => mongoose.connect(CONNECTION_STRING, DB_CONFIG.mongoOptions),
