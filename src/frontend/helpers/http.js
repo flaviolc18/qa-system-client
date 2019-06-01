@@ -2,13 +2,13 @@ import { serialize } from '../../utils';
 
 const productionURL = 'https://qa-system-client.herokuapp.com';
 const developmentURL = 'http://localhost';
-const serverBaseURL = `${process.env.ENV === 'production' ? productionURL : developmentURL}:${process.env.PORT ||
+const serverBaseURL = `${process.env.NODE_ENV === 'production' ? productionURL : developmentURL}:${process.env.PORT ||
   3000}`;
 
 /* eslint no-console:0 */
 
 function request({ method, url, body }) {
-  console.log({ ENVIROMENT: process.env.ENV });
+  console.log({ NODE_ENV: process.env.NODE_ENV, PORT: process.env.PORT });
   const opts = {
     method,
     headers: {
