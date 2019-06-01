@@ -10,7 +10,16 @@ exports.initServer = async function register(tap) {
   const fastify = Fastify();
 
   server(fastify);
+
+  fastify.listen(process.env.PORT || 3000, '0.0.0.0', err => {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
+  });
+
   tap.teardown(() => fastify.close());
+
   await fastify.ready();
 
   await core.database.mongoose.connection.db.dropDatabase();

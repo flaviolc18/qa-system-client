@@ -19,55 +19,46 @@ const { default: render } = require('../../dist/app.ssr');
 
 /* eslint no-unused-vars:0 */
 
-const Fastify = require('fastify');
+module.exports = fastify => {
+  fastify.decorate('core', core);
 
-const fastify = Fastify({
-  pluginTimeout: 10000,
-});
+  fastify.register(fastifyStatic, {
+    root: path.join(__dirname, '../../dist'),
+    prefix: '/assets',
+  });
 
-fastify.decorate('core', core);
+  fastify.register(
+    fastifyPlugin(async function() {
+      await core.database.connect();
 
-fastify.register(fastifyStatic, {
-  root: path.join(__dirname, '../../dist'),
-  prefix: '/assets',
-});
+      fastify.addHook('onClose', () => core.database.disconnect());
+    })
+  );
+  fastify.register(fastifyMultipart);
 
-fastify.register(
-  fastifyPlugin(async function() {
-    await core.database.connect();
+  fastify.register(fastifyCircuitBreaker);
+  fastify.register(fastifySensible);
 
-    fastify.addHook('onClose', () => core.database.disconnect());
-  })
-);
-fastify.register(fastifyMultipart);
+  fastify.register(fastifyCors, { credentials: true, origin: true });
 
-fastify.register(fastifyCircuitBreaker);
-fastify.register(fastifySensible);
+  fastify.register(fastifyCookie);
 
-fastify.register(fastifyCors, { credentials: true, origin: true });
+  fastify.register(fastifyHelmet, { hidePoweredBy: { setTo: 'PHP 4.2.0' } });
 
-fastify.register(fastifyCookie);
+  fastify.register(fastifyAutoLoad, {
+    dir: path.join(__dirname, 'plugins'),
+  });
 
-fastify.register(fastifyHelmet, { hidePoweredBy: { setTo: 'PHP 4.2.0' } });
+  fastify.register(fastifyAutoLoad, {
+    dir: path.join(__dirname, 'api'),
+    options: { prefix: '/api' },
+  });
 
-fastify.register(fastifyAutoLoad, {
-  dir: path.join(__dirname, 'plugins'),
-});
+  fastify.get('/api/*', async () => {
+    throw fastify.httpErrors.notFound();
+  });
 
-fastify.register(fastifyAutoLoad, {
-  dir: path.join(__dirname, 'api'),
-  options: { prefix: '/api' },
-});
-
-fastify.get('/api/*', async () => {
-  throw fastify.httpErrors.notFound();
-});
-
-fastify.get('/*', async (req, res) => res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url)));
-
-fastify.listen(process.env.PORT || 3000, '0.0.0.0', err => {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-});
+  fastify.get('/*', async (req, res) =>
+    res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url))
+  );
+};
