@@ -13,7 +13,14 @@ class Answers extends Component {
 
   componentDidMount() {
     if (!this.props.perguntaId) {
-      return '';
+      return;
+    }
+    this.props.loadRespostasByPergunta({ perguntaId: this.props.perguntaId });
+  }
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.respostas.length === this.props.respostas.length) {
+      return;
     }
     this.props.loadRespostasByPergunta({ perguntaId: this.props.perguntaId });
   }

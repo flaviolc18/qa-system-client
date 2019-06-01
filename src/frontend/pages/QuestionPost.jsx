@@ -38,7 +38,6 @@ class QuestionPost extends Component {
     }
 
     const descricao = this.textBox.current.value;
-    const { titulo } = this.state;
 
     let tags = this.state.tags.split(',');
     tags = tags.filter(tag => tag !== '');
@@ -49,7 +48,7 @@ class QuestionPost extends Component {
       return;
     }
     const questionBody = {
-      titulo,
+      titulo: this.state.title,
       descricao,
       tags,
       usuarioId: this.props.session.usuarioId,
