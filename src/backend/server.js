@@ -18,6 +18,7 @@ const core = require('../core');
 const { default: render } = require('../../dist/app.ssr');
 
 /* eslint no-unused-vars:0 */
+
 module.exports = async function(fastify, opts) {
   fastify.register(fastifyEnv, {
     schema: {
