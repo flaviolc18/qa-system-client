@@ -3,7 +3,7 @@
 const { mongoose } = require('../../database');
 const bcrypt = require('bcryptjs');
 
-const { saltWorkFactor } = require('../../constants');
+const { saltWorkFactor } = require('../../../utils');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

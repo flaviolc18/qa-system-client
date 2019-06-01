@@ -13,6 +13,10 @@ module.exports = async function(fastify) {
       throw fastify.httpErrors.badRequest('Não é possível alterar senha por esta API');
     }
 
+    if (usuarioData.imagemId) {
+      throw fastify.httpErrors.badRequest('Não é possível alterar imagem de perfil por esta API');
+    }
+
     try {
       const usuario = await fastify.core.models.usuario.update({ _id: usuarioId }, usuarioData);
 

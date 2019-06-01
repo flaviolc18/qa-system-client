@@ -2,7 +2,7 @@
 
 const UsuarioModel = require('./usuario.model');
 const bcrypt = require('bcryptjs');
-const { saltWorkFactor } = require('../../constants');
+const { saltWorkFactor } = require('../../../utils');
 
 module.exports = async function(query, changes) {
   const foundUsuario = await UsuarioModel.findOne(query);
@@ -18,8 +18,5 @@ module.exports = async function(query, changes) {
   const salt = bcrypt.genSaltSync(saltWorkFactor);
   const hash = bcrypt.hashSync(changes.password, salt);
 
-  const { password, ..._changes } = changes;
-  const model = { ..._changes, password: hash };
-
-  return UsuarioModel.findOneAndUpdate(query, model, { new: true });
+  return UsuarioModel.findOneAndUpdate(query, { ...changes, password: hash }, { new: true });
 };

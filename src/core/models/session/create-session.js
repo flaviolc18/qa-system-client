@@ -1,7 +1,7 @@
 'use strict';
 
 const SessionModel = require('./session.model');
-const { sessionExpirationTimeInDays } = require('../../constants');
+const { sessionExpirationTimeInDays } = require('../../../utils');
 const findUsuario = require('../usuario/find-usuario');
 
 module.exports = async function(usuarioId) {
