@@ -35,12 +35,11 @@ class SmallQuestion extends Component {
         }}
       >
         <div
-          className="row p-2 m-0"
+          className="row p-2 m-0 bg-light"
           style={{
             borderBottom: '1px solid rgb(220,220,220)',
-            backgroundColor: 'rgb(0,0,0, 0.1)',
-            borderTopLeftRadius: '10px',
-            borderTopRightRadius: '10px',
+            borderBottomLeftRadius: '15px',
+            borderBottomRightRadius: '15px',
           }}
         >
           <div className="col p-0 m-0">
