@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 
 import { postPergunta } from '../redux/perguntas.redux';
 import { getSession } from '../redux/sessions.redux';
-import TextAreaBox from '../components/TextBox';
+import TextAreaBox from '../components/TextBox/TextBox';
 
 class QuestionPost extends Component {
   constructor(props) {
