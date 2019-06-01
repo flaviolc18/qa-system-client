@@ -1,32 +1,53 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Image from './Image';
-import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
 import { connect } from 'react-redux';
 
+import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
+import { getImagensByFilters, loadImagem } from '../redux/imagens.redux';
+
 class ProfilePicture extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
-    this.props.loadUsuario({ id: this.props.usuarioId });
+    const { loadUsuario, usuarioId } = this.props;
+    loadUsuario({ id: usuarioId });
   }
 
-  render() {
-    if (!this.props.usuario) {
-      return 'Carregando...';
+  componentDidUpdate(oldProps) {
+    const { usuario, loadImagem } = this.props;
+    const { imagem } = oldProps;
+
+    if ((usuario && !imagem) || (usuario && imagem && usuario.imagemId != imagem._id)) {
+      loadImagem({ id: usuario.imagemId });
     }
-    return <Image style={this.props.style} id={this.props.usuario.imagemId} />;
+  }
+  render() {
+    const { imagem, usuario, style } = this.props;
+
+    if (!usuario || !imagem) {
+      return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
+    }
+
+    return <img style={style} src={imagem.buffer} />;
   }
 }
 
 ProfilePicture.propTypes = {
   style: PropTypes.object,
+  usuarioId: PropTypes.isRequired,
   usuario: PropTypes.object,
-  usuarioId: PropTypes.string,
+  imagem: PropTypes.object,
+  loadImagem: PropTypes.func,
   loadUsuario: PropTypes.func,
 };
 
 export default connect(
   (state, ownProps) => {
-    return { usuario: getUsuario(state, ownProps.usuarioId) };
+    return {
+      imagem: getImagensByFilters(state, { id: ownProps.id })[0],
+      usuario: getUsuario(state, ownProps.usuarioId),
+    };
   },
-  { loadUsuario }
+  { loadImagem, loadUsuario }
 )(ProfilePicture);

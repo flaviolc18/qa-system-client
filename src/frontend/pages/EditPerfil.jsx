@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 
-import { getUsuario, loadUsuario, updateUsuario } from '../redux/usuarios.redux';
+import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { uploadImagem, loadImagem } from '../redux/imagens.redux';
 import { navigate } from '@reach/router';
 
@@ -13,68 +13,68 @@ class EditPerfilt extends Component {
     this.state = {
       username: '',
       descricao: '',
-      buffer: null,
+      image: null,
     };
-    this.onChange = this.onChange.bind(this);
+    this.onTextChange = this.onTextChange.bind(this);
     this.editUser = this.editUser.bind(this);
-    this.upload = this.upload.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
     this.renderUpdateProfilePictureLabel = this.renderUpdateProfilePictureLabel.bind(this);
   }
-  onChange(e) {
+  onTextChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   }
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId }).then(response => {
-      const usuario = response.elements[0];
-      this.props.loadImagem({ id: usuario.imagemId }).then(response => {
-        this.setState({
-          username: usuario.username,
-          descricao: usuario.descricao,
-          buffer: response.elements[0].buffer,
+      if (response.total) {
+        const usuario = response.elements[0];
+        this.props.loadImagem({ id: usuario.imagemId }).then(response => {
+          this.setState({
+            username: usuario.username,
+            descricao: usuario.descricao,
+            imagem: response.elements[0],
+          });
         });
-      });
+      }
     });
   }
 
-  upload(e) {
+  onImageChange(e) {
     const image = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = e => {
-      const buffer = e.target.result;
-      const body = {
-        nome: image.name,
-        buffer,
-      };
-      this.setState({ image: body, buffer });
-    };
+
+    const formData = new FormData();
+    formData.append('image', image);
+    this.setState({ image });
+
+    // let reader = new FileReader();
+    // reader.readAsDataURL(image);
+    // reader.onload = e => {
+    //   const image = {
+    //     nome: image.name,
+    //     buffer: e.target.result,
+    //   };
+    //   this.setState({ image });
+    // };
   }
 
   editUser(e) {
     e.preventDefault();
-    let { image, buffer, ...data } = this.state;
+    const { changeProfilePicture, updateUsuario, usuarioId } = this.props;
+    let { image, username, descricao } = this.state;
+
+    const promises = [];
 
     if (image) {
-      this.props.uploadImagem(this.state.image).then(response => {
-        if (response.elements[0]) {
-          this.props.updateUsuario({ id: this.props.usuarioId }, { imagemId: response.elements[0]._id });
-        }
-      });
+      promises.push(changeProfilePicture({ id: usuarioId }, image));
     }
 
-    this.props.updateUsuario({ id: this.props.usuarioId }, data).then(() => {
-      navigate('/usuarios/' + this.props.usuarioId);
-    });
-  }
+    if (username || descricao) {
+      promises.push(updateUsuario({ id: usuarioId }, { username, descricao }));
+    }
 
-  renderUpdateProfilePictureLabel() {
-    return (
-      <div htmlFor={'uploadInput'}>
-        <label htmlFor={'uploadInput'} />
-        <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.upload} />
-      </div>
-    );
+    if (promises.length) {
+      Promise.all(promises).then(() => navigate('/usuarios/' + usuarioId));
+    }
   }
 
   render() {
@@ -93,8 +93,10 @@ class EditPerfilt extends Component {
             ) : (
               ''
             )}
-
-            {this.renderUpdateProfilePictureLabel()}
+            <div htmlFor={'uploadInput'}>
+              <label htmlFor={'uploadInput'} />
+              <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.onImageChange} />
+            </div>
           </div>
         </div>
         <form onSubmit={this.editUser} className="form-container">
@@ -102,7 +104,7 @@ class EditPerfilt extends Component {
           <input
             name="username"
             className="form-control"
-            onChange={this.onChange}
+            onChange={this.onTextChange}
             type="text"
             value={this.state.username}
           />
@@ -110,7 +112,7 @@ class EditPerfilt extends Component {
           <input
             name="descricao"
             className="form-control"
-            onChange={this.onChange}
+            onChange={this.onTextChange}
             type="text"
             value={this.state.descricao}
           />
@@ -132,6 +134,7 @@ EditPerfilt.propTypes = {
   usuarioId: PropTypes.string,
   usuario: PropTypes.object,
   loadUsuario: PropTypes.func,
+  changeProfilePicture: PropTypes.func,
   updateUsuario: PropTypes.func,
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
@@ -142,5 +145,5 @@ export default connect(
       usuario: getUsuario(state, ownProps.usuarioId),
     };
   },
-  { loadUsuario, updateUsuario, uploadImagem, loadImagem }
+  { loadUsuario, updateUsuario, uploadImagem, loadImagem, changeProfilePicture }
 )(EditPerfilt);
