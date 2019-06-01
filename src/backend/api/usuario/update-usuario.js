@@ -14,7 +14,7 @@ module.exports = async function(fastify) {
     }
 
     if (usuarioData.imagemId) {
-      throw fastify.httpErrors.badRequest('Não é possível alterar imagem de perfil esta API');
+      throw fastify.httpErrors.badRequest('Não é possível alterar imagem de perfil por esta API');
     }
 
     try {

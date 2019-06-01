@@ -203,6 +203,26 @@ test('api.usuarios.update: tenta alterar senha', async t => {
   t.end();
 });
 
+test('api.usuarios.update: tenta alterar a imagem de perfil', async t => {
+  const fastify = await initServer(t);
+
+  const usuario = await seed.entidades.usuario();
+  const alteracoes = { imagemId: randomObjectId() };
+
+  const { statusCode, payload } = await fastify.inject({
+    url: `/api/usuarios/${usuario._id}`,
+    method: 'POST',
+    payload: alteracoes,
+  });
+
+  const { message } = JSON.parse(payload);
+
+  t.same(message, 'Não é possível alterar imagem de perfil por esta API');
+  t.same(statusCode, 400);
+
+  t.end();
+});
+
 for (const loginMethod of ['username', 'email']) {
   test(`api.usuarios.login: loga por ${loginMethod}`, async t => {
     const fastify = await initServer(t);
