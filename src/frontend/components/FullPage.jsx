@@ -129,7 +129,7 @@ class FullPage extends Component {
                   </MenuLink>
 
                   <div className="pb-4" />
-                  <SearchBarMenu to="/perguntas/pesquisar" searchKey="tags" />
+                  <SearchBarMenu to="/perguntas/pesquisar" location={this.props.location} searchKey="tags" />
                 </MenuBody>
               </Menu>
             </div>

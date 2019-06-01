@@ -20,6 +20,18 @@ class Search extends Component {
 
     this.setState({ searchBarText: value });
   }
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.location.search === this.props.location.search) return;
+
+    const query = deserialize(this.props.location.search.slice(1));
+
+    let value = query[this.props.searchKey];
+    value = value ? value : '';
+
+    this.setState({ searchBarText: value });
+  }
+
   onSearch(e) {
     e.preventDefault();
     navigate(this.props.to + '?' + serialize({ [this.props.searchKey]: this.state.searchBarText }));

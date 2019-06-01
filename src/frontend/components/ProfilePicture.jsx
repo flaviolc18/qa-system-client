@@ -11,7 +11,7 @@ class ProfilePicture extends Component {
 
   render() {
     if (!this.props.usuario) {
-      return 'Carregando...';
+      return <div>Carregando...</div>;
     }
     return <Image style={this.props.style} id={this.props.usuario.imagemId} />;
   }

@@ -22,6 +22,30 @@ body {
   color: green;
 }
 
+.tag {
+  color: rgba(66, 170, 235, 1);
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-right: 5px;
+  border-radius: 3px;
+  line-height: 25px;
+  background-color: rgba(135, 206, 250, 0.4);
+}
+.tag:hover {
+  color: rgb(48, 143, 202);
+
+  text-decoration: none;
+  background-color: rgba(92, 154, 192, 0.4);
+}
+.small-question-title {
+  color: rgb(82, 82, 82);
+  font-size: 25px;
+}
+.small-question-title:hover {
+  color: rgb(34, 34, 34);
+  text-decoration: none;
+}
+
 .login-form {
   margin: 300px auto;
   border-radius: 10px;

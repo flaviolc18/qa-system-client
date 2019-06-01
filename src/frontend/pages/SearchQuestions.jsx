@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { searchPergunta, getPerguntaByFilters } from '../redux/perguntas.redux';
-import SmallQuestion from '../components/Question/SmallQuestion';
+import SmallQuestion from '../components/Question/SmallQuestion/SmallQuestion';
 
 class SearchQuestion extends Component {
   componentDidMount() {
@@ -19,13 +19,12 @@ class SearchQuestion extends Component {
     return (
       <div>
         <h3 className="mb-4">
-          <i className="fas fa-search" />
-          Perguntas:
+          <i className="fas fa-search" /> Resultados da Pesquisa:
         </h3>
-        <ul className="list-group m-2">
+        <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
           {this.props.perguntas.map((question, i) => {
             return (
-              <li key={i} className="list-group-item">
+              <li key={i}>
                 <SmallQuestion pergunta={question} />
               </li>
             );
