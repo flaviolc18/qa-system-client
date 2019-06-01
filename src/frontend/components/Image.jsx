@@ -1,46 +1,49 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getImagensByFilters, loadImagem } from '../redux/imagens.redux';
+
+import { getImagem, loadImagem } from '../redux/imagens.redux';
 
 class Image extends Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    if (!this.props.id) return;
-    if (!this.props.image) {
-      this.props.loadImagem({ id: this.props.id });
-    }
+    const { id, loadImagem } = this.props;
+    loadImagem({ id });
   }
 
   componentDidUpdate(oldProps) {
-    if (!this.props.id) return;
-    if (oldProps.image === this.props.image) return;
-    if (!this.props.image) {
-      this.props.loadImagem({ id: this.props.id });
+    const { loadImagem, id } = this.props;
+    const { imagem } = oldProps;
+
+    if (imagem && id != imagem._id) {
+      loadImagem({ id });
     }
   }
   render() {
-    if (!this.props.image) {
-      let style = this.props.style;
-      return <div style={{ backgroundColor: 'gray', ...style }} />;
+    const { imagem, style } = this.props;
+
+    if (!imagem) {
+      //TODO: usar <Loading />
+      return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
     }
-    return <img style={this.props.style} src={this.props.image.buffer} />;
+
+    return <img style={style} src={imagem.buffer} />;
   }
 }
 
 Image.propTypes = {
   style: PropTypes.object,
   id: PropTypes.string.isRequired,
-  image: PropTypes.object,
+  imagem: PropTypes.object,
   loadImagem: PropTypes.func,
 };
 
 export default connect(
   (state, ownProps) => {
     return {
-      image: getImagensByFilters(state, { id: ownProps.id })[0],
+      imagem: getImagem(state, ownProps.id),
     };
   },
   { loadImagem }
