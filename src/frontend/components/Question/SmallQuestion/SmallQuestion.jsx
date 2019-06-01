@@ -30,11 +30,18 @@ class SmallQuestion extends Component {
     return (
       <div
         style={{
-          margin: '10px',
-          border: '1px solid rgb(220,220,220)',
+          marginTop: '10px',
+          marginBottom: '20px',
         }}
       >
-        <div className="row p-2 m-0" style={{ borderBottom: '1px solid rgb(220,220,220)' }}>
+        <div
+          className="row p-2 m-0 bg-light"
+          style={{
+            borderBottom: '1px solid rgb(220,220,220)',
+            borderBottomLeftRadius: '15px',
+            borderBottomRightRadius: '15px',
+          }}
+        >
           <div className="col p-0 m-0">
             <FooterInfo usuario={usuario} pergunta={pergunta} />
           </div>
@@ -43,8 +50,8 @@ class SmallQuestion extends Component {
           </div>
         </div>
 
-        <div className="row p-0 m-2">
-          <div className="col p-0 m-0">
+        <div className="row p-2 m-2">
+          <div className="col px-3 m-0">
             <Titulo pergunta={pergunta} />
             <div className="row p-0 m-0">
               <TagList tags={tags} />

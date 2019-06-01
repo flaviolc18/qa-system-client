@@ -20,7 +20,7 @@ class Titulo extends Component {
             {pergunta.titulo}
           </Link>
         </div>
-        <div className="row m-0 p-0" style={{ color: 'gray' }}>
+        <div className="row m-0 p-0" style={{ color: 'rgb(0,0,0,0.5)' }}>
           {this.formatDescricao(pergunta.descricao)}
         </div>
       </div>

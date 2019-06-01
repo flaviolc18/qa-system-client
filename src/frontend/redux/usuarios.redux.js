@@ -8,6 +8,7 @@ let loadUsuariosRespostaURL = filters => '/api/usuarios/respostas/' + filters.re
 let loadUsuarioPerguntaURL = filters => '/api/usuarios/perguntas/' + filters.perguntaId;
 let changePasswordURL = filters => '/api/usuarios/change-password/' + filters.id;
 let createUsuarioURL = () => '/api/usuarios/signup';
+let changeProfilePictureURL = filters => `/api/usuarios/${filters.id}/upload`;
 
 let actions = actionsFactory({
   context,
@@ -15,6 +16,7 @@ let actions = actionsFactory({
     loadOneURLs: [loadUsuarioURL, loadUsuariosRespostaURL, loadUsuarioPerguntaURL],
     editOneURLs: [updateUsuarioURL, changePasswordURL],
     createOneURLs: [createUsuarioURL],
+    uploadOneURLs: [changeProfilePictureURL],
   },
 });
 
@@ -28,8 +30,11 @@ export const signUpUsuario = actions.create[0];
 export const loadUsuario = actions.load[0];
 export const loadUsuariosByResposta = actions.load[1];
 export const loadUsuarioPergunta = actions.load[2];
+
 export const updateUsuario = actions.edit[0];
 export const changePasswordUsuario = actions.edit[1];
+
+export const changeProfilePicture = actions.upload[0];
 
 export const getUsuarioLoadingState = getters.getLoadingState;
 

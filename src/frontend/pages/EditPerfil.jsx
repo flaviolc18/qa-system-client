@@ -1,79 +1,94 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
-import { getUsuario, loadUsuario, updateUsuario } from '../redux/usuarios.redux';
+import { base64Flag } from '../../utils';
+
+import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { uploadImagem, loadImagem } from '../redux/imagens.redux';
-import { navigate } from '@reach/router';
 
-class EditPerfilt extends Component {
+class EditPerfil extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: '',
       descricao: '',
-      buffer: null,
+      image: null,
+      imageSource: null,
     };
-    this.onChange = this.onChange.bind(this);
+
+    this.onTextChange = this.onTextChange.bind(this);
     this.editUser = this.editUser.bind(this);
-    this.upload = this.upload.bind(this);
-    this.renderUpdateProfilePictureLabel = this.renderUpdateProfilePictureLabel.bind(this);
+    this.renderImage = this.renderImage.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
   }
-  onChange(e) {
+
+  onTextChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   }
+
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId }).then(response => {
       const usuario = response.elements[0];
       this.props.loadImagem({ id: usuario.imagemId }).then(response => {
+        const imagem = response.elements[0];
+
+        const imageStr = Buffer.from(imagem.buffer).toString('base64');
+
         this.setState({
           username: usuario.username,
           descricao: usuario.descricao,
-          buffer: response.elements[0].buffer,
+          imageSource: base64Flag + imageStr,
         });
       });
     });
   }
 
-  upload(e) {
-    const image = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = e => {
-      const buffer = e.target.result;
-      const body = {
-        nome: image.name,
-        buffer,
+  onImageChange(e) {
+    if (event.target.files && event.target.files[0]) {
+      const image = e.target.files[0];
+
+      let reader = new FileReader();
+      reader.onload = e => {
+        this.setState({ image, imageSource: e.target.result });
       };
-      this.setState({ image: body, buffer });
-    };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   editUser(e) {
     e.preventDefault();
-    let { image, buffer, ...data } = this.state;
+    const { changeProfilePicture, updateUsuario, usuarioId } = this.props;
+    let { image, username, descricao } = this.state;
+
+    const promises = [];
 
     if (image) {
-      this.props.uploadImagem(this.state.image).then(response => {
-        if (response.elements[0]) {
-          this.props.updateUsuario({ id: this.props.usuarioId }, { imagemId: response.elements[0]._id });
-        }
-      });
+      const formData = new FormData();
+      formData.append('image', image);
+
+      promises.push(changeProfilePicture({ id: usuarioId }, formData));
     }
 
-    this.props.updateUsuario({ id: this.props.usuarioId }, data).then(() => {
-      navigate('/usuarios/' + this.props.usuarioId);
-    });
+    if (username || descricao) {
+      promises.push(updateUsuario({ id: usuarioId }, { username, descricao }));
+    }
+
+    if (promises.length) {
+      Promise.all(promises).then(() => {
+        navigate('/usuarios/' + usuarioId);
+      });
+    }
   }
 
-  renderUpdateProfilePictureLabel() {
-    return (
-      <div htmlFor={'uploadInput'}>
-        <label htmlFor={'uploadInput'} />
-        <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.upload} />
-      </div>
+  renderImage() {
+    return this.state.imageSource ? (
+      <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={this.state.imageSource} />
+    ) : (
+      ''
     );
   }
 
@@ -81,20 +96,17 @@ class EditPerfilt extends Component {
     if (!this.props.usuario) {
       return '';
     }
-    const imageBuffer = this.state.buffer;
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <h3>Editar Pefil</h3>
         <div className="mb-4">
           <label>Foto de Perfil</label>
           <div>
-            {imageBuffer ? (
-              <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={imageBuffer} />
-            ) : (
-              ''
-            )}
-
-            {this.renderUpdateProfilePictureLabel()}
+            {this.renderImage()}
+            <div htmlFor={'uploadInput'}>
+              <label htmlFor={'uploadInput'} />
+              <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.onImageChange} />
+            </div>
           </div>
         </div>
         <form onSubmit={this.editUser} className="form-container">
@@ -102,7 +114,7 @@ class EditPerfilt extends Component {
           <input
             name="username"
             className="form-control"
-            onChange={this.onChange}
+            onChange={this.onTextChange}
             type="text"
             value={this.state.username}
           />
@@ -110,7 +122,7 @@ class EditPerfilt extends Component {
           <input
             name="descricao"
             className="form-control"
-            onChange={this.onChange}
+            onChange={this.onTextChange}
             type="text"
             value={this.state.descricao}
           />
@@ -128,10 +140,11 @@ class EditPerfilt extends Component {
     );
   }
 }
-EditPerfilt.propTypes = {
+EditPerfil.propTypes = {
   usuarioId: PropTypes.string,
   usuario: PropTypes.object,
   loadUsuario: PropTypes.func,
+  changeProfilePicture: PropTypes.func,
   updateUsuario: PropTypes.func,
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
@@ -142,5 +155,5 @@ export default connect(
       usuario: getUsuario(state, ownProps.usuarioId),
     };
   },
-  { loadUsuario, updateUsuario, uploadImagem, loadImagem }
-)(EditPerfilt);
+  { loadUsuario, updateUsuario, uploadImagem, loadImagem, changeProfilePicture }
+)(EditPerfil);

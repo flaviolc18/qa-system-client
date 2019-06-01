@@ -144,7 +144,6 @@ FullPage.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   location: PropTypes.object,
   loadSession: PropTypes.func,
-  loadUsuario: PropTypes.func,
   session: PropTypes.object,
   logout: PropTypes.func,
 };

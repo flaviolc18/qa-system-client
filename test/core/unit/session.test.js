@@ -7,7 +7,7 @@ const seed = require('../../../seed');
 
 const sessionModel = require('../../../src/core/models/session');
 
-const { sessionExpirationTimeInDays } = require('../../../src/core/constants');
+const { sessionExpirationTimeInDays } = require('../../../src/utils');
 
 test(
   'model.session.create',
