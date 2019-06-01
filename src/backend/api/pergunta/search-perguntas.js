@@ -13,7 +13,7 @@ module.exports = async function(fastify) {
 
     if (query.keyword) {
       filters.push({ titulo: { $regex: query.keyword, $options: 'i' } });
-      //filters.push({ descricao: { $regex: query.keyword, $options: 'i' } });
+      filters.push({ descricao: { $regex: query.keyword, $options: 'i' } });
     }
 
     const perguntas = filters.length ? await fastify.core.models.pergunta.findAll({ $or: filters }) : [];
