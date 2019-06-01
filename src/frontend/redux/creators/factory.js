@@ -17,6 +17,7 @@ const loadPrefix = 'LOAD';
 const createPrefix = 'CREATE';
 const deletePrefix = 'DELETE';
 const editPrefix = 'EDIT';
+const uploadPrefix = 'UPLOAD';
 
 function buildActionLoad({ buildURLs, context }) {
   const request = loadPrefix + '_' + context + '_' + 'REQUEST';
@@ -97,6 +98,26 @@ function buildActionEdit({ buildURLs, context }) {
   });
 }
 
+function buildActionUpload({ buildURLs, context }) {
+  const request = uploadPrefix + '_' + context + '_' + 'REQUEST';
+  const failure = uploadPrefix + '_' + context + '_' + 'FAILURE';
+  const success = loadPrefix + '_' + context + '_' + 'SUCCESS';
+
+  return buildURLs.map(func => {
+    return (_filters, data, sobrepositionFilter) => {
+      const filters = sobrepositionFilter ? sobrepositionFilter : _filters;
+
+      return {
+        types: [request, success, failure],
+        callAPI: () => http.upload(func(_filters), data),
+        payload: {
+          filters,
+        },
+      };
+    };
+  });
+}
+
 function getOneById(state, context, id) {
   const obj = state[context].byIds[id];
   return obj ? obj : null;
@@ -126,18 +147,20 @@ export function gettersFactory({ context }) {
 
 export function actionsFactory({
   context,
-  buildURLs: { loadOneURLs = [], createOneURLs = [], removeOneURLs = [], editOneURLs = [] },
+  buildURLs: { loadOneURLs = [], createOneURLs = [], removeOneURLs = [], editOneURLs = [], uploadOneURLs = [] },
 }) {
-  let load = buildActionLoad({ buildURLs: loadOneURLs, context });
-  let create = buildActionCreate({ buildURLs: createOneURLs, context });
-  let remove = buildActionDelete({ buildURLs: removeOneURLs, context });
-  let edit = buildActionEdit({ buildURLs: editOneURLs, context });
+  const load = buildActionLoad({ buildURLs: loadOneURLs, context });
+  const create = buildActionCreate({ buildURLs: createOneURLs, context });
+  const remove = buildActionDelete({ buildURLs: removeOneURLs, context });
+  const edit = buildActionEdit({ buildURLs: editOneURLs, context });
+  const upload = buildActionUpload({ buildURLs: uploadOneURLs, context });
 
   return {
     load,
     create,
     remove,
     edit,
+    upload,
   };
 }
 

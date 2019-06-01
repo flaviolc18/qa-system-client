@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { getImagem, loadImagem } from '../redux/imagens.redux';
 
+import { base64Flag } from '../../utils';
+
 class Image extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,9 @@ class Image extends Component {
       return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
     }
 
-    return <img style={style} src={imagem.buffer} />;
+    const imageStr = Buffer.from(imagem.buffer).toString('base64');
+
+    return <img style={style} src={base64Flag + imageStr} />;
   }
 }
 

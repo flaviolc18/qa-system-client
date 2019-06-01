@@ -4,36 +4,6 @@ const { test } = require('tap');
 
 const { initServer, randomObjectId } = require('../../../test-helpers');
 
-test('api.imagem.upload', async t => {
-  const fastify = await initServer(t);
-
-  const { statusCode } = await fastify.inject({
-    url: '/api/imagem',
-    method: 'POST',
-    payload: { nome: 'teste', data: 'data' },
-  });
-
-  t.same(statusCode, 200);
-
-  t.end();
-});
-
-test('api.imagem.upload', async t => {
-  const fastify = await initServer(t);
-
-  const { statusCode, payload } = await fastify.inject({
-    url: '/api/imagem',
-    method: 'POST',
-  });
-
-  const { message } = JSON.parse(payload);
-
-  t.same(message, 'Something went wrong');
-  t.same(statusCode, 500);
-
-  t.end();
-});
-
 test('api.imagem.find', async t => {
   const fastify = await initServer(t);
 
