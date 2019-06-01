@@ -7,7 +7,7 @@ import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '..
 import { uploadImagem, loadImagem } from '../redux/imagens.redux';
 import { navigate } from '@reach/router';
 
-class EditPerfilt extends Component {
+class EditPerfil extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -130,7 +130,7 @@ class EditPerfilt extends Component {
     );
   }
 }
-EditPerfilt.propTypes = {
+EditPerfil.propTypes = {
   usuarioId: PropTypes.string,
   usuario: PropTypes.object,
   loadUsuario: PropTypes.func,
@@ -146,4 +146,4 @@ export default connect(
     };
   },
   { loadUsuario, updateUsuario, uploadImagem, loadImagem, changeProfilePicture }
-)(EditPerfilt);
+)(EditPerfil);
