@@ -29,6 +29,7 @@ class Answer extends Component {
 
   render() {
     //FIXME: isso não é loading
+
     if (!this.props.resposta || !this.props.usuario) {
       return 'Loading...';
     }
