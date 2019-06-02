@@ -10,9 +10,9 @@ class Image extends Component {
   componentDidMount() {
     this.props.loadImagem({ id: this.props.id });
   }
+  
   componentDidUpdate(oldProps) {
     const { loadImagem, id } = this.props;
-
     const { imagem } = oldProps;
 
     if (imagem === this.props.imagem) return;
