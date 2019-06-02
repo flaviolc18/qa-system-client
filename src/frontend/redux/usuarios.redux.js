@@ -4,6 +4,7 @@ const context = 'usuarios';
 
 let loadUsuarioURL = filters => '/api/usuarios/' + filters.id;
 let updateUsuarioURL = filters => '/api/usuarios/' + filters.id;
+let removeUsuarioURL = filters => '/api/usuarios/' + filters.id;
 let loadUsuariosRespostaURL = filters => '/api/usuarios/respostas/' + filters.respostaId;
 let loadUsuarioPerguntaURL = filters => '/api/usuarios/perguntas/' + filters.perguntaId;
 let changePasswordURL = filters => '/api/usuarios/change-password/' + filters.id;
@@ -17,6 +18,7 @@ let actions = actionsFactory({
     editOneURLs: [updateUsuarioURL, changePasswordURL],
     createOneURLs: [createUsuarioURL],
     uploadOneURLs: [changeProfilePictureURL],
+    removeOneURLs: [removeUsuarioURL],
   },
 });
 
@@ -33,6 +35,8 @@ export const loadUsuarioPergunta = actions.load[2];
 
 export const updateUsuario = actions.edit[0];
 export const changePasswordUsuario = actions.edit[1];
+
+export const removeUsuario = actions.remove[0];
 
 export const changeProfilePicture = actions.upload[0];
 

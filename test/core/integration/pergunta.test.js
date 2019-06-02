@@ -54,3 +54,22 @@ test(
     t.end();
   })
 );
+
+test(
+  'model.pergunta.deleteMany: deleta várias perguntas e suas respostas relacionadas',
+  withDB(async t => {
+    const cenario = await seed.cenarios.padrao({ numUsuarios: 2, numPerguntas: 3, numRespostas: 6 });
+
+    const perguntasIds = cenario.perguntas.map(({ _id }) => _id);
+
+    await core.models.pergunta.deleteMany({ _id: { $in: perguntasIds } });
+
+    const foundPerguntas = await core.models.pergunta.findAll({});
+    const foundRespostas = await core.models.resposta.findAll({});
+
+    t.same(foundPerguntas.length, 0);
+    t.same(foundRespostas.length, 0);
+
+    await t.end();
+  })
+);

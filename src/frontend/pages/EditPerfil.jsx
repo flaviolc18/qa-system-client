@@ -5,7 +5,7 @@ import { Link, navigate } from '@reach/router';
 
 import { base64Flag } from '../../utils';
 
-import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
+import { getUsuario, loadUsuario, updateUsuario, removeUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
 import { FadeLoader } from 'react-spinners';
 
@@ -24,6 +24,7 @@ class EditPerfil extends Component {
     this.editUser = this.editUser.bind(this);
     this.renderImage = this.renderImage.bind(this);
     this.onImageChange = this.onImageChange.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
   onTextChange(e) {
@@ -85,6 +86,14 @@ class EditPerfil extends Component {
     }
   }
 
+  onDeleteClick(e) {
+    e.preventDefault();
+
+    const { removeUsuario, usuario } = this.props;
+
+    removeUsuario({ id: usuario._id }).then(() => navigate('/home'));
+  }
+
   renderImage() {
     return this.state.imageSource ? (
       <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={this.state.imageSource} />
@@ -139,6 +148,8 @@ class EditPerfil extends Component {
             <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
               Alterar Senha
             </Link>
+
+            <a onClick={this.onDeleteClick}>Deletar Conta</a>
           </div>
         </form>
       </div>
@@ -151,6 +162,7 @@ EditPerfil.propTypes = {
   loadUsuario: PropTypes.func,
   changeProfilePicture: PropTypes.func,
   updateUsuario: PropTypes.func,
+  removeUsuario: PropTypes.func,
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
 };
@@ -160,5 +172,5 @@ export default connect(
       usuario: getUsuario(state, ownProps.usuarioId),
     };
   },
-  { loadUsuario, updateUsuario, loadImagem, changeProfilePicture }
+  { loadUsuario, updateUsuario, loadImagem, removeUsuario, changeProfilePicture }
 )(EditPerfil);

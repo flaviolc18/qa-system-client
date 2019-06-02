@@ -6,8 +6,8 @@ const { withDB, randomObjectId } = require('../../test-helpers');
 const seed = require('../../../seed');
 
 const voteModel = require('../../../src/core/models/votes');
-const perguntaModel = require('../../../src/core/models/pergunta');
-const respostaModel = require('../../../src/core/models/resposta');
+const findPergunta = require('../../../src/core/models/pergunta/find-pergunta');
+const findResposta = require('../../../src/core/models/resposta/find-resposta');
 
 test(
   'model.vote.upvotes: registra voto para pergunta',
@@ -20,7 +20,7 @@ test(
 
     await t.resolves(voteModel.upvote({ postId: pergunta._id, usuarioId }));
 
-    const perguntaAtualizada = await perguntaModel.find({ _id: pergunta._id });
+    const perguntaAtualizada = await findPergunta({ _id: pergunta._id });
 
     t.same(perguntaAtualizada.upvotes, 1);
     t.same(perguntaAtualizada.downvotes, 0);
@@ -40,7 +40,7 @@ test(
 
     await t.resolves(voteModel.downvote({ postId: resposta._id, usuarioId }));
 
-    const respostaAtualizada = await respostaModel.find({ _id: resposta._id });
+    const respostaAtualizada = await findResposta({ _id: resposta._id });
 
     t.same(respostaAtualizada.upvotes, 0);
     t.same(respostaAtualizada.downvotes, 1);
@@ -60,14 +60,14 @@ test(
 
     await t.resolves(voteModel.downvote({ postId: resposta._id, usuarioId }));
 
-    const respostaAtualizada = await respostaModel.find({ _id: resposta._id });
+    const respostaAtualizada = await findResposta({ _id: resposta._id });
 
     t.same(respostaAtualizada.upvotes, 0);
     t.same(respostaAtualizada.downvotes, 1);
 
     await t.resolves(voteModel.upvote({ postId: resposta._id, usuarioId }));
 
-    const respostaAtualizada2 = await respostaModel.find({ _id: resposta._id });
+    const respostaAtualizada2 = await findResposta({ _id: resposta._id });
 
     t.same(respostaAtualizada2.upvotes, 1);
     t.same(respostaAtualizada2.downvotes, 0);
@@ -87,14 +87,14 @@ test(
 
     await t.resolves(voteModel.upvote({ postId: resposta._id, usuarioId }));
 
-    const respostaAtualizada = await respostaModel.find({ _id: resposta._id });
+    const respostaAtualizada = await findResposta({ _id: resposta._id });
 
     t.same(respostaAtualizada.upvotes, 1);
     t.same(respostaAtualizada.downvotes, 0);
 
     await t.resolves(voteModel.downvote({ postId: resposta._id, usuarioId }));
 
-    const respostaAtualizada2 = await respostaModel.find({ _id: resposta._id });
+    const respostaAtualizada2 = await findResposta({ _id: resposta._id });
 
     t.same(respostaAtualizada2.upvotes, 0);
     t.same(respostaAtualizada2.downvotes, 1);
@@ -157,7 +157,7 @@ test(
     await t.resolves(voteModel.upvote({ postId: perguntaId, usuarioId }));
 
     await t.resolves(voteModel.unvote({ postId: perguntaId, usuarioId }));
-    const perguntaAtualizada = await perguntaModel.find({ _id: perguntaId });
+    const perguntaAtualizada = await findPergunta({ _id: perguntaId });
 
     t.same(perguntaAtualizada.upvotes, 0);
 
@@ -172,11 +172,11 @@ test(
     const { _id: respostaId } = await seed.entidades.resposta({ usuarioId });
 
     await t.resolves(voteModel.downvote({ postId: respostaId, usuarioId }));
-    let respostaAtualizada = await respostaModel.find({ _id: respostaId });
+    let respostaAtualizada = await findResposta({ _id: respostaId });
 
     await t.resolves(voteModel.unvote({ postId: respostaId, usuarioId }));
 
-    respostaAtualizada = await respostaModel.find({ _id: respostaId });
+    respostaAtualizada = await findResposta({ _id: respostaId });
 
     t.same(respostaAtualizada.downvotes, 0);
 
