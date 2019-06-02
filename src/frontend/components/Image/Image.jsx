@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getImagem, loadImagem } from '../../redux/imagens.redux';
+import { getImagem, loadImagem, getImagemLoadingState } from '../../redux/imagens.redux';
 
 import { base64Flag } from '../../../utils';
 
 class Image extends Component {
+  componentDidMount() {
+    const { loadImagem, id } = this.props;
+    id && loadImagem({ id });
+  }
+
   componentDidUpdate(oldProps) {
     const { loadImagem, id } = this.props;
-    const { imagem } = oldProps;
+    const { imagem, imageLoadingState } = oldProps;
 
-    if ((id && !imagem) || (imagem && id != imagem._id)) {
+    if (imageLoadingState !== 'LOADING' && ((id && !imagem) || (imagem && id != imagem._id))) {
       loadImagem({ id });
     }
   }
@@ -32,6 +37,7 @@ Image.propTypes = {
   style: PropTypes.object,
   id: PropTypes.string,
   imagem: PropTypes.object,
+  imageLoadingState: PropTypes.string,
   loadImagem: PropTypes.func,
 };
 
@@ -39,6 +45,7 @@ export default connect(
   (state, ownProps) => {
     return {
       imagem: getImagem(state, ownProps.id),
+      imageLoadingState: getImagemLoadingState(state, { id: ownProps.id }),
     };
   },
   { loadImagem }
