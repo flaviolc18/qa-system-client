@@ -87,7 +87,10 @@ class EditPerfil extends Component {
 
   renderImage() {
     return this.state.imageSource ? (
-      <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={this.state.imageSource} />
+      <img
+        style={{ width: '100px', height: '100px', backgroundColor: 'gray', borderRadius: '20px' }}
+        src={this.state.imageSource}
+      />
     ) : (
       ''
     );
@@ -103,42 +106,60 @@ class EditPerfil extends Component {
     }
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
+        <div className="mb-3" />
         <h3>Editar Pefil</h3>
-        <div className="mb-4">
-          <label>Foto de Perfil</label>
-          <div>
-            {this.renderImage()}
-            <div htmlFor={'uploadInput'}>
-              <label htmlFor={'uploadInput'} />
-              <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.onImageChange} />
-            </div>
-          </div>
-        </div>
-        <form onSubmit={this.editUser} className="form-container">
-          <label>Nome de Usuario</label>
+        <form onSubmit={this.editUser}>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Username:</h4>
           <input
             name="username"
-            className="form-control"
+            className="input-text"
             onChange={this.onTextChange}
+            placeholder="Username"
             type="text"
             value={this.state.username}
           />
-          <label>Descrição</label>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Descrição:</h4>
           <input
             name="descricao"
-            className="form-control"
+            className="input-text"
+            placeholder="Descrição"
             onChange={this.onTextChange}
             type="text"
             value={this.state.descricao}
           />
-          <div className="row p-0 m-0 pt-3">
-            <button className="btn btn-success" type="submit">
-              {' '}
-              Atualiar
-            </button>
-            <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
-              Alterar Senha
-            </Link>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Foto de Perfil:</h4>
+
+          <div style={{ backgroundColor: 'rgb(240,240,240)', borderRadius: '20px', padding: '10px' }} className="mb-4">
+            <div>
+              {this.renderImage()}
+              <div htmlFor={'uploadInput'}>
+                <label htmlFor={'uploadInput'} />
+                <input
+                  className="form-control-file"
+                  type="file"
+                  id={'uploadInput'}
+                  style={{ border: 'none' }}
+                  onChange={this.onImageChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row align-items-center p-0 m-0 pt-3">
+            <div className="col-md-auto p-0 m-0">
+              <button className="btn btn-primary" style={{ borderRadius: '20px' }} type="submit">
+                Atualiar
+              </button>
+            </div>
+            <div className="col p-0 m-0" />
+
+            <div className="col-md-auto p-0 m-0">
+              <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
+                <i className="fas fa-key" /> Alterar Senha
+              </Link>
+            </div>
           </div>
         </form>
       </div>
