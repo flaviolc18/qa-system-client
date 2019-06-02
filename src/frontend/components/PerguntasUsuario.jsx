@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
 import { connect } from 'react-redux';
-import { Link } from '@reach/router';
+import SmallQuestion from './Question/SmallQuestion/SmallQuestion';
 
 class PerguntasUsuario extends Component {
   componentDidMount() {
@@ -12,9 +12,7 @@ class PerguntasUsuario extends Component {
     return this.props.perguntas.map((pergunta, index) => {
       return (
         <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
-          <Link to={'/perguntas/' + pergunta._id}>
-            <h5>{pergunta.titulo}</h5>
-          </Link>
+          <SmallQuestion pergunta={pergunta} />
         </div>
       );
     });

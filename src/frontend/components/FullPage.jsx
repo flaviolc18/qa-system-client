@@ -55,6 +55,7 @@ class FullPage extends Component {
           key={'logged-nav-profile-picture'}
         >
           <Button onClick={() => navigate('/usuarios/' + this.props.session.usuarioId)}>Perfil</Button>
+          <Button onClick={() => navigate('/editar-perfil/' + this.props.session.usuarioId)}>Editar Perfil</Button>
           <Button onClick={() => this.props.logout()}>Logout</Button>
         </Dropbox>
       ) : (

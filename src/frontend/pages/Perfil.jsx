@@ -6,52 +6,38 @@ import { loadUsuario, getUsuario, updateUsuario } from '../redux/usuarios.redux'
 import { getSession } from '../redux/sessions.redux';
 import ProfilePicture from '../components/ProfilePicture';
 import PerguntasUsuario from '../components/PerguntasUsuario';
-import RespostasUsuario from '../components/RespostasUsuario';
-import Tabs from '../components/Tabs';
-import { Link } from '@reach/router';
 
 class Perfil extends Component {
   componentDidMount() {
     this.props.loadUsuario({ id: this.props.usuarioId });
   }
 
-  renderEditButton() {
-    if (this.props.session && this.props.session.usuarioId === this.props.usuarioId) {
-      return <Link to={'/editar-perfil/' + this.props.usuarioId}>Editar</Link>;
-    } else {
-      return '';
-    }
-  }
   render() {
     if (!this.props.usuario) {
       return '';
     }
     const { usuario } = this.props;
+
     return (
-      <div>
-        <div className="row" style={{ width: '100%' }}>
-          <div style={{ overflow: 'hidden' }} className="col">
+      <div className="m-3">
+        <div className="row p-0 m-2" style={{ width: '100%' }}>
+          <div style={{ overflow: 'hidden' }} className="col-md-auto p-0 m-0 mr-2">
             <ProfilePicture
-              style={{ width: '300px', borderRadius: '100%', height: '300px' }}
+              style={{ width: '200px', borderRadius: '20px', height: '200px' }}
               usuarioId={this.props.usuarioId}
             />
           </div>
 
-          <div style={{ paddingTop: '40px' }} className="col">
-            <h4>{usuario.username}</h4>
-            <h6>Reputação: {usuario.reputacao}</h6>
-            <h6>Descrição: {usuario.descricao}</h6>
-            {this.renderEditButton()}
+          <div className="col p-0 m-0">
+            <h4 className="m-3">{usuario.username}</h4>
+            <h6 className="m-3" style={{ color: 'gray' }}>
+              {usuario.descricao}
+            </h6>
           </div>
+          <div className="col p-0 m-0" />
         </div>
 
-        <div className="pt-3" />
-        <Tabs
-          tabs={[
-            { label: 'Perguntas', component: <PerguntasUsuario usuarioId={this.props.usuarioId} /> },
-            { label: 'Respostas', component: <RespostasUsuario usuarioId={this.props.usuarioId} /> },
-          ]}
-        />
+        <PerguntasUsuario usuarioId={this.props.usuarioId} />
       </div>
     );
   }

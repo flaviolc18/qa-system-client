@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Button extends Component {
   render() {
     return (
-      <button onClick={this.props.onClick} style={{ width: '100%' }}>
+      <button onClick={this.props.onClick} className="dropbox-button">
         {this.props.children}
       </button>
     );
