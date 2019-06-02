@@ -8,7 +8,7 @@ export const SmallQuestion = loadable(() => import('./SmallQuestion/SmallQuestio
       className="p-2"
       style={{
         width: '100%',
-        height: '180px',
+        height: '190px',
         backgroundColor: 'rgb(240,240,240)',
         borderRadius: '20px',
         margin: '5px',

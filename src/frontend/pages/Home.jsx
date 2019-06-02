@@ -44,7 +44,7 @@ class Home extends Component {
     return (
       <div className="pt-3">
         <h3>
-          <i className="fas fa-align-left" /> Trending perguntas:
+          <i className="fas fa-align-left" /> Trending:
         </h3>
         <div className="p-2">{this.renderPerguntas()}</div>
       </div>

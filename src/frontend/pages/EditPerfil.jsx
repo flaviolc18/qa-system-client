@@ -5,6 +5,7 @@ import { Link, navigate } from '@reach/router';
 import { FadeLoader, BeatLoader } from 'react-spinners';
 
 import { base64Flag } from '../../utils';
+import { getSession } from '../redux/sessions.redux';
 
 import { getUsuario, loadUsuario, updateUsuario, removeUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
@@ -36,6 +37,9 @@ class EditPerfil extends Component {
   }
 
   componentDidMount() {
+    if (!this.props.session || !this.props.session.usuarioId) {
+      navigate('/');
+    }
     this.props.loadUsuario({ id: this.props.usuarioId }).then(response => {
       const usuario = response.elements[0];
       this.props.loadImagem({ id: usuario.imagemId }).then(response => {
@@ -50,6 +54,11 @@ class EditPerfil extends Component {
         });
       });
     });
+  }
+  componentDidUpdate() {
+    if (!this.props.session || !this.props.session.usuarioId) {
+      navigate('/');
+    }
   }
 
   onImageChange(e) {
@@ -126,6 +135,13 @@ class EditPerfil extends Component {
         />
         <div className="mb-3" />
         <h3>Editar Pefil</h3>
+        <div className="row m-0 p-0 mt-2">
+          <div className="mt-4" />
+
+          <Link className="" to={'/mudar-senha/' + this.props.usuarioId}>
+            <i className="fas fa-key" /> Alterar Senha
+          </Link>
+        </div>
         <form onSubmit={this.editUser}>
           <div className="mb-3" />
           <h4 style={{ color: 'gray' }}>Username:</h4>
@@ -171,15 +187,20 @@ class EditPerfil extends Component {
                 {this.state.isUpdating ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Atualiar'}
               </button>
             </div>
-
-            <div className="col-md-auto p-0 m-0">
-              <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
-                <i className="fas fa-key" /> Alterar Senha
-              </Link>
-            </div>
-            <div className="col-md-auto p-0 m-0 link">
-              <a className="ml-4 text-primary" data-toggle="modal" data-target="#remove-usuario-modal">
-                <i className="fas fa-user-times text-primary" /> Deletar Conta
+            <div className="col p-0 m-0" />
+            <div className="col-md-auto p-0 m-0 link text-danger">
+              <a
+                className="ml-4"
+                style={{
+                  backgroundColor: 'rgb(190,0,0)',
+                  color: 'rgb(255,255,255)',
+                  borderRadius: '20px',
+                  padding: '8px',
+                }}
+                data-toggle="modal"
+                data-target="#remove-usuario-modal"
+              >
+                <i className="fas fa-user-times" /> Deletar Conta
               </a>
             </div>
           </div>
@@ -197,11 +218,13 @@ EditPerfil.propTypes = {
   removeUsuario: PropTypes.func,
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
+  session: PropTypes.object,
 };
 export default connect(
   (state, ownProps) => {
     return {
       usuario: getUsuario(state, ownProps.usuarioId),
+      session: getSession(state),
     };
   },
   { loadUsuario, updateUsuario, loadImagem, removeUsuario, changeProfilePicture }

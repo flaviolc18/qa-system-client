@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login, getSession } from '../../redux/sessions.redux';
+import { BeatLoader } from 'react-spinners';
 
 import Logo from '../Logo';
 
@@ -9,6 +10,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isRequesting: false,
+      isWrong: false,
       email: '',
       password: '',
     };
@@ -20,9 +23,13 @@ class LoginForm extends Component {
 
   onLogin(e) {
     e.preventDefault();
-    const { isVisible, ...loginBody } = this.state;
+    this.setState({ isRequesting: true });
+    const { isVisible, isRequesting, isWrong, ...loginBody } = this.state;
     this.props.login(loginBody, {}).then(response => {
-      if (response.elements[0] && response.elements[0].usuarioId) {
+      this.setState({ isRequesting: false });
+      if (response.error) {
+        this.setState({ isWrong: true });
+      } else if (response && response.elements[0] && response.elements[0].usuarioId) {
         this.props.onLogin();
       }
     });
@@ -52,6 +59,7 @@ class LoginForm extends Component {
                 <h3 className="modal-title mt-2" id="exampleModalLongTitle" style={{ color: 'white' }}>
                   Login
                 </h3>
+                {this.state.isWrong ? <div className="text-danger">Informações incorretas!</div> : ''}
               </div>
               <div className="mb-4" />
 
@@ -76,8 +84,12 @@ class LoginForm extends Component {
               />
               <div className="mb-4" />
 
-              <button type="submit" className="btn btn-outline-light btn-block" style={{ borderRadius: '20px' }}>
-                Login
+              <button
+                type="submit"
+                className="btn btn-block"
+                style={{ borderRadius: '20px', backgroundColor: '#5e656d', color: 'white' }}
+              >
+                {this.state.isRequesting ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Login'}
               </button>
             </form>
           </div>

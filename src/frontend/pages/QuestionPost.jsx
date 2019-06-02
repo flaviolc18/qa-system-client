@@ -65,13 +65,21 @@ class QuestionPost extends Component {
     tags = [...new Set(tags)];
     return (
       <div className="p-3">
+        {this.props.session && this.props.session.usuarioId ? (
+          ''
+        ) : (
+          <div style={{ color: 'rgb(240,0,0)' }}>
+            <h3>É nescessário estar logado para postar uma Pergunta!</h3>
+          </div>
+        )}
+
         <h2>+Pergunta:</h2>
         <div className="pb-1" />
 
         <form onSubmit={this.onPost}>
           <input
             className="input-text"
-            placeHolder="Pergunta..."
+            placeholder="Pergunta..."
             onChange={this.onChange}
             disabled={this.props.session ? false : true}
             name="title"
@@ -85,7 +93,7 @@ class QuestionPost extends Component {
           <input
             onChange={this.onChange}
             name="tags"
-            placeHolder="Tags..."
+            placeholder="Tags..."
             disabled={this.props.session ? false : true}
             type="text"
             className="input-text"

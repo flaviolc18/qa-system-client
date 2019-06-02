@@ -30,7 +30,7 @@ class SmallQuestion extends Component {
           className="p-2"
           style={{
             width: '100%',
-            height: '180px',
+            height: '200px',
             backgroundColor: 'rgb(240,240,240)',
             borderRadius: '20px',
             margin: '5px',
@@ -56,11 +56,12 @@ class SmallQuestion extends Component {
           </div>
         </div>
         <div
-          className="row p-2 m-0 bg-light"
+          className="row p-2 m-0"
           style={{
             borderBottom: '1px solid rgb(220,220,220)',
             borderBottomLeftRadius: '15px',
             borderBottomRightRadius: '15px',
+            backgroundColor: 'rgb(240,240,240)',
           }}
         >
           <div className="col p-0 m-0">

@@ -23,15 +23,15 @@ const NotFount = () => (
 const Index = () => (
   <Router>
     <FullPage path="/">
-      <Perfil path="usuarios/:usuarioId" />
-      <SignUp path="registrar" />
-      <Home path="/" />
-      <QuestionPage path="perguntas/:id" />
-      <QuestionPost path="postar-pergunta" />
-      <EditPerfil path="editar-perfil/:usuarioId" />
-      <ChangePassword path="mudar-senha/:usuarioId" />
-      <SearchQuestions path="perguntas/pesquisar" />
-      <NotFount default />
+      <Perfil key="perfil-page" path="usuarios/:usuarioId" />
+      <SignUp key="signup-page" path="registrar" />
+      <Home key="home-page" path="/" />
+      <QuestionPage key="question-page" path="perguntas/:id" />
+      <QuestionPost key="question-post-page" path="postar-pergunta" />
+      <EditPerfil key="edit-perfil-page" path="editar-perfil/:usuarioId" />
+      <ChangePassword key="change-password-page" path="mudar-senha/:usuarioId" />
+      <SearchQuestions key="search-question-page" path="perguntas/pesquisar" />
+      <NotFount key="not-found-page" default />
     </FullPage>
   </Router>
 );
