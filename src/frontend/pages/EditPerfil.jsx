@@ -7,7 +7,7 @@ import { base64Flag } from '../../utils';
 
 import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
-import { FadeLoader } from 'react-spinners';
+import { FadeLoader, BeatLoader } from 'react-spinners';
 
 class EditPerfil extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class EditPerfil extends Component {
       descricao: '',
       image: null,
       imageSource: null,
+      isUpdating: false,
     };
 
     this.onTextChange = this.onTextChange.bind(this);
@@ -62,6 +63,7 @@ class EditPerfil extends Component {
 
   editUser(e) {
     e.preventDefault();
+    this.setState({ isUpdating: true });
     const { changeProfilePicture, updateUsuario, usuarioId } = this.props;
     let { image, username, descricao } = this.state;
 
@@ -80,6 +82,7 @@ class EditPerfil extends Component {
 
     if (promises.length) {
       Promise.all(promises).then(() => {
+        this.setState({ isUpdating: false });
         navigate('/usuarios/' + usuarioId);
       });
     }
@@ -150,10 +153,10 @@ class EditPerfil extends Component {
           <div className="row align-items-center p-0 m-0 pt-3">
             <div className="col-md-auto p-0 m-0">
               <button className="btn btn-primary" style={{ borderRadius: '20px' }} type="submit">
-                Atualiar
+                {this.state.isUpdating ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Atualiar'}
               </button>
             </div>
-            <div className="col p-0 m-0" />
+            <div className="col p-0 ml-4" />
 
             <div className="col-md-auto p-0 m-0">
               <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>

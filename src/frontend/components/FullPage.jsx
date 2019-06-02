@@ -164,7 +164,6 @@ class FullPage extends Component {
                 width: '800px',
                 minWidth: '800px',
                 backgroundColor: 'white',
-                borderRight: '1px solid rgb(220,220,220)',
               }}
             >
               {this.props.children}
