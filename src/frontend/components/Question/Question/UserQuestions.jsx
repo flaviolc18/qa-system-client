@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { loadPerguntasUsuario, getPerguntaByFilters } from '../../../redux/perguntas.redux';
 import { connect } from 'react-redux';
 import SmallQuestion from '../SmallQuestion/SmallQuestion';
+import { FadeLoader } from 'react-spinners';
 
 class PerguntasUsuario extends Component {
   componentDidMount() {
@@ -19,10 +20,22 @@ class PerguntasUsuario extends Component {
   }
   render() {
     if (!this.props.perguntas) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
 
-    return <div>{this.props.perguntas.length <= 0 ? '' : <div>{this.renderPerguntas()}</div>}</div>;
+    return (
+      <div>
+        {this.props.perguntas.length <= 0 ? (
+          'Nenhuma pergunta foi cadastrada por esse Usuário!'
+        ) : (
+          <div>{this.renderPerguntas()}</div>
+        )}
+      </div>
+    );
   }
 }
 

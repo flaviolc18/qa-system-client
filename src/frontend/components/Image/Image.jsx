@@ -19,7 +19,7 @@ class Image extends Component {
     const { loadImagem, id } = this.props;
     const { imagem } = oldProps;
 
-    if (imagem && id != imagem._id) {
+    if (!imagem || id != imagem._id) {
       loadImagem({ id });
     }
   }
