@@ -1,5 +1,7 @@
 'use strict';
 
+// isso é uma gambiarra, devido a falta de tempo para entrega do trabalho tive q fazer essa obra de arte, assim q passar a apresentação mudarei
+
 const path = require('path');
 
 const fastifyAutoLoad = require('fastify-autoload');
@@ -18,8 +20,24 @@ const core = require('../core');
 const { default: render } = require('../../dist/app.ssr');
 
 /* eslint no-unused-vars:0 */
+module.exports = async function(fastify, opts) {
+  fastify.register(fastifyEnv, {
+    schema: {
+      type: 'object',
+      required: ['PORT', 'NODE_ENV'],
+      properties: {
+        PORT: {
+          type: 'string',
+          default: 3000,
+        },
+        NODE_ENV: {
+          type: 'string',
+          default: 'development',
+        },
+      },
+    },
+  });
 
-module.exports = fastify => {
   fastify.decorate('core', core);
 
   fastify.register(fastifyStatic, {
