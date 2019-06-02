@@ -1,7 +1,8 @@
 'use strict';
 
 const PerguntaModel = require('./pergunta.model');
-const RespostaModel = require('../resposta/resposta.model');
+const deleteManyRespostas = require('../resposta/delete-many-respostas');
+const votesModel = require('../votes');
 
 module.exports = async function(query) {
   const deletedPergunta = await PerguntaModel.findOneAndRemove(query);
@@ -10,7 +11,9 @@ module.exports = async function(query) {
     throw new Error('Pergunta não encontrada');
   }
 
-  await RespostaModel.deleteMany({ perguntaId: deletedPergunta._id });
+  await votesModel.deleteMany({ postId: deletedPergunta._id });
+
+  await deleteManyRespostas({ perguntaId: deletedPergunta._id });
 
   return deletedPergunta;
 };

@@ -17,6 +17,11 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
+.link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .text-box {
   color: rgb(48, 48, 48);
   border-radius: 20px;
@@ -69,7 +74,7 @@ body {
 .login-form {
   margin: 300px auto;
   border-radius: 20px;
-  background-color: white;
+  border: 1px solid white;
   padding: 20px;
   width: 500px;
   z-index: 10;

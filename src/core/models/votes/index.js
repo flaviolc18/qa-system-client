@@ -1,73 +1,75 @@
 'use strict';
 
-const perguntaCore = require('../pergunta');
-const respostaCore = require('../resposta');
-const usuarioCore = require('../usuario');
+const updatePergunta = require('../pergunta/update-pergunta');
+const findPergunta = require('../pergunta/find-pergunta');
+const updateResposta = require('../resposta/update-resposta');
+const findResposta = require('../resposta/find-resposta');
+const findUsuario = require('../usuario/find-usuario');
 
 const VotesModel = require('./votes.model');
+const deleteManyVotes = require('./delete-many-votes');
+const findVote = require('./find-vote');
 
 const UPVOTE = 1;
 const DOWNVOTE = -1;
 
-module.exports = {
-  upvote: async ({ usuarioId, postId }) => {
-    const prevVote = await getPreviousVote({ usuarioId, postId, vote: UPVOTE });
+exports.upvote = async ({ usuarioId, postId }) => {
+  const prevVote = await getPreviousVote({ usuarioId, postId, vote: UPVOTE });
 
-    if (!prevVote) {
-      return createNewVote({ usuarioId, postId, vote: UPVOTE });
-    }
+  if (!prevVote) {
+    return createNewVote({ usuarioId, postId, vote: UPVOTE });
+  }
 
-    return updateExistingVote({ usuarioId, postId, vote: UPVOTE });
-  },
-  downvote: async ({ usuarioId, postId }) => {
-    const prevVote = await getPreviousVote({ usuarioId, postId, vote: DOWNVOTE });
-
-    if (!prevVote) {
-      return createNewVote({ usuarioId, postId, vote: DOWNVOTE });
-    }
-
-    return updateExistingVote({ usuarioId, postId, vote: DOWNVOTE });
-  },
-
-  unvote: async ({ postId, usuarioId }) => {
-    const voteDoc = await VotesModel.findOne({ postId, usuarioId });
-
-    if (!voteDoc) {
-      throw new Error('Documento "Vote" não encontrado');
-    }
-
-    const voteType = voteDoc.vote === UPVOTE ? 'upvotes' : 'downvotes';
-
-    const postCore = await getPostCore(postId);
-
-    const deletedVote = await VotesModel.findOneAndRemove({ _id: voteDoc._id });
-
-    await postCore.update({ _id: postId }, { $inc: { [voteType]: -1 } });
-
-    return deletedVote;
-  },
-
-  find: query => {
-    return VotesModel.findOne(query);
-  },
+  return updateExistingVote({ usuarioId, postId, vote: UPVOTE });
 };
 
-async function getPostCore(postId) {
-  let postCore;
+exports.downvote = async ({ usuarioId, postId }) => {
+  const prevVote = await getPreviousVote({ usuarioId, postId, vote: DOWNVOTE });
 
-  if (await perguntaCore.find({ _id: postId })) {
-    postCore = perguntaCore;
-  } else if (await respostaCore.find({ _id: postId })) {
-    postCore = respostaCore;
+  if (!prevVote) {
+    return createNewVote({ usuarioId, postId, vote: DOWNVOTE });
+  }
+
+  return updateExistingVote({ usuarioId, postId, vote: DOWNVOTE });
+};
+
+exports.unvote = async ({ postId, usuarioId }) => {
+  const voteDoc = await VotesModel.findOne({ postId, usuarioId });
+
+  if (!voteDoc) {
+    throw new Error('Documento "Vote" não encontrado');
+  }
+
+  const voteType = voteDoc.vote === UPVOTE ? 'upvotes' : 'downvotes';
+
+  const updatePost = await getUpdatePost(postId);
+
+  const deletedVote = await VotesModel.findOneAndRemove({ _id: voteDoc._id });
+
+  await updatePost({ _id: postId }, { $inc: { [voteType]: -1 } });
+
+  return deletedVote;
+};
+
+exports.find = findVote;
+exports.deleteMany = deleteManyVotes;
+
+async function getUpdatePost(postId) {
+  let updatePost;
+
+  if (await findPergunta({ _id: postId })) {
+    updatePost = updatePergunta;
+  } else if (await findResposta({ _id: postId })) {
+    updatePost = updateResposta;
   } else {
     throw new Error('Referência para post inválida');
   }
 
-  return postCore;
+  return updatePost;
 }
 
 async function getPreviousVote({ postId, usuarioId, vote }) {
-  const usuario = await usuarioCore.find({ _id: usuarioId });
+  const usuario = await findUsuario({ _id: usuarioId });
 
   if (!usuario) {
     throw new Error('Referência para usuário inválida');
@@ -95,9 +97,9 @@ async function createNewVote({ usuarioId, postId, vote }) {
 
   const voteDoc = await voteModel.save();
 
-  const postCore = await getPostCore(postId);
+  const updatePost = await getUpdatePost(postId);
 
-  await postCore.update({ _id: postId }, { $inc: { [voteType]: 1 } });
+  await updatePost({ _id: postId }, { $inc: { [voteType]: 1 } });
 
   return voteDoc;
 }
@@ -107,9 +109,9 @@ async function updateExistingVote({ usuarioId, postId, vote }) {
 
   const voteDoc = await VotesModel.findOneAndUpdate({ usuarioId, postId }, { vote }, { new: true });
 
-  const postCore = await getPostCore(postId);
+  const updatePost = await getUpdatePost(postId);
 
-  await postCore.update({ _id: postId }, { $inc: { [voteType]: 1, [otherVoteType]: -1 } });
+  await updatePost({ _id: postId }, { $inc: { [voteType]: 1, [otherVoteType]: -1 } });
 
   return voteDoc;
 }

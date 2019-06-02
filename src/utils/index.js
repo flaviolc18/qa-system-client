@@ -3,4 +3,5 @@
 module.exports = {
   ...require('./serializer'),
   ...require('./constants'),
+  ...require('./random'),
 };

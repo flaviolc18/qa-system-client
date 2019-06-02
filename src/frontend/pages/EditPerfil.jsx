@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
+import { FadeLoader, BeatLoader } from 'react-spinners';
 
 import { base64Flag } from '../../utils';
 
-import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
+import { getUsuario, loadUsuario, updateUsuario, removeUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
-import { FadeLoader, BeatLoader } from 'react-spinners';
+
+import Modal from '../components/Modal/Modal';
 
 class EditPerfil extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class EditPerfil extends Component {
     this.editUser = this.editUser.bind(this);
     this.renderImage = this.renderImage.bind(this);
     this.onImageChange = this.onImageChange.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
   onTextChange(e) {
@@ -88,6 +91,12 @@ class EditPerfil extends Component {
     }
   }
 
+  onDeleteClick() {
+    const { removeUsuario, usuario } = this.props;
+
+    removeUsuario({ id: usuario._id }).then(() => navigate('/home'));
+  }
+
   renderImage() {
     return this.state.imageSource ? (
       <img
@@ -109,6 +118,12 @@ class EditPerfil extends Component {
     }
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
+        <Modal
+          title={'Deseja deletar sua conta?'}
+          modalId={`remove-usuario-modal`}
+          bodyText={'A deleção não pode ser desfeita.'}
+          onConfirm={this.onDeleteClick}
+        />
         <div className="mb-3" />
         <h3>Editar Pefil</h3>
         <form onSubmit={this.editUser}>
@@ -156,12 +171,16 @@ class EditPerfil extends Component {
                 {this.state.isUpdating ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Atualiar'}
               </button>
             </div>
-            <div className="col p-0 ml-4" />
 
             <div className="col-md-auto p-0 m-0">
               <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
                 <i className="fas fa-key" /> Alterar Senha
               </Link>
+            </div>
+            <div className="col-md-auto p-0 m-0 link">
+              <a className="ml-4 text-primary" data-toggle="modal" data-target="#remove-usuario-modal">
+                <i className="fas fa-user-times text-primary" /> Deletar Conta
+              </a>
             </div>
           </div>
         </form>
@@ -175,6 +194,7 @@ EditPerfil.propTypes = {
   loadUsuario: PropTypes.func,
   changeProfilePicture: PropTypes.func,
   updateUsuario: PropTypes.func,
+  removeUsuario: PropTypes.func,
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
 };
@@ -184,5 +204,5 @@ export default connect(
       usuario: getUsuario(state, ownProps.usuarioId),
     };
   },
-  { loadUsuario, updateUsuario, loadImagem, changeProfilePicture }
+  { loadUsuario, updateUsuario, loadImagem, removeUsuario, changeProfilePicture }
 )(EditPerfil);

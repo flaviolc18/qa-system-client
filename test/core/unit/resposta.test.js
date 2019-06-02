@@ -182,3 +182,18 @@ test(
     t.end();
   })
 );
+
+test(
+  'model.resposta.deleteMany',
+  withDB(async t => {
+    const {
+      respostas: [resposta],
+    } = await seed.cenarios.padrao({ numUsuarios: 1, numPerguntas: 1, numRespostas: 3 });
+
+    await respostaModel.deleteMany({ _id: resposta._id });
+
+    t.same((await respostaModel.findAll({ _id: resposta._id })).length, 0);
+
+    await t.end();
+  })
+);

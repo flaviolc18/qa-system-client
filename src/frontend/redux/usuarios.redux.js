@@ -4,12 +4,12 @@ const context = 'usuarios';
 
 let loadUsuarioURL = filters => '/api/usuarios/' + filters.id;
 let updateUsuarioURL = filters => '/api/usuarios/' + filters.id;
+let removeUsuarioURL = filters => '/api/usuarios/' + filters.id;
 let loadUsuariosRespostaURL = filters => '/api/usuarios/respostas/' + filters.respostaId;
 let loadUsuarioPerguntaURL = filters => '/api/usuarios/perguntas/' + filters.perguntaId;
 let changePasswordURL = filters => '/api/usuarios/change-password/' + filters.id;
 let createUsuarioURL = () => '/api/usuarios/signup';
 let changeProfilePictureURL = filters => `/api/usuarios/${filters.id}/upload`;
-let deleteUsuarioURL = filters => '/api/usuarios/' + filters.id;
 
 let actions = actionsFactory({
   context,
@@ -18,7 +18,7 @@ let actions = actionsFactory({
     editOneURLs: [updateUsuarioURL, changePasswordURL],
     createOneURLs: [createUsuarioURL],
     uploadOneURLs: [changeProfilePictureURL],
-    removeOneURLs: [deleteUsuarioURL],
+    removeOneURLs: [removeUsuarioURL],
   },
 });
 

@@ -1,47 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { navigate } from '@reach/router';
+import { FadeLoader } from 'react-spinners';
 
 import { loadSession, getSession, logout } from '../redux/sessions.redux';
 import { Navbar, Dropbox, SearchBar, Button } from './Navbar';
 
 import Feed from './Feed/Feed';
-import { navigate } from '@reach/router';
 import { ProfilePicture } from './Image';
 import LoginModal from './Login/LoginModal';
 import { Menu, MenuLink, MenuBody, SearchBarMenu } from './Menu';
-import { FadeLoader } from 'react-spinners';
-import { Link } from '@reach/router';
-
-const Logo = ({ style }) => (
-  <Link className="title-link" to="/">
-    <div className="row align-items-center p-0 m-0" style={{ ...style, color: 'white' }}>
-      <div
-        className="col-md-auto align-self-center p-1 m-0 mr-2"
-        style={{
-          backgroundColor: '#6e7882',
-          height: '55px',
-          width: '55px',
-          textAlign: 'center',
-          borderRadius: '10px',
-        }}
-      >
-        <h1>Ñ</h1>
-      </div>
-      <div className="col-md-auto align-self-center p-1 m-0 mt-2">
-        <div>Faço a menor</div>
-        <div>
-          <h3>
-            Ideia <i className="far fa-lightbulb" />
-          </h3>
-        </div>
-      </div>
-    </div>
-  </Link>
-);
-Logo.propTypes = {
-  style: PropTypes.object,
-};
+import Logo from './Logo';
 
 class FullPage extends Component {
   constructor(props) {

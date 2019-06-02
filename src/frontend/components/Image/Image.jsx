@@ -8,7 +8,8 @@ import { base64Flag } from '../../../utils';
 
 class Image extends Component {
   componentDidMount() {
-    this.props.loadImagem({ id: this.props.id });
+    const { loadImagem, id } = this.props;
+    id && loadImagem({ id });
   }
 
   componentDidUpdate(oldProps) {

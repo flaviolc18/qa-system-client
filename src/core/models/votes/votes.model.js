@@ -12,7 +12,7 @@ const votesSchema = mongoose.Schema({
       message: 'value must be 1 or -1',
     },
   },
-  date: Date,
+  date: { type: Date, default: Date.now },
   usuarioId: ObjectId,
   postId: ObjectId,
 });
