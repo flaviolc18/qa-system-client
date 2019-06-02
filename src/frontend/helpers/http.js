@@ -1,9 +1,9 @@
 import { serialize } from '../../utils';
 
 const productionURL = 'https://qa-system-client.herokuapp.com';
-const developmentURL = 'http://localhost';
-const serverBaseURL = `${process.env.NODE_ENV === 'production' ? productionURL : developmentURL}:${process.env.PORT ||
-  3000}`;
+const developmentURL = `http://localhost:${process.env.PORT || 3000}`;
+
+const serverBaseURL = process.env.NODE_ENV === 'production' ? productionURL : developmentURL;
 
 /* eslint no-console:0 */
 
