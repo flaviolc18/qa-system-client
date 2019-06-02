@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { FadeLoader } from 'react-spinners';
 
 import { SmallQuestion } from '../components/Question';
 
@@ -34,7 +35,11 @@ class Home extends Component {
 
   render() {
     if (!this.props.perguntas) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
     return (
       <div className="pt-3">

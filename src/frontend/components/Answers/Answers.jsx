@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { PacmanLoader } from 'react-spinners';
 
 import { loadRespostasByPergunta, getRespostaByPergunta } from '../../redux/respostas.redux';
 import Answer from './Answer';
@@ -39,7 +40,7 @@ class Answers extends Component {
   }
   render() {
     if (!this.props.perguntaId) {
-      return '';
+      return <PacmanLoader sizeUnit={'px'} size={20} color={'#000000'} loading={true} />;
     }
 
     return (

@@ -1,10 +1,15 @@
 import React from 'react';
 import loadable from '@loadable/component';
 
-export const Menu = loadable(() => import('./Menu'), { fallback: <div>Carregando Menu....</div> });
+export const Menu = loadable(() => import('./Menu'));
 
 export const MenuLink = loadable(() => import('./MenuLink'), {
-  fallback: <div style={{ width: '80px', height: '10px', backgroundColor: 'rgb(240,240,240)' }} />,
+  fallback: (
+    <div>
+      <div style={{ width: '80px', height: '10px', backgroundColor: 'rgb(240,240,240)' }} />
+      <div style={{ width: '80px', height: '10px', backgroundColor: 'rgb(240,240,240)' }} />
+    </div>
+  ),
 });
 
 export const MenuButton = loadable(() => import('./MenuButton'), {

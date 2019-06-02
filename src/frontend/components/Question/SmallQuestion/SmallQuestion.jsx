@@ -30,11 +30,10 @@ class SmallQuestion extends Component {
           className="p-2"
           style={{
             width: '100%',
-            height: '150px',
-
+            height: '180px',
             backgroundColor: 'rgb(240,240,240)',
             borderRadius: '20px',
-            margin: '10px',
+            margin: '5px',
           }}
         />
       );

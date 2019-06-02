@@ -11,7 +11,7 @@ class PerguntasUsuario extends Component {
   renderPerguntas() {
     return this.props.perguntas.map((pergunta, index) => {
       return (
-        <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
+        <div key={'perguntas-' + index}>
           <SmallQuestion pergunta={pergunta} />
         </div>
       );
