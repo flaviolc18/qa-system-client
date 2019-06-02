@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ActionButton({ onClick, icon, text, visible, color, dataToggle, dataTarget }) {
+  if (!onClick || !icon || !text || !visible || !color || !dataToggle || !dataTarget) {
+    return '';
+  }
   return (
     visible && (
       <button
