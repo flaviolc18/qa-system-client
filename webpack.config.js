@@ -1,5 +1,6 @@
 'use strict';
 
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
@@ -43,6 +44,10 @@ const appConfig = {
     extensions: ['*', '.js', '.jsx'],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      PORT: JSON.stringify(process.env.PORT),
+    }),
     new LoadablePlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/shared/template.html'),
