@@ -8,7 +8,7 @@ class TextAreaBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      text: props.initialValue,
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -25,6 +25,7 @@ class TextAreaBox extends Component {
           ref={this.props.reference}
           className="text-box"
           disabled={this.props.session ? false : true}
+          value={this.state.text}
           onChange={this.onChange}
           placeHolder={this.props.placeHolder}
           style={{ resize: 'none', width: '100%', height: '200px' }}
@@ -34,8 +35,11 @@ class TextAreaBox extends Component {
     );
   }
 }
-
+TextAreaBox.defaultProps = {
+  initialValue: '',
+};
 TextAreaBox.propTypes = {
+  initialValue: PropTypes.string,
   reference: PropTypes.object,
   placeHolder: PropTypes.string,
   session: PropTypes.object,

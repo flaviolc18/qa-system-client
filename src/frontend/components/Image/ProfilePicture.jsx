@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadUsuario, getUsuario } from '../redux/usuarios.redux';
+import { loadUsuario, getUsuario } from '../../redux/usuarios.redux';
 
 import Image from './Image';
 

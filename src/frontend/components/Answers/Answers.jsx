@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadRespostasByPergunta, getRespostaByPergunta } from '../redux/respostas.redux';
+import { loadRespostasByPergunta, getRespostaByPergunta } from '../../redux/respostas.redux';
 import Answer from './Answer';
 
 class Answers extends Component {
@@ -43,7 +43,7 @@ class Answers extends Component {
     }
 
     return (
-      <div className="mt-4">
+      <div className="mt-4 pt-4">
         <h5>{`${this.props.respostas.length} Respostas`}</h5>
         <ul style={{ listStyle: 'none' }} className="list-group">
           {this.renderRespostas()}

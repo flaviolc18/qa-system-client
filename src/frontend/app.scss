@@ -27,14 +27,7 @@ body {
 .text-box {
   outline: none;
 }
-.login-modal {
-  border-radius: 5px;
-  padding: 20px;
-  background-color: white;
-  width: 400px;
-  margin: 0 auto;
-  margin-top: 200px;
-}
+
 .button-toggler {
   color: white;
 }
@@ -69,12 +62,17 @@ body {
 
 .login-form {
   margin: 300px auto;
-  border-radius: 10px;
+  border-radius: 20px;
   background-color: white;
   padding: 20px;
   width: 500px;
   z-index: 10;
   top: 0;
+}
+.logo {
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-image: url('./assets/Logo.png');
 }
 .dropbox-button {
   border: none;

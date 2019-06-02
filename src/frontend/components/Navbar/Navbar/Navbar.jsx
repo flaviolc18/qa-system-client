@@ -8,7 +8,7 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark" style={{ minWidth: '1200px' }}>
-        <div className="navbar" style={{ margin: '0 auto' }}>
+        <div className="navbar" style={{ margin: '0 auto', minWidth: '1080px' }}>
           {this.props.children}
         </div>
       </nav>

@@ -4,7 +4,6 @@ import loadable from '@loadable/component';
 
 const FullPage = loadable(() => import('../components/FullPage'));
 const Home = loadable(() => import('./Home'));
-const SignIn = loadable(() => import('./SignIn'));
 const SignUp = loadable(() => import('./SignUp'));
 const QuestionPage = loadable(() => import('./QuestionPage'));
 const QuestionPost = loadable(() => import('./QuestionPost'));
@@ -24,10 +23,9 @@ const NotFount = () => (
 const Index = () => (
   <Router>
     <FullPage path="/">
-      <SignIn path="login" />
       <Perfil path="usuarios/:usuarioId" />
       <SignUp path="registrar" />
-      <Home path="home" />
+      <Home path="/" />
       <QuestionPage path="perguntas/:id" />
       <QuestionPost path="postar-pergunta" />
       <EditPerfil path="editar-perfil/:usuarioId" />

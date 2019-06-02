@@ -52,7 +52,7 @@ class LoginForm extends Component {
 
               <input
                 name="email"
-                className="form-control"
+                className="input-text"
                 type="email"
                 style={{ width: '100%' }}
                 placeHolder="Email"
@@ -62,7 +62,7 @@ class LoginForm extends Component {
               <div className="mb-4" />
               <input
                 name="password"
-                className="form-control"
+                className="input-text"
                 type="password"
                 placeHolder="Password"
                 style={{ width: '100%' }}
@@ -71,7 +71,7 @@ class LoginForm extends Component {
               />
               <div className="mb-4" />
 
-              <button type="submit" className="btn btn-block btn-primary">
+              <button type="submit" className="btn btn-block btn-primary" style={{ borderRadius: '20px' }}>
                 Login
               </button>
             </form>

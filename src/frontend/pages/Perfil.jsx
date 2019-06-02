@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { loadUsuario, getUsuario, updateUsuario } from '../redux/usuarios.redux';
 import { getSession } from '../redux/sessions.redux';
-import ProfilePicture from '../components/ProfilePicture';
-import PerguntasUsuario from '../components/PerguntasUsuario';
+import { ProfilePicture } from '../components/Image';
+import { UserQuestions } from '../components/Question';
 
 class Perfil extends Component {
   componentDidMount() {
@@ -37,7 +37,7 @@ class Perfil extends Component {
           <div className="col p-0 m-0" />
         </div>
 
-        <PerguntasUsuario usuarioId={this.props.usuarioId} />
+        <UserQuestions usuarioId={this.props.usuarioId} />
       </div>
     );
   }

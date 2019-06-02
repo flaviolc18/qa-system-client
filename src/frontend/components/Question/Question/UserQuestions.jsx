@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { loadPerguntasUsuario, getPerguntaByFilters } from '../../../redux/perguntas.redux';
 import { connect } from 'react-redux';
-import { Link } from '@reach/router';
-
-import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
+import SmallQuestion from '../SmallQuestion/SmallQuestion';
 
 class PerguntasUsuario extends Component {
   componentDidMount() {
@@ -13,9 +12,7 @@ class PerguntasUsuario extends Component {
     return this.props.perguntas.map((pergunta, index) => {
       return (
         <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
-          <Link to={'/perguntas/' + pergunta._id}>
-            <h5>{pergunta.titulo}</h5>
-          </Link>
+          <SmallQuestion pergunta={pergunta} />
         </div>
       );
     });
@@ -25,15 +22,7 @@ class PerguntasUsuario extends Component {
       return '';
     }
 
-    return (
-      <div>
-        {this.props.perguntas.length <= 0 ? (
-          <div>Nenhuma Pergunta encontrada para o Usuário!</div>
-        ) : (
-          <div>{this.renderPerguntas()}</div>
-        )}
-      </div>
-    );
+    return <div>{this.props.perguntas.length <= 0 ? '' : <div>{this.renderPerguntas()}</div>}</div>;
   }
 }
 

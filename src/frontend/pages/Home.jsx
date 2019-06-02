@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
 
-import SmallQuestion from '../components/Question/SmallQuestion/SmallQuestion';
+import { SmallQuestion } from '../components/Question';
 
 class Home extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    this.props.loadPerguntasTrending();
+    this.props.loadPerguntasTrending({});
   }
   onChange(e) {
     e.preventDefault();
@@ -37,11 +37,11 @@ class Home extends Component {
       return '';
     }
     return (
-      <div className="mt-5">
+      <div className="pt-3">
         <h3>
           <i className="fas fa-align-left" /> Trending perguntas:
         </h3>
-        <div className="px-3 mt-5">{this.renderPerguntas()}</div>
+        <div className="p-2">{this.renderPerguntas()}</div>
       </div>
     );
   }

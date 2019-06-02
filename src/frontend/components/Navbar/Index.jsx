@@ -1,19 +1,18 @@
 import React from 'react';
 import loadable from '@loadable/component';
 
-//TODO: especificar esqueleto para fallback
-export const Navbar = loadable(() => import('./Navbar/Navbar'), { fallback: <div>Carregando Navbar....</div> });
+export const Navbar = loadable(() => import('./Navbar/Navbar'), {
+  fallback: <div style={{ height: '55px', backgroundColor: '#343a40', wifth: '100%' }} />,
+});
 
-//TODO: especificar esqueleto para fallback
-export const NavLink = loadable(() => import('./NavLink/NavLink'), { fallback: <div>Carregando Link....</div> });
+export const NavLink = loadable(() => import('./NavLink/NavLink'));
 
-//TODO: especificar esqueleto para fallback
-export const Dropbox = loadable(() => import('./Dropbox/Dropbox'), { fallback: <div>Carregando Dropbox....</div> });
+export const Dropbox = loadable(() => import('./Dropbox/Dropbox'));
 
-//TODO: especificar esqueleto para fallback
-export const Button = loadable(() => import('./Dropbox/Button'), { fallback: <div>Carregando Button....</div> });
+export const Button = loadable(() => import('./Dropbox/Button'));
 
-//TODO: especificar esqueleto para fallback
 export const SearchBar = loadable(() => import('./SearchBar/SearchBar'), {
-  fallback: <div>Carregando SearchBar....</div>,
+  fallback: (
+    <div style={{ width: '350px', height: '35px', borderRadius: '10px', backgroundColor: '#3d434b', margin: '10px' }} />
+  ),
 });
