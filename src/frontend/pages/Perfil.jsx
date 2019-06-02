@@ -8,7 +8,6 @@ import ProfilePicture from '../components/ProfilePicture';
 import PerguntasUsuario from '../components/PerguntasUsuario';
 import RespostasUsuario from '../components/RespostasUsuario';
 import Tabs from '../components/Tabs';
-import { uploadImagem } from '../redux/imagens.redux';
 import { Link } from '@reach/router';
 
 class Perfil extends Component {
@@ -63,7 +62,6 @@ Perfil.propTypes = {
   loadUsuario: PropTypes.func,
   usuario: PropTypes.object,
   session: PropTypes.object,
-  uploadImagem: PropTypes.func,
   updateUsuario: PropTypes.func,
 };
 
@@ -74,5 +72,5 @@ export default connect(
       session: getSession(state),
     };
   },
-  { loadUsuario, uploadImagem, updateUsuario }
+  { loadUsuario, updateUsuario }
 )(Perfil);

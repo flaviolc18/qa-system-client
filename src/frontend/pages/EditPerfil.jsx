@@ -6,7 +6,7 @@ import { Link, navigate } from '@reach/router';
 import { base64Flag } from '../../utils';
 
 import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
-import { uploadImagem, loadImagem } from '../redux/imagens.redux';
+import { loadImagem } from '../redux/imagens.redux';
 
 class EditPerfil extends Component {
   constructor(props) {
@@ -155,5 +155,5 @@ export default connect(
       usuario: getUsuario(state, ownProps.usuarioId),
     };
   },
-  { loadUsuario, updateUsuario, uploadImagem, loadImagem, changeProfilePicture }
+  { loadUsuario, updateUsuario, loadImagem, changeProfilePicture }
 )(EditPerfil);
