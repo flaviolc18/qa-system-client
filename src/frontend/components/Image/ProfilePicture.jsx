@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { BounceLoader } from 'react-spinners';
 
 import { loadUsuario, getUsuario } from '../../redux/usuarios.redux';
 
@@ -15,8 +16,11 @@ class ProfilePicture extends Component {
     const { usuario, style } = this.props;
 
     if (!usuario) {
-      //TODO: usar <Loading />
-      return <div style={{ backgroundColor: 'gray', ...style }}>Loading...</div>;
+      return (
+        <div style={{ backgroundColor: 'gray', ...style, overflow: 'hidden' }}>
+          <BounceLoader sizeUnit={'px'} color="#FFFFFF" size={style.width.split('px')[0]} />
+        </div>
+      );
     }
     return <Image style={style} id={usuario.imagemId} />;
   }
