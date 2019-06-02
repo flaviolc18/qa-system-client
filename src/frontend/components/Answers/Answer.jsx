@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loadResposta, editResposta, removeResposta, getRespostaById } from '../redux/respostas.redux';
-import { getUsuariosByFilter, loadUsuario } from '../redux/usuarios.redux';
+import { loadResposta, editResposta, removeResposta, getRespostaById } from '../../redux/respostas.redux';
+import { getUsuariosByFilter, loadUsuario } from '../../redux/usuarios.redux';
 
-import Post from './Post';
+import { Post } from '../Post';
 
 class Answer extends Component {
   constructor(props) {
@@ -30,7 +30,34 @@ class Answer extends Component {
 
   render() {
     if (!this.props.resposta || !this.props.usuario) {
-      return 'Loading...';
+      return (
+        <div>
+          <div className="row p-0 m-0">
+            <div className="col-md-auto p-0 m-3">
+              <div
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  backgroundColor: 'rgb(240,240,240)',
+                  borderRadiur: '10px',
+                  margin: '10px',
+                }}
+              />
+            </div>
+            <div className="col p-0 m-0">
+              <div
+                style={{
+                  width: '100%',
+                  height: '150px',
+                  backgroundColor: 'rgb(240,240,240)',
+                  borderRadiur: '10px',
+                  margin: '10px',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      );
     }
     return (
       <Post

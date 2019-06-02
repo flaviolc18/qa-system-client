@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 
 import { loadUsuario, getUsuario, updateUsuario } from '../redux/usuarios.redux';
 import { getSession } from '../redux/sessions.redux';
-import ProfilePicture from '../components/ProfilePicture';
-import PerguntasUsuario from '../components/PerguntasUsuario';
+import { ProfilePicture } from '../components/Image';
+import { UserQuestions } from '../components/Question';
+import { FadeLoader } from 'react-spinners';
 
 class Perfil extends Component {
   componentDidMount() {
@@ -14,7 +15,11 @@ class Perfil extends Component {
 
   render() {
     if (!this.props.usuario) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
     const { usuario } = this.props;
 
@@ -37,7 +42,7 @@ class Perfil extends Component {
           <div className="col p-0 m-0" />
         </div>
 
-        <PerguntasUsuario usuarioId={this.props.usuarioId} />
+        <UserQuestions usuarioId={this.props.usuarioId} />
       </div>
     );
   }

@@ -3,13 +3,39 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadSession, getSession, logout } from '../redux/sessions.redux';
-import { Navbar, Dropbox, SearchBar, Button } from './Navbar/Index';
+import { Navbar, Dropbox, SearchBar, Button } from './Navbar';
 
 import Feed from './Feed/Feed';
 import { navigate } from '@reach/router';
-import ProfilePicture from './ProfilePicture';
+import { ProfilePicture } from './Image';
 import LoginModal from './Login/LoginModal';
-import { Menu, MenuLink, MenuBody, SearchBarMenu } from './Menu/Index';
+import { Menu, MenuLink, MenuBody, SearchBarMenu } from './Menu';
+
+const Logo = ({ style }) => (
+  <div className="row align-items-center p-0 m-0" style={{ ...style, color: 'white' }}>
+    <div
+      className="col-md-auto align-self-center p-1 m-0 mr-2"
+      style={{
+        backgroundColor: '#6e7882',
+        height: '55px',
+        width: '55px',
+        textAlign: 'center',
+        borderRadius: '10px',
+      }}
+    >
+      <h1>Ñ</h1>
+    </div>
+    <div className="col-md-auto p-0 m-0">
+      <div className="row align-items-start p-0 m-0">Faço a menor</div>
+      <div className="row align-items-end p-0 m-0">
+        <h3>Ideia</h3>
+      </div>
+    </div>
+  </div>
+);
+Logo.propTypes = {
+  style: PropTypes.object,
+};
 
 class FullPage extends Component {
   constructor(props) {
@@ -94,7 +120,21 @@ class FullPage extends Component {
 
   render() {
     if (!this.state.isSessionChecked) {
-      return 'Verificando Sessão...';
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            minHeight: '100vh',
+            backgroundColor: '#343a40',
+          }}
+        >
+          <Logo />
+        </div>
+      );
     }
     return (
       <div>
@@ -106,8 +146,8 @@ class FullPage extends Component {
         />
 
         <Navbar key={this.props.session && this.props.session.usuarioId ? 'logged' : 'unlogged'}>
-          <h3 style={{ fontFamily: '"Raleway", sans-serif', color: 'white' }}>não faço a menor idéia</h3>
-          <div style={{ marginRight: '400px' }} />,{this.getLinks()}
+          <Logo />
+          <div style={{ marginRight: '430px' }} />,{this.getLinks()}
         </Navbar>
 
         <Feed>
@@ -117,11 +157,11 @@ class FullPage extends Component {
             </div>
           </div>
 
-          <div className="col-md-auto p-0 m-0" style={{ borderLeft: '1px solid rgb(220,220,220)' }}>
+          <div className="col-md-auto p-0 m-0" style={{ borderLeft: '1px solid rgb(220,220,220)', minHeight: '100vh' }}>
             <div style={{ width: '250px', minWidth: '250px', minHeight: '100%' }}>
               <Menu>
                 <MenuBody>
-                  <MenuLink pathname={this.props.location.pathname} to="/home">
+                  <MenuLink pathname={this.props.location.pathname} to="/">
                     <i className="fas fa-home" /> Home
                   </MenuLink>
 

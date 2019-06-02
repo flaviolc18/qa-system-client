@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from '@reach/router';
 
-import { getSession } from '../redux/sessions.redux';
-import { loadVote, upvotePost, downvotePost, unvotePost, getVoteByFilters } from '../redux/votes.redux';
+import { getSession } from '../../redux/sessions.redux';
+import { loadVote, upvotePost, downvotePost, unvotePost, getVoteByFilters } from '../../redux/votes.redux';
 
-import ProfilePicture from './ProfilePicture';
+import { ProfilePicture } from '../Image';
 import ActionButton from './ActionButton';
 import Modal from './Modal';
+import TextBox from '../TextBox/TextBox';
 
 const UPVOTE = 1;
 const DOWNVOTE = -1;
@@ -20,6 +21,7 @@ class Post extends Component {
     this.state = {
       text: props.post.descricao,
     };
+    this.textBox = React.createRef();
     this.onUpvoteClick = this.onUpvoteClick.bind(this);
     this.onDownvoteClick = this.onDownvoteClick.bind(this);
   }
@@ -33,25 +35,16 @@ class Post extends Component {
     //FIXME: usar Textbox
     return (
       <div>
-        <div className="pb-2">
-          <input
-            className="form-control"
-            name="text"
-            onChange={e => {
-              this.setState({ text: e.target.value });
-            }}
-            type="text"
-            value={this.state.text}
-          />
-        </div>
+        <TextBox initialValue={this.state.text} placeHolder="Descrição" reference={this.textBox} />
+        <div className="pb-2" />
         <button
           onClick={() => {
-            this.props.onFinishEdit(this.state.text);
+            this.props.onFinishEdit(this.textBox.current.value);
           }}
-          style={{ float: 'right' }}
-          className="btn btn-success"
+          style={{ float: 'right', borderRadius: '20px' }}
+          className="btn btn-primary"
         >
-          Update
+          Atualizar
         </button>
       </div>
     );
@@ -155,14 +148,14 @@ class Post extends Component {
           <ProfilePicture style={{ height: '45px', width: '45px', borderRadius: '5%' }} usuarioId={user._id} />
           {this.renderVoteButtons()}
         </div>
-        <div className="col">
+        <div className="col m-0">
           <div className="card">
             <div className="card-header">
               <div className="row m-0">
                 <Link to={'/usuarios/' + user._id} className="font-weight-bold mr-1">
                   {user.username}
                 </Link>
-                {` posted on ${new Date(post.dataCriacao).toLocaleDateString()}`}
+                {` Postou em ${new Date(post.dataCriacao).toLocaleDateString()}`}
                 <div className="ml-auto">{this.renderCrudButtons()}</div>
               </div>
             </div>

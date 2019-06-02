@@ -7,6 +7,7 @@ import { base64Flag } from '../../utils';
 
 import { getUsuario, loadUsuario, updateUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
+import { FadeLoader } from 'react-spinners';
 
 class EditPerfil extends Component {
   constructor(props) {
@@ -94,7 +95,11 @@ class EditPerfil extends Component {
 
   render() {
     if (!this.props.usuario) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>

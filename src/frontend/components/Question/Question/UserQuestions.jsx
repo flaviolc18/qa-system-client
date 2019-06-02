@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { loadPerguntasUsuario, getPerguntaByFilters } from '../../../redux/perguntas.redux';
 import { connect } from 'react-redux';
-import { Link } from '@reach/router';
-
-import { loadPerguntasUsuario, getPerguntaByFilters } from '../redux/perguntas.redux';
+import SmallQuestion from '../SmallQuestion/SmallQuestion';
+import { FadeLoader } from 'react-spinners';
 
 class PerguntasUsuario extends Component {
   componentDidMount() {
@@ -12,23 +12,25 @@ class PerguntasUsuario extends Component {
   renderPerguntas() {
     return this.props.perguntas.map((pergunta, index) => {
       return (
-        <div key={'perguntas-' + index} style={{ borderRadius: '5px', backgroundColor: 'rgb(245,245,245)' }}>
-          <Link to={'/perguntas/' + pergunta._id}>
-            <h5>{pergunta.titulo}</h5>
-          </Link>
+        <div key={'perguntas-' + index}>
+          <SmallQuestion pergunta={pergunta} />
         </div>
       );
     });
   }
   render() {
     if (!this.props.perguntas) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
 
     return (
       <div>
         {this.props.perguntas.length <= 0 ? (
-          <div>Nenhuma Pergunta encontrada para o Usuário!</div>
+          'Nenhuma pergunta foi cadastrada por esse Usuário!'
         ) : (
           <div>{this.renderPerguntas()}</div>
         )}

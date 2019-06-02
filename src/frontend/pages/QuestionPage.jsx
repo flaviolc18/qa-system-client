@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import { postResposta } from '../redux/respostas.redux';
 import { getSession } from '../redux/sessions.redux';
-import Question from '../components/Question';
+import { Question } from '../components/Question';
 import TextBox from '../components/TextBox/TextBox';
-import Answers from '../components/Answers';
+import { Answers } from '../components/Answers';
 
 class QuestionPage extends Component {
   constructor(props) {
@@ -45,6 +45,7 @@ class QuestionPage extends Component {
     };
 
     this.props.postResposta(resposta, { perguntaId: resposta.perguntaId });
+    this.textBox.current.value = '';
   }
 
   render() {

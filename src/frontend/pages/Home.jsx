@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadPerguntasTrending, getPerguntaByFilters } from '../redux/perguntas.redux';
+import { FadeLoader } from 'react-spinners';
 
-import SmallQuestion from '../components/Question/SmallQuestion/SmallQuestion';
+import { SmallQuestion } from '../components/Question';
 
 class Home extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    this.props.loadPerguntasTrending();
+    this.props.loadPerguntasTrending({});
   }
   onChange(e) {
     e.preventDefault();
@@ -34,14 +35,18 @@ class Home extends Component {
 
   render() {
     if (!this.props.perguntas) {
-      return '';
+      return (
+        <div style={{ margin: '100px 400px' }}>
+          <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
+        </div>
+      );
     }
     return (
-      <div className="mt-5">
+      <div className="pt-3">
         <h3>
           <i className="fas fa-align-left" /> Trending perguntas:
         </h3>
-        <div className="px-3 mt-5">{this.renderPerguntas()}</div>
+        <div className="p-2">{this.renderPerguntas()}</div>
       </div>
     );
   }

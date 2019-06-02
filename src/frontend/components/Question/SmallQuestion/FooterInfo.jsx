@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import ProfilePicture from '../../ProfilePicture';
+import { ProfilePicture } from '../../Image';
 
 function FooterInfo({ usuario, pergunta }) {
   return (
