@@ -27,7 +27,7 @@ class TextAreaBox extends Component {
           disabled={this.props.session ? false : true}
           value={this.state.text}
           onChange={this.onChange}
-          placeHolder={this.props.placeHolder}
+          placeholder={this.props.placeHolder}
           style={{ resize: 'none', width: '100%', height: '200px' }}
         />
         <div className="pb-3" />

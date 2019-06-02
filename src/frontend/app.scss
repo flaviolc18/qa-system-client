@@ -16,6 +16,7 @@ body {
   padding: 10px;
   background-color: rgb(240, 240, 240);
 }
+
 .text-box {
   color: rgb(48, 48, 48);
   border-radius: 20px;
@@ -51,9 +52,14 @@ body {
   text-decoration: none;
   background-color: rgba(92, 154, 192, 0.4);
 }
+
 .small-question-title {
   color: rgb(82, 82, 82);
   font-size: 22px;
+}
+
+.title-link:hover {
+  text-decoration: none;
 }
 .small-question-title:hover {
   color: rgb(34, 34, 34);
@@ -99,7 +105,6 @@ body {
   align-self: center;
   text-align: center;
   max-width: 1000px;
-  height: 100%;
 }
 
 .colored-line {

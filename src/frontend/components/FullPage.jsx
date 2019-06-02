@@ -10,28 +10,34 @@ import { navigate } from '@reach/router';
 import { ProfilePicture } from './Image';
 import LoginModal from './Login/LoginModal';
 import { Menu, MenuLink, MenuBody, SearchBarMenu } from './Menu';
+import { FadeLoader } from 'react-spinners';
+import { Link } from '@reach/router';
 
 const Logo = ({ style }) => (
-  <div className="row align-items-center p-0 m-0" style={{ ...style, color: 'white' }}>
-    <div
-      className="col-md-auto align-self-center p-1 m-0 mr-2"
-      style={{
-        backgroundColor: '#6e7882',
-        height: '55px',
-        width: '55px',
-        textAlign: 'center',
-        borderRadius: '10px',
-      }}
-    >
-      <h1>Ñ</h1>
-    </div>
-    <div className="col-md-auto p-0 m-0">
-      <div className="row align-items-start p-0 m-0">Faço a menor</div>
-      <div className="row align-items-end p-0 m-0">
-        <h3>Ideia</h3>
+  <Link className="title-link" to="/">
+    <div className="row align-items-center p-0 m-0" style={{ ...style, color: 'white' }}>
+      <div
+        className="col-md-auto align-self-center p-1 m-0 mr-2"
+        style={{
+          backgroundColor: '#6e7882',
+          height: '55px',
+          width: '55px',
+          textAlign: 'center',
+          borderRadius: '10px',
+        }}
+      >
+        <h1>Ñ</h1>
+      </div>
+      <div className="col-md-auto align-self-center p-1 m-0 mt-2">
+        <div>Faço a menor</div>
+        <div>
+          <h3>
+            Ideia <i className="far fa-lightbulb" />
+          </h3>
+        </div>
       </div>
     </div>
-  </div>
+  </Link>
 );
 Logo.propTypes = {
   style: PropTypes.object,
@@ -133,11 +139,12 @@ class FullPage extends Component {
           }}
         >
           <Logo />
+          <FadeLoader size={1} color={'#FFFFFF'} loading={true} />
         </div>
       );
     }
     return (
-      <div>
+      <div style={{ height: '100%' }}>
         <LoginModal
           isVisible={this.state.showLoginModal}
           onLogin={() => this.setState({ showLoginModal: false })}
@@ -152,13 +159,20 @@ class FullPage extends Component {
 
         <Feed>
           <div className="col-md-auto p-0 m-0">
-            <div style={{ width: '800px', minWidth: '800px', minHeight: '100%', backgroundColor: 'white' }}>
+            <div
+              style={{
+                width: '800px',
+                minWidth: '800px',
+                backgroundColor: 'white',
+                borderRight: '1px solid rgb(220,220,220)',
+              }}
+            >
               {this.props.children}
             </div>
           </div>
 
-          <div className="col-md-auto p-0 m-0" style={{ borderLeft: '1px solid rgb(220,220,220)', minHeight: '100vh' }}>
-            <div style={{ width: '250px', minWidth: '250px', minHeight: '100%' }}>
+          <div className="col-md-auto p-0 m-0" style={{}}>
+            <div style={{ width: '250px', minWidth: '250px' }}>
               <Menu>
                 <MenuBody>
                   <MenuLink pathname={this.props.location.pathname} to="/">

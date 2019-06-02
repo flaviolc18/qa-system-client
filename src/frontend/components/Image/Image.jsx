@@ -7,7 +7,11 @@ import { getImagem, loadImagem } from '../../redux/imagens.redux';
 import { base64Flag } from '../../../utils';
 
 class Image extends Component {
+  componentDidMount() {
+    this.props.loadImagem({ id: this.props.id });
+  }
   componentDidUpdate(oldProps) {
+    if (oldProps.imagem === this.props.imagem) return;
     const { loadImagem, id } = this.props;
     const { imagem } = oldProps;
 
