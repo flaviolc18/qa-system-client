@@ -54,6 +54,7 @@ ${styleTags}
     </script>
     ${scriptTags}
   </body>
+
   </html>
 `;
 }

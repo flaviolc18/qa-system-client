@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getImagem, loadImagem, getImagemLoadingState } from '../../redux/imagens.redux';
-
+import { getImagem, loadImagem } from '../../redux/imagens.redux';
+import { BounceLoader } from 'react-spinners';
 import { base64Flag } from '../../../utils';
 
 class Image extends Component {
@@ -13,18 +13,25 @@ class Image extends Component {
   }
 
   componentDidUpdate(oldProps) {
+    if (oldProps.imagem === this.props.imagem) return;
     const { loadImagem, id } = this.props;
-    const { imagem, imageLoadingState } = oldProps;
+    const { imagem } = oldProps;
 
-    if (imageLoadingState !== 'LOADING' && ((id && !imagem) || (imagem && id != imagem._id))) {
+    if (imagem === this.props.imagem) return;
+    if (id === oldProps.id) return;
+
+    if ((id && !imagem) || (imagem && id != imagem._id)) {
       loadImagem({ id });
     }
   }
   render() {
     const { imagem, style } = this.props;
-
     if (!imagem) {
-      return <div style={{ backgroundColor: 'gray', ...style }} />;
+      return (
+        <div style={{ backgroundColor: 'gray', ...style, overflow: 'hidden' }}>
+          <BounceLoader sizeUnit={'px'} color="#FFFFFF" size={style.width.split('px')[0]} />
+        </div>
+      );
     }
 
     const imageStr = Buffer.from(imagem.buffer).toString('base64');
@@ -37,7 +44,6 @@ Image.propTypes = {
   style: PropTypes.object,
   id: PropTypes.string,
   imagem: PropTypes.object,
-  imageLoadingState: PropTypes.string,
   loadImagem: PropTypes.func,
 };
 
@@ -45,7 +51,6 @@ export default connect(
   (state, ownProps) => {
     return {
       imagem: getImagem(state, ownProps.id),
-      imageLoadingState: getImagemLoadingState(state, { id: ownProps.id }),
     };
   },
   { loadImagem }

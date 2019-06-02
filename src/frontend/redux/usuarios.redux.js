@@ -33,10 +33,10 @@ export const loadUsuario = actions.load[0];
 export const loadUsuariosByResposta = actions.load[1];
 export const loadUsuarioPergunta = actions.load[2];
 
+export const removeUsuario = actions.remove[0];
+
 export const updateUsuario = actions.edit[0];
 export const changePasswordUsuario = actions.edit[1];
-
-export const removeUsuario = actions.remove[0];
 
 export const changeProfilePicture = actions.upload[0];
 

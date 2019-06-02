@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
+import { FadeLoader, BeatLoader } from 'react-spinners';
 
 import { base64Flag } from '../../utils';
 
 import { getUsuario, loadUsuario, updateUsuario, removeUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
-import { FadeLoader } from 'react-spinners';
+
+import Modal from '../components/Modal/Modal';
 
 class EditPerfil extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class EditPerfil extends Component {
       descricao: '',
       image: null,
       imageSource: null,
+      isUpdating: false,
     };
 
     this.onTextChange = this.onTextChange.bind(this);
@@ -63,6 +66,7 @@ class EditPerfil extends Component {
 
   editUser(e) {
     e.preventDefault();
+    this.setState({ isUpdating: true });
     const { changeProfilePicture, updateUsuario, usuarioId } = this.props;
     let { image, username, descricao } = this.state;
 
@@ -81,14 +85,13 @@ class EditPerfil extends Component {
 
     if (promises.length) {
       Promise.all(promises).then(() => {
+        this.setState({ isUpdating: false });
         navigate('/usuarios/' + usuarioId);
       });
     }
   }
 
-  onDeleteClick(e) {
-    e.preventDefault();
-
+  onDeleteClick() {
     const { removeUsuario, usuario } = this.props;
 
     removeUsuario({ id: usuario._id }).then(() => navigate('/home'));
@@ -96,7 +99,10 @@ class EditPerfil extends Component {
 
   renderImage() {
     return this.state.imageSource ? (
-      <img style={{ width: '100px', height: '100px', backgroundColor: 'gray' }} src={this.state.imageSource} />
+      <img
+        style={{ width: '100px', height: '100px', backgroundColor: 'gray', borderRadius: '20px' }}
+        src={this.state.imageSource}
+      />
     ) : (
       ''
     );
@@ -112,44 +118,70 @@ class EditPerfil extends Component {
     }
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
+        <Modal
+          title={'Deseja deletar sua conta?'}
+          modalId={`remove-usuario-modal`}
+          bodyText={'A deleção não pode ser desfeita.'}
+          onConfirm={this.onDeleteClick}
+        />
+        <div className="mb-3" />
         <h3>Editar Pefil</h3>
-        <div className="mb-4">
-          <label>Foto de Perfil</label>
-          <div>
-            {this.renderImage()}
-            <div htmlFor={'uploadInput'}>
-              <label htmlFor={'uploadInput'} />
-              <input className="form-control-file" type="file" id={'uploadInput'} onChange={this.onImageChange} />
-            </div>
-          </div>
-        </div>
-        <form onSubmit={this.editUser} className="form-container">
-          <label>Nome de Usuario</label>
+        <form onSubmit={this.editUser}>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Username:</h4>
           <input
             name="username"
-            className="form-control"
+            className="input-text"
             onChange={this.onTextChange}
+            placeholder="Username"
             type="text"
             value={this.state.username}
           />
-          <label>Descrição</label>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Descrição:</h4>
           <input
             name="descricao"
-            className="form-control"
+            className="input-text"
+            placeholder="Descrição"
             onChange={this.onTextChange}
             type="text"
             value={this.state.descricao}
           />
-          <div className="row p-0 m-0 pt-3">
-            <button className="btn btn-success" type="submit">
-              {' '}
-              Atualiar
-            </button>
-            <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
-              Alterar Senha
-            </Link>
+          <div className="mb-3" />
+          <h4 style={{ color: 'gray' }}>Foto de Perfil:</h4>
 
-            <a onClick={this.onDeleteClick}>Deletar Conta</a>
+          <div style={{ backgroundColor: 'rgb(240,240,240)', borderRadius: '20px', padding: '10px' }} className="mb-4">
+            <div>
+              {this.renderImage()}
+              <div htmlFor={'uploadInput'}>
+                <label htmlFor={'uploadInput'} />
+                <input
+                  className="form-control-file"
+                  type="file"
+                  id={'uploadInput'}
+                  style={{ border: 'none' }}
+                  onChange={this.onImageChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row align-items-center p-0 m-0 pt-3">
+            <div className="col-md-auto p-0 m-0">
+              <button className="btn btn-primary" style={{ borderRadius: '20px' }} type="submit">
+                {this.state.isUpdating ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Atualiar'}
+              </button>
+            </div>
+
+            <div className="col-md-auto p-0 m-0">
+              <Link className="ml-4" to={'/mudar-senha/' + this.props.usuarioId}>
+                <i className="fas fa-key" /> Alterar Senha
+              </Link>
+            </div>
+            <div className="col-md-auto p-0 m-0 link">
+              <a className="ml-4 text-primary" data-toggle="modal" data-target="#remove-usuario-modal">
+                <i className="fas fa-user-times text-primary" /> Deletar Conta
+              </a>
+            </div>
           </div>
         </form>
       </div>

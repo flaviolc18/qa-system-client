@@ -18,10 +18,10 @@ class SearchQuestion extends Component {
   render() {
     return (
       <div>
-        <h3 className="mb-4">
+        <h3 className="mb-4 mt-4">
           <i className="fas fa-search" /> Resultados da Pesquisa:
         </h3>
-        <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
+        <ul style={{ listStyle: 'none', padding: '0', margin: '10px' }}>
           {this.props.perguntas.map((question, i) => {
             return (
               <li key={i}>

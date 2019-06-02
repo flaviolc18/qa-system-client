@@ -8,7 +8,7 @@ import { loadVote, upvotePost, downvotePost, unvotePost, getVoteByFilters } from
 
 import { ProfilePicture } from '../Image';
 import ActionButton from './ActionButton';
-import Modal from './Modal';
+import Modal from '../Modal/Modal';
 import TextBox from '../TextBox/TextBox';
 
 const UPVOTE = 1;

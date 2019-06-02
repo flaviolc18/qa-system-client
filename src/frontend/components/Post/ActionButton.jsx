@@ -27,4 +27,11 @@ ActionButton.propTypes = {
   dataTarget: PropTypes.string,
 };
 
+ActionButton.defaultProps = {
+  onClick: () => {},
+  color: 'gray',
+  dataToggle: '',
+  dataTarget: '',
+};
+
 export default ActionButton;

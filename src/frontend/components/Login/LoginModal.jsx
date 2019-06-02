@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login, getSession } from '../../redux/sessions.redux';
 
+import Logo from '../Logo';
+
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -42,12 +44,15 @@ class LoginForm extends Component {
     }
     return (
       <div ref={this.backgrounRef} onMouseDown={this.onBackgroundClick} className="login-modal">
-        <form className="login-form">
+        <form className="login-form bg-dark">
           <div>
             <form onSubmit={this.onLogin}>
-              <h5 className="modal-title" id="exampleModalLongTitle">
-                Login
-              </h5>
+              <div className="d-flex flex-column align-items-center">
+                <Logo />
+                <h3 className="modal-title mt-2" id="exampleModalLongTitle" style={{ color: 'white' }}>
+                  Login
+                </h3>
+              </div>
               <div className="mb-4" />
 
               <input
@@ -71,7 +76,7 @@ class LoginForm extends Component {
               />
               <div className="mb-4" />
 
-              <button type="submit" className="btn btn-block btn-primary" style={{ borderRadius: '20px' }}>
+              <button type="submit" className="btn btn-outline-light btn-block" style={{ borderRadius: '20px' }}>
                 Login
               </button>
             </form>
