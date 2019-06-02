@@ -11,6 +11,7 @@ class Image extends Component {
     this.props.loadImagem({ id: this.props.id });
   }
   componentDidUpdate(oldProps) {
+    if (oldProps.imagem === this.props.imagem) return;
     const { loadImagem, id } = this.props;
 
     const { imagem } = oldProps;
