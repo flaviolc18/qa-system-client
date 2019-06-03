@@ -19,6 +19,9 @@ test('serialize null', async t => {
 
 test('deserialize null', async t => {
   t.same(deserialize('teste=a'), { teste: 'a' });
+  t.same(deserialize('tag=a&tag=b'), { tag: ['a', 'b'] });
+  t.same(deserialize('tag=a&tag=b&tag=c'), { tag: ['a', 'b', 'c'] });
+  t.same(deserialize('teste=a'), { teste: 'a' });
   t.same(deserialize(), {});
   t.same(deserialize('='), {});
   t.end();

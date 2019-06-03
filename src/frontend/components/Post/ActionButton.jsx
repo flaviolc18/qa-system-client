@@ -5,6 +5,7 @@ function ActionButton({ onClick, icon, text, visible, color, dataToggle, dataTar
   if (!visible) {
     return '';
   }
+  
   return (
     <button
       onClick={onClick}

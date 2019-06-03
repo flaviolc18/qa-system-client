@@ -6,7 +6,9 @@ module.exports = async function(fastify) {
     const filters = [];
 
     if (query.tags) {
-      const tags = await fastify.core.models.tags.findAll({ nome: { $in: query.tags } });
+      const regex = Array.isArray(query.tags) ? query.tags.join('|') : query.tags;
+
+      const tags = await fastify.core.models.tags.findAll({ nome: { $regex: regex, $options: 'i' } });
 
       filters.push({ tags: { $elemMatch: { $in: tags.map(({ _id }) => _id) } } });
     }

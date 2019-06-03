@@ -15,10 +15,11 @@ class Search extends Component {
   componentDidMount() {
     const query = deserialize(this.props.location.search.slice(1));
 
-    let value = query[this.props.searchKey];
-    value = value ? value : '';
+    const value = Array.isArray(query[this.props.searchKey])
+      ? query[this.props.searchKey].join(',')
+      : query[this.props.searchKey];
 
-    this.setState({ searchBarText: value });
+    this.setState({ searchBarText: value || '' });
   }
 
   componentDidUpdate(oldProps) {
@@ -26,15 +27,16 @@ class Search extends Component {
 
     const query = deserialize(this.props.location.search.slice(1));
 
-    let value = query[this.props.searchKey];
-    value = value ? value : '';
+    const value = Array.isArray(query[this.props.searchKey])
+      ? query[this.props.searchKey].join(',')
+      : query[this.props.searchKey];
 
-    this.setState({ searchBarText: value });
+    this.setState({ searchBarText: value || '' });
   }
 
   onSearch(e) {
     e.preventDefault();
-    navigate(this.props.to + '?' + serialize({ [this.props.searchKey]: this.state.searchBarText }));
+    navigate(this.props.to + '?' + serialize({ [this.props.searchKey]: this.state.searchBarText.split(',') }));
   }
 
   onChange(e) {
@@ -54,10 +56,18 @@ class Search extends Component {
             type="search"
             placeholder="Pesquisar Tag"
             aria-label="Search"
+            autoComplete="off"
           />
           <button className="searchButtonMenu" type="submit">
             <i className="fas fa-search" />
           </button>
+        </div>
+        <div className="row p-0 m-0 mt-3">
+          {this.state.searchBarText.split(',').map((tag, index) => (
+            <div className="tag" key={index}>
+              {tag}
+            </div>
+          ))}
         </div>
       </form>
     );
