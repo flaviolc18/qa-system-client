@@ -5,7 +5,7 @@ import { Link, navigate } from '@reach/router';
 import { FadeLoader, BeatLoader } from 'react-spinners';
 
 import { base64Flag } from '../../utils';
-import { getSession } from '../redux/sessions.redux';
+import { getSession, logout } from '../redux/sessions.redux';
 
 import { getUsuario, loadUsuario, updateUsuario, removeUsuario, changeProfilePicture } from '../redux/usuarios.redux';
 import { loadImagem } from '../redux/imagens.redux';
@@ -103,7 +103,7 @@ class EditPerfil extends Component {
   onDeleteClick() {
     const { removeUsuario, usuario } = this.props;
 
-    removeUsuario({ id: usuario._id }).then(() => navigate('/'));
+    this.props.logout().then(() => removeUsuario({ id: usuario._id }).then(() => navigate('/')));
   }
 
   renderImage() {
@@ -134,7 +134,7 @@ class EditPerfil extends Component {
           onConfirm={this.onDeleteClick}
         />
         <div className="mb-3" />
-        <h3>Editar Pefil</h3>
+        <h3>Editar Perfil</h3>
         <div className="row m-0 p-0 mt-2">
           <div className="mt-4" />
 
@@ -224,6 +224,7 @@ EditPerfil.propTypes = {
   uploadImagem: PropTypes.func,
   loadImagem: PropTypes.func,
   session: PropTypes.object,
+  logout: PropTypes.func,
 };
 export default connect(
   (state, ownProps) => {
@@ -232,5 +233,5 @@ export default connect(
       session: getSession(state),
     };
   },
-  { loadUsuario, updateUsuario, loadImagem, removeUsuario, changeProfilePicture }
+  { loadUsuario, updateUsuario, logout, loadImagem, removeUsuario, changeProfilePicture }
 )(EditPerfil);

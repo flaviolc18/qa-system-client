@@ -32,10 +32,15 @@ class Question extends Component {
       <div>
         <div className="pb-2">
           <input
-            className="form-control"
+            className="input-text"
+            placeholder="Título"
             name="titulo"
             onChange={e => {
               const titulo = e.target.value;
+              if (titulo.length === 0) {
+                alert('Título vazio não é permitido!');
+                return;
+              }
               this.setState(prevState => ({ ...prevState, titulo }));
             }}
             type="text"
