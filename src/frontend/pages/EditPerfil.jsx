@@ -22,6 +22,7 @@ class EditPerfil extends Component {
       image: null,
       imageSource: null,
       isUpdating: false,
+      isLoading: true,
     };
 
     this.onTextChange = this.onTextChange.bind(this);
@@ -51,6 +52,7 @@ class EditPerfil extends Component {
           username: usuario.username,
           descricao: usuario.descricao,
           imageSource: base64Flag + imageStr,
+          isLoading: false,
         });
       });
     });
@@ -118,7 +120,7 @@ class EditPerfil extends Component {
   }
 
   render() {
-    if (!this.props.usuario) {
+    if (!this.props.usuario || this.state.isLoading) {
       return (
         <div style={{ margin: '100px 400px' }}>
           <FadeLoader sizeUnit={'px'} size={2} color={'#555555'} loading={true} />
