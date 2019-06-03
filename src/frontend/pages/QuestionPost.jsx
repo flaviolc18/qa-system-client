@@ -97,6 +97,7 @@ class QuestionPost extends Component {
             disabled={this.props.session ? false : true}
             type="text"
             className="input-text"
+            autoComplete="off"
           />
           <div className="row p-0 m-0 mt-3">
             {tags.map((tag, index) => (

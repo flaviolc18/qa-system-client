@@ -56,10 +56,18 @@ class Search extends Component {
             type="search"
             placeholder="Pesquisar Tag"
             aria-label="Search"
+            autoComplete="off"
           />
           <button className="searchButtonMenu" type="submit">
             <i className="fas fa-search" />
           </button>
+        </div>
+        <div className="row p-0 m-0 mt-3">
+          {this.state.searchBarText.split(',').map((tag, index) => (
+            <div className="tag" key={index}>
+              {tag}
+            </div>
+          ))}
         </div>
       </form>
     );
