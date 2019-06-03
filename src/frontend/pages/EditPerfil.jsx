@@ -146,7 +146,7 @@ class EditPerfil extends Component {
         </div>
         <form onSubmit={this.editUser}>
           <div className="mb-3" />
-          <h4 style={{ color: 'gray' }}>Username:</h4>
+          <h4 style={{ color: 'gray' }}>Nome Usuario:</h4>
           <input
             name="username"
             className="input-text"
