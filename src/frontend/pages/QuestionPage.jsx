@@ -54,7 +54,7 @@ class QuestionPage extends Component {
         <Question id={this.props.id} />
         <Answers perguntaId={this.props.id} />
         <form className="pt-3" onSubmit={this.onSubmit}>
-          <h3>Responser:</h3>
+          <h3>Responder:</h3>
           <TextBox placeHolder="Resposta..." buttonMessage="Responder!" reference={this.textBox} />
           <button className="btn btn-primary" style={{ float: 'right', borderRadius: '20px' }} type="submit">
             Responder!
