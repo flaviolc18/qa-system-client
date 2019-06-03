@@ -10,6 +10,7 @@ import { ProfilePicture } from '../Image';
 import ActionButton from './ActionButton';
 import Modal from '../Modal/Modal';
 import TextBox from '../TextBox/TextBox';
+import LoginModal from '../Login/LoginModal';
 
 const UPVOTE = 1;
 const DOWNVOTE = -1;
@@ -20,15 +21,25 @@ class Post extends Component {
 
     this.state = {
       text: props.post.descricao,
+      showLoginModal: false,
     };
     this.textBox = React.createRef();
     this.onUpvoteClick = this.onUpvoteClick.bind(this);
     this.onDownvoteClick = this.onDownvoteClick.bind(this);
+    this.showLoginModal = this.showLoginModal.bind(this);
+    this.hideLoginModal = this.hideLoginModal.bind(this);
   }
 
   componentDidMount() {
     const { loadVote, post } = this.props;
     loadVote({ postId: post._id });
+  }
+
+  componentDidUpdate() {
+    const { session, user, post, vote, loadVote } = this.props;
+    if (session && user._id && !vote) {
+      loadVote({ postId: post._id });
+    }
   }
 
   renderEdit() {
@@ -77,6 +88,14 @@ class Post extends Component {
     );
   }
 
+  hideLoginModal() {
+    this.setState(prevState => ({ ...prevState, showLoginModal: false }));
+  }
+
+  showLoginModal() {
+    this.setState(prevState => ({ ...prevState, showLoginModal: true }));
+  }
+
   renderVoteButtons() {
     const { post, user, session, vote } = this.props;
 
@@ -85,20 +104,27 @@ class Post extends Component {
 
     return (
       <div>
+        <LoginModal
+          key={'login-modal'}
+          isVisible={this.state.showLoginModal}
+          onLogin={this.hideLoginModal}
+          onBackgroundClick={this.hideLoginModal}
+          session={session}
+        />
         <div className="m-2">
           <ActionButton
-            onClick={this.onUpvoteClick}
+            onClick={session && user._id ? this.onUpvoteClick : this.showLoginModal}
             icon={'fa-thumbs-up'}
-            visible={session && user._id}
+            visible={true}
             color={isVoteUpvote ? 'green' : 'gray'}
           />
           {post.upvotes}
         </div>
         <div className="m-2">
           <ActionButton
-            onClick={this.onDownvoteClick}
+            onClick={session && user._id ? this.onDownvoteClick : this.showLoginModal}
             icon={'fa-thumbs-down'}
-            visible={session && user._id}
+            visible={true}
             color={isVoteDownvote ? 'red' : 'gray'}
           />
           {post.downvotes}

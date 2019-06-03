@@ -27,7 +27,13 @@ function deserialize(data) {
     const [key, value] = param.split('=');
 
     if (decodeURIComponent(key) !== '') {
-      obj[decodeURIComponent(key)] = decodeURIComponent(value);
+      if (!obj[decodeURIComponent(key)]) {
+        obj[decodeURIComponent(key)] = decodeURIComponent(value);
+      } else {
+        obj[decodeURIComponent(key)] = Array.isArray(obj[decodeURIComponent(key)])
+          ? [...obj[decodeURIComponent(key)], decodeURIComponent(value)]
+          : [obj[decodeURIComponent(key)], decodeURIComponent(value)];
+      }
     }
   });
 
