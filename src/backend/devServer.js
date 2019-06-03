@@ -3,6 +3,7 @@
 // isso é uma gambiarra, devido a falta de tempo para entrega do trabalho tive q fazer essa obra de arte, assim q passar a apresentação mudarei
 
 const path = require('path');
+const fs = require('fs');
 
 const fastifyAutoLoad = require('fastify-autoload');
 const fastifyCircuitBreaker = require('fastify-circuit-breaker');
@@ -18,6 +19,8 @@ const fastifyStatic = require('fastify-static');
 const core = require('../core');
 
 const { default: render } = require('../../dist/app.ssr');
+
+const { nomeInitialImage } = require('../utils');
 
 /* eslint no-unused-vars:0 */
 module.exports = async function(fastify, opts) {
@@ -79,4 +82,19 @@ module.exports = async function(fastify, opts) {
   fastify.get('/*', async (req, res) =>
     res.header('Content-Type', 'text/html; charset=utf-8').send(render(req.raw.url))
   );
+
+  fastify.ready().then(async fastify => {
+    const initialImage = await fastify.core.models.imagem.find({ nome: nomeInitialImage });
+
+    if (!initialImage) {
+      fs.readFile(path.join(__dirname, '../../images/initial.png'), async (err, data) => {
+        if (err) {
+          throw err;
+        }
+        const buffer = Buffer.from(data);
+
+        await fastify.core.models.imagem.create(nomeInitialImage, buffer);
+      });
+    }
+  });
 };

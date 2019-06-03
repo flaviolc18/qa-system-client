@@ -6,7 +6,6 @@ const fastifyAutoLoad = require('fastify-autoload');
 const fastifyCircuitBreaker = require('fastify-circuit-breaker');
 const fastifyCookie = require('fastify-cookie');
 const fastifyCors = require('fastify-cors');
-const fastifyEnv = require('fastify-env');
 const fastifyHelmet = require('fastify-helmet');
 const fastifyMultipart = require('fastify-multipart');
 const fastifyPlugin = require('fastify-plugin');
@@ -22,7 +21,7 @@ const { default: render } = require('../../dist/app.ssr');
 module.exports = fastify => {
   fastify.decorate('core', core);
 
-  fastify.register(fastifyStatic, {
+  fastify.register(fastifyStatic, { 
     root: path.join(__dirname, '../../dist'),
     prefix: '/assets',
   });
