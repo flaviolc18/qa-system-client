@@ -27,15 +27,7 @@ class PerguntasUsuario extends Component {
       );
     }
 
-    return (
-      <div>
-        {this.props.perguntas.length <= 0 ? (
-          'Nenhuma pergunta foi cadastrada por esse Usuário!'
-        ) : (
-          <div>{this.renderPerguntas()}</div>
-        )}
-      </div>
-    );
+    return <div>{this.props.perguntas.length <= 0 ? '' : <div>{this.renderPerguntas()}</div>}</div>;
   }
 }
 

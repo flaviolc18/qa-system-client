@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { navigate } from '@reach/router';
-import { FadeLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 
 import { loadSession, getSession, logout } from '../redux/sessions.redux';
 import { Navbar, Dropbox, SearchBar, Button } from './Navbar';
@@ -25,7 +25,7 @@ class FullPage extends Component {
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
         if (this.props.location.pathname === '/login' && this.props.session) {
-          navigate('/home');
+          navigate('/');
         }
       });
     });
@@ -38,7 +38,7 @@ class FullPage extends Component {
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
         if (this.props.location.pathname === '/login' && this.props.session) {
-          navigate('/home');
+          navigate('/');
         }
       });
     });
@@ -56,13 +56,23 @@ class FullPage extends Component {
           }
           key={'logged-nav-profile-picture'}
         >
-          <Button onClick={() => navigate('/usuarios/' + this.props.session.usuarioId)}>Perfil</Button>
-          <Button onClick={() => navigate('/editar-perfil/' + this.props.session.usuarioId)}>Editar Perfil</Button>
-          <Button onClick={() => this.props.logout()}>Logout</Button>
+          <Button key={'dropdown-perfil'} onClick={() => navigate('/usuarios/' + this.props.session.usuarioId)}>
+            Perfil
+          </Button>
+          <Button
+            key={'dropdown-editar-perfil'}
+            onClick={() => navigate('/editar-perfil/' + this.props.session.usuarioId)}
+          >
+            Editar Perfil
+          </Button>
+          <Button key={'dropdown-logout'} onClick={() => this.props.logout().then(navigate('/'))}>
+            Logout
+          </Button>
         </Dropbox>
       ) : (
         <div>
           <button
+            key={'button-login'}
             className="btn btn-outline-light m-2"
             onClick={e => {
               e.preventDefault();
@@ -72,6 +82,7 @@ class FullPage extends Component {
             Login
           </button>
           <button
+            key={'button-registrar'}
             className="btn btn-outline-light m-2"
             onClick={e => {
               e.preventDefault();
@@ -109,13 +120,14 @@ class FullPage extends Component {
           }}
         >
           <Logo />
-          <FadeLoader size={1} color={'#FFFFFF'} loading={true} />
+          <PulseLoader size={15} margin="2px" color={'#FFFFFF'} loading={true} />
         </div>
       );
     }
     return (
-      <div style={{ height: '100%' }}>
+      <div key="full-page" style={{ height: '100%' }}>
         <LoginModal
+          key={'login-modal'}
           isVisible={this.state.showLoginModal}
           onLogin={() => this.setState({ showLoginModal: false })}
           onBackgroundClick={() => this.setState({ showLoginModal: false })}
@@ -123,37 +135,47 @@ class FullPage extends Component {
         />
 
         <Navbar key={this.props.session && this.props.session.usuarioId ? 'logged' : 'unlogged'}>
-          <Logo />
-          <div style={{ marginRight: '430px' }} />,{this.getLinks()}
+          <Logo key={'logo'} />
+          <div key={'links'} style={{ marginRight: '430px' }} />,{this.getLinks()}
         </Navbar>
 
-        <Feed>
-          <div className="col-md-auto p-0 m-0">
+        <Feed key={'feed'}>
+          <div key="page-col" className="col-md-auto p-0 m-0">
             <div
               style={{
                 width: '800px',
                 minWidth: '800px',
                 backgroundColor: 'white',
               }}
+              key={'page-body'}
             >
               {this.props.children}
             </div>
           </div>
 
-          <div className="col-md-auto p-0 m-0" style={{}}>
+          <div className="col-md-auto p-0 m-0">
             <div style={{ width: '250px', minWidth: '250px' }}>
-              <Menu>
-                <MenuBody>
-                  <MenuLink pathname={this.props.location.pathname} to="/">
+              <Menu key={'menu'}>
+                <MenuBody key={'menu-body'}>
+                  <MenuLink key={'menu-link-1'} pathname={this.props.location.pathname} to="/">
                     <i className="fas fa-home" /> Home
                   </MenuLink>
 
-                  <MenuLink pathname={this.props.location.pathname} to="/postar-pergunta">
-                    + Pergunta
-                  </MenuLink>
+                  {this.props.session && this.props.session.usuarioId ? (
+                    <MenuLink key={'menu-link-2'} pathname={this.props.location.pathname} to="/postar-pergunta">
+                      + Pergunta
+                    </MenuLink>
+                  ) : (
+                    ''
+                  )}
 
                   <div className="pb-4" />
-                  <SearchBarMenu to="/perguntas/pesquisar" location={this.props.location} searchKey="tags" />
+                  <SearchBarMenu
+                    key={'menu-searchbar'}
+                    to="/perguntas/pesquisar"
+                    location={this.props.location}
+                    searchKey="tags"
+                  />
                 </MenuBody>
               </Menu>
             </div>

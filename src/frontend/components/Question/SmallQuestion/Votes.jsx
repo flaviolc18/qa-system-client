@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 
 function Votes({ pergunta: { upvotes, downvotes } }) {
   // TODO: deveria mostrar o numero de respostas
-  const QUANTIDADE_RESPOSTAS = 10;
 
   return (
     <div className="row justify-content-end m-0 p-0 mr-2">
-      {[[upvotes, 'upvotes'], [QUANTIDADE_RESPOSTAS, 'respostas'], [downvotes, 'downvotes']].map(([e, v], index) => (
+      {[[upvotes, 'upvotes'], [downvotes, 'downvotes']].map(([e, v], index) => (
         <div
           style={{
             color: '#606060',

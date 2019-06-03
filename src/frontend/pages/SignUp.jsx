@@ -37,7 +37,7 @@ class SignUp extends Component {
       if (!response.error) {
         const usuario = response.elements[0];
         this.props.login({ email: usuario.email, password: usuario.password }).then(() => {
-          return navigate('/home');
+          return navigate('/');
         });
       }
     });

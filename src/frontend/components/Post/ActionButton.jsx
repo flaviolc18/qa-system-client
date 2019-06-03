@@ -2,18 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ActionButton({ onClick, icon, text, visible, color, dataToggle, dataTarget }) {
+  if (!visible) {
+    return '';
+  }
   return (
-    visible && (
-      <button
-        onClick={onClick}
-        style={{ color, border: '0', backgroundColor: 'rgba(1,1,1,0)' }}
-        data-toggle={dataToggle}
-        data-target={dataTarget}
-      >
-        {icon && <i className={`fas ${icon}`} />}
-        {text && <div>{text}</div>}
-      </button>
-    )
+    <button
+      onClick={onClick}
+      style={{ color, border: '0', backgroundColor: 'rgba(1,1,1,0)' }}
+      data-toggle={dataToggle}
+      data-target={dataTarget}
+    >
+      {icon && <i className={`fas ${icon}`} />}
+      {text && <div>{text}</div>}
+    </button>
   );
 }
 

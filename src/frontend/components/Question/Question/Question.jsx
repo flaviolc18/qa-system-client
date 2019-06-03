@@ -60,7 +60,7 @@ class Question extends Component {
   }
 
   onRemovePergunta(query) {
-    this.props.removePergunta(query).then(() => navigate('/home'));
+    this.props.removePergunta(query).then(() => navigate('/'));
   }
 
   render() {

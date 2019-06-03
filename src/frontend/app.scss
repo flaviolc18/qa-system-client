@@ -60,7 +60,7 @@ body {
 
 .small-question-title {
   color: rgb(82, 82, 82);
-  font-size: 22px;
+  font-size: 30px;
 }
 
 .title-link:hover {
@@ -74,7 +74,6 @@ body {
 .login-form {
   margin: 300px auto;
   border-radius: 20px;
-  border: 1px solid white;
   padding: 20px;
   width: 500px;
   z-index: 10;
@@ -97,11 +96,12 @@ body {
 .login-modal {
   padding: 0px;
   margin: 0px;
-  position: absolute;
+  position: fixed;
   top: 0;
-  bottom: 0;
-  height: 100%;
-  width: 100vw;
+  left: 0;
+  right: 0;
+  // height: 100%;
+  // width: 100%;
   z-index: 120;
   background-color: rgba(0, 0, 0, 0.5);
 }
