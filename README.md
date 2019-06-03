@@ -2,9 +2,16 @@
 
 Implementacao de um sistema web de perguntas e respostas baseando na metodologia de desenvolvimento de software Extreme Programming
 
+# Integrantes
+
+- Flavio Lucio Correa Junior
+- Marcos Vinicius Moreira Santos
+
 # Tecnologias
 
-A serem definidas
+Frontend: ReactJS, Redux, Webpack.
+Backend: MongoDB, Mongoose, Fastify.
+Teste: Node Tap
 
 # Workflow
 
@@ -60,9 +67,9 @@ As <b>descrições</b> devem ser suficientemente claras, utilizando seu espaço 
 
 https://trello.com/b/wHcYpqUq
 
-# Integrantes
+# Heroku
 
-- Flavio Lucio Correa Junior
-- Marcos Vinicius Moreira Santos
-- Antônio Côrtes Rodrigues
-- Tomás Tamantini
+https://qa-system-client.herokuapp.com/
+
+#Diagramas UML
+Podem ser Achados na pasta "diagramas" na raiz do repositório
