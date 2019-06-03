@@ -297,6 +297,30 @@ test('api.perguntas.search: pesquisa por tags', async t => {
   t.end();
 });
 
+test('api.perguntas.search: pesquisa por uma única tag', async t => {
+  const fastify = await initServer(t);
+
+  const { _id: usuarioId } = await seed.entidades.usuario();
+
+  const perguntaData = seed.fixtures.pergunta({ usuarioId, tags: ['teste1', 'teste2'] });
+
+  await fastify.core.models.pergunta.create(perguntaData);
+
+  const filter = utils.serialize({ tags: 'teste1' });
+
+  const { statusCode, payload } = await fastify.inject({
+    url: '/api/perguntas/search?' + filter,
+    method: 'GET',
+  });
+
+  const { total } = JSON.parse(payload);
+
+  t.same(statusCode, 200);
+  t.same(total, 1);
+
+  t.end();
+});
+
 test('api.perguntas.search: pesquisa por keyword', async t => {
   const fastify = await initServer(t);
 
