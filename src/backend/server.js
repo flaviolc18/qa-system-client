@@ -17,7 +17,7 @@ const core = require('../core');
 
 const { default: render } = require('../../dist/app.ssr');
 
-/* eslint no-unused-vars:0 */
+/* eslint no-unused-vars:0  */
 
 module.exports = fastify => {
   fastify.decorate('core', core);
