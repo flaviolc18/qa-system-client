@@ -50,6 +50,10 @@ class Post extends Component {
         <div className="pb-2" />
         <button
           onClick={() => {
+            if (this.textBox.current.value.length === 0) {
+              alert('Descrição vazia não é permitido!');
+              return;
+            }
             this.props.onFinishEdit(this.textBox.current.value);
           }}
           style={{ float: 'right', borderRadius: '20px' }}

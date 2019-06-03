@@ -36,8 +36,17 @@ class QuestionPost extends Component {
     if (!this.props.session) {
       return;
     }
-
     const descricao = this.textBox.current.value;
+
+    if (descricao.length === 0) {
+      alert('Descrição vazia não é permitido!');
+      return;
+    }
+
+    if (this.state.title.length === 0) {
+      alert('Titulo vazio não é permitido!');
+      return;
+    }
 
     let tags = this.state.tags.split(',');
     tags = tags.filter(tag => tag !== '');
