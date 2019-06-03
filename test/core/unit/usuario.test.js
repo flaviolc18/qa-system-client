@@ -15,7 +15,7 @@ test(
 
     const usuario = await usuarioModel.create(usuarioData);
     const {
-      _doc: { _id, __v, password, ...createdUsuario },
+      _doc: { _id, __v, password, imagemId, ...createdUsuario },
     } = usuario;
 
     t.strictSame(createdUsuario, usuarioDataWithoutPass);
