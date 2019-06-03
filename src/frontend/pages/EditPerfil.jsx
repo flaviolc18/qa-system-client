@@ -103,7 +103,7 @@ class EditPerfil extends Component {
   onDeleteClick() {
     const { removeUsuario, usuario } = this.props;
 
-    removeUsuario({ id: usuario._id }).then(() => navigate('/home'));
+    removeUsuario({ id: usuario._id }).then(() => navigate('/'));
   }
 
   renderImage() {
@@ -183,25 +183,30 @@ class EditPerfil extends Component {
           </div>
           <div className="row align-items-center p-0 m-0 pt-3">
             <div className="col-md-auto p-0 m-0">
-              <button className="btn btn-primary" style={{ borderRadius: '20px' }} type="submit">
-                {this.state.isUpdating ? <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" /> : 'Atualiar'}
+              <button className="btn btn-primary" style={{ borderRadius: '20px', width: '170px' }} type="submit">
+                {this.state.isUpdating ? (
+                  <BeatLoader sizeUnit={'px'} color="#FFFFFF" size="6" />
+                ) : (
+                  <div>
+                    <i className="fas fa-upload mr-1" /> Atualiar
+                  </div>
+                )}
               </button>
             </div>
             <div className="col p-0 m-0" />
             <div className="col-md-auto p-0 m-0 link text-danger">
-              <a
-                className="ml-4"
+              <button
+                className="btn btn-danger"
                 style={{
-                  backgroundColor: 'rgb(190,0,0)',
-                  color: 'rgb(255,255,255)',
                   borderRadius: '20px',
-                  padding: '8px',
+                  width: '170px',
                 }}
+                onClick={e => e.preventDefault()}
                 data-toggle="modal"
                 data-target="#remove-usuario-modal"
               >
-                <i className="fas fa-user-times" /> Deletar Conta
-              </a>
+                <i className="fas fa-user-times mr-1" /> Deletar Conta
+              </button>
             </div>
           </div>
         </form>

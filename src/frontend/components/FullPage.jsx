@@ -25,7 +25,7 @@ class FullPage extends Component {
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
         if (this.props.location.pathname === '/login' && this.props.session) {
-          navigate('/home');
+          navigate('/');
         }
       });
     });
@@ -38,7 +38,7 @@ class FullPage extends Component {
     this.props.loadSession().then(() => {
       this.setState({ isSessionChecked: true }, () => {
         if (this.props.location.pathname === '/login' && this.props.session) {
-          navigate('/home');
+          navigate('/');
         }
       });
     });
@@ -65,7 +65,7 @@ class FullPage extends Component {
           >
             Editar Perfil
           </Button>
-          <Button key={'dropdown-logout'} onClick={() => this.props.logout()}>
+          <Button key={'dropdown-logout'} onClick={() => this.props.logout().then(navigate('/'))}>
             Logout
           </Button>
         </Dropbox>
